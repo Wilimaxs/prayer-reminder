@@ -15,7 +15,8 @@ interface ApiService {
         @Path("month") month: Int,
         @Query("latitude") latitude: Double,
         @Query("longitude") longitude: Double,
-        @Query("method") method: Int = 20
+        @Query("method") method: Int = 20,
+        @Query("school") school: Int = 0
     ): Response<BaseResponse<List<PrayerDataDto>>>
 
     @GET("hijriCalendar/{year}/{month}")
@@ -24,6 +25,7 @@ interface ApiService {
         @Path("month") month: Int,
         @Query("latitude") latitude: Double,
         @Query("longitude") longitude: Double,
-        @Query("method") method: Int = 20
+        @Query("method") method: Int = 20,
+        @Query("school") school: Int = 0
     ): Response<BaseResponse<List<PrayerDataDto>>>
 }
