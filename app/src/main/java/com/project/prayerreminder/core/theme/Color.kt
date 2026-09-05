@@ -1,4 +1,4 @@
-package com.project.prayerreminder.ui.theme
+package com.project.prayerreminder.core.theme
 
 import androidx.compose.ui.graphics.Color
 

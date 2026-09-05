@@ -1,4 +1,4 @@
-package com.project.prayerreminder.ui.theme
+package com.project.prayerreminder.core.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
