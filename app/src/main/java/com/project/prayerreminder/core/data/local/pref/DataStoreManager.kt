@@ -4,6 +4,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import timber.log.Timber
@@ -42,7 +43,7 @@ class DataStoreManager @Inject constructor(
             val jsonString = pref[key]
             if (!jsonString.isNullOrEmpty()) {
                 try {
-                    gson.fromJson(jsonString, T::class.java)
+                    gson.fromJson(jsonString, object : TypeToken<T>() {}.type)
                 } catch (e: Exception) {
                     Timber.e(e, "Failed to parse JSON from DataStore for key: ${key.name}")
                     null

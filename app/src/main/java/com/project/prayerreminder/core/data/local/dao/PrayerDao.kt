@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import com.project.prayerreminder.core.data.local.entity.PrayerEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -16,7 +17,7 @@ interface PrayerDao {
 
     // Get prayer schedule by date for this day
     @Query("Select * From prayer_schedules Where date = :date Limit 1")
-    fun getScheduleByDate(date: String): PrayerEntity?
+    suspend fun getScheduleByDate(date: String): PrayerEntity?
 
     // Get prayer schedule by a specific date for UI realtime
     @Query("Select * From prayer_schedules Where date = :date Limit 1")
@@ -29,4 +30,11 @@ interface PrayerDao {
     // Delete all prayer schedules (for user when refresh new location)
     @Query("Delete From prayer_schedules")
     suspend fun deleteAllSchedules()
+
+    // Change all schedule with atomic
+    @Transaction
+    suspend fun replaceAll(schedule: List<PrayerEntity>) {
+        deleteAllSchedules()
+        insertAll(schedule)
+    }
 }
