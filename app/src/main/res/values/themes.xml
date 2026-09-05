@@ -2,4 +2,10 @@
 <resources>
 
     <style name="Theme.PrayerReminder" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="Theme.PrayerReminder.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground" type="color">@color/splash_background</item>
+        <item name="windowSplashScreenAnimatedIcon" type="drawable">@drawable/ic_splash_logo</item>
+        <item name="postSplashScreenTheme" type="style">@style/Theme.PrayerReminder</item>
+    </style>
 </resources>
