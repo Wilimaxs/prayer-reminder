@@ -13,6 +13,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -26,9 +28,16 @@ import com.project.prayerreminder.core.theme.PrayerDimens
 @Composable
 fun SplashScreen(
     modifier: Modifier,
+    onFinished: () -> Unit,
     viewModel: SplashViewModel = hiltViewModel(),
 ) {
-    val uiState = viewModel.uiState.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(uiState.currentProgress) {
+        if (uiState.currentProgress >= 1f) {
+            onFinished()
+        }
+    }
 
     Scaffold(
         modifier = modifier
@@ -57,7 +66,7 @@ fun SplashScreen(
             Spacer(modifier = Modifier.height(PrayerDimens.StackMedium))
             LinearProgressIndicator(
                 modifier = Modifier.fillMaxWidth(0.5f),
-                progress = { uiState.value.currentProgress }
+                progress = { uiState.currentProgress }
             )
         }
     }

@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.project.prayerreminder.core.theme.PrayerReminderTheme
-import com.project.prayerreminder.feature.splash.SplashScreen
+import com.project.prayerreminder.route.AppRoute
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -19,7 +19,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             PrayerReminderTheme {
-                SplashScreen(
+                AppRoute(
                     modifier = Modifier.fillMaxSize()
                 )
             }
