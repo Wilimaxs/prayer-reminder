@@ -17,6 +17,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.project.prayerreminder.feature.home.HomeScreen
 import com.project.prayerreminder.feature.main.MainBottomNavigationScreen
 import com.project.prayerreminder.feature.splash.SplashScreen
 
@@ -80,12 +81,9 @@ fun AppRoute(
             }
 
             composable(AppScreen.HOME.route) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(text = "Home Screen")
-                }
+                HomeScreen(
+                    modifier = Modifier.fillMaxSize()
+                )
             }
 
             composable(AppScreen.CALENDAR.route) {

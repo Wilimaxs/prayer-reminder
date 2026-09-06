@@ -11,12 +11,16 @@ import com.project.prayerreminder.R
 
 val InterFontFamily = FontFamily(
     Font(
+        resId = R.font.inter_light,
+        weight = FontWeight.Light
+    ),
+    Font(
         resId = R.font.inter_regular,
         weight = FontWeight.Normal
     ),
     Font(
         resId = R.font.inter_bold,
-        weight = FontWeight.Medium
+        weight = FontWeight.Bold
     )
 )
 
