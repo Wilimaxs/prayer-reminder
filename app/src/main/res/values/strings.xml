@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Prayer Reminder</string>
+    <string name="splash_title">Prayer Reminder</string>
+    <string name="splash_subtitle">Spiritual Discipline</string>
 </resources>
