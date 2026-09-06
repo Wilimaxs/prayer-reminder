@@ -2,7 +2,13 @@
     <string name="app_name">Prayer Reminder</string>
     <string name="splash_title">Prayer Reminder</string>
     <string name="splash_subtitle">Spiritual Discipline</string>
-    <string name="home_label">home</string>
-    <string name="calendar_label">calendar</string>
-    <string name="profile_label">profile</string>
+    <string name="home_label">Home</string>
+    <string name="calendar_label">Calendar</string>
+    <string name="profile_label">Profile</string>
+    <string name="prayer_schedule_today">Prayer Schedule Today</string>
+    <string name="fajr">Fajr</string>
+    <string name="dhuhr">Dhuhr</string>
+    <string name="asr">Asr</string>
+    <string name="maghrib">Maghrib</string>
+    <string name="isha">Isha</string>
 </resources>
