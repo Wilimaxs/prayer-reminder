@@ -2,4 +2,7 @@
     <string name="app_name">Prayer Reminder</string>
     <string name="splash_title">Prayer Reminder</string>
     <string name="splash_subtitle">Spiritual Discipline</string>
+    <string name="home_label">home</string>
+    <string name="calendar_label">calendar</string>
+    <string name="profile_label">profile</string>
 </resources>

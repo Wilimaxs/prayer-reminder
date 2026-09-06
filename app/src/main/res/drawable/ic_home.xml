@@ -1,0 +1,45 @@
+<!--
+Font Awesome Free License
+––––––––––––––––––––––––-
+
+Font Awesome Free is free, open source, and GPL friendly. You can use it for
+commercial projects, open source projects, or really almost whatever you want.
+Full Font Awesome Free license: https://fontawesome.com/license/free.
+
+# Icons: CC BY 4.0 License (https://creativecommons.org/licenses/by/4.0/)
+In the Font Awesome Free download, the CC BY 4.0 license applies to all icons
+packaged as SVG and JS file types.
+
+# Fonts: SIL OFL 1.1 License (https://scripts.sil.org/OFL)
+In the Font Awesome Free download, the SIL OFL license applies to all icons
+packaged as web and desktop font files.
+
+# Code: MIT License (https://opensource.org/licenses/MIT)
+In the Font Awesome Free download, the MIT license applies to all non-font and
+non-icon files.
+
+# Attribution
+Attribution is required by MIT, SIL OFL, and CC BY licenses. Downloaded Font
+Awesome Free files already contain embedded comments with sufficient
+attribution, so you shouldn't need to do anything additional when using these
+files normally.
+
+We've kept attribution comments terse, so we ask that you do not actively work
+to remove them from files, especially code. They're a great way for folks to
+learn about Font Awesome.
+
+# Brand Icons
+All brand icons are trademarks of their respective owners. The use of these
+trademarks does not indicate endorsement of the trademark holder by Font
+Awesome, nor vice versa. **Please do not use brand logos for any purpose except
+to represent the company, product, or service to which they refer.**
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="576"
+    android:viewportHeight="512">
+    <path
+        android:fillColor="@color/black"
+        android:pathData="M280.37,148.26L96,300.11V464a16,16 0 0,0 16,16l112.06,-0.29a16,16 0 0,0 15.92,-16V368a16,16 0 0,1 16,-16h64a16,16 0 0,1 16,16v95.64a16,16 0 0,0 16,16.05L464,480a16,16 0 0,0 16,-16V300L295.67,148.26a12.19,12.19 0 0,0 -15.3,0ZM571.6,251.47L488,182.56V44.05a12,12 0 0,0 -12,-12h-56a12,12 0 0,0 -12,12v72.61L318.47,43a48,48 0 0,0 -61,0L4.34,251.47a12,12 0 0,0 -1.6,16.9l25.5,31A12,12 0 0,0 45.15,301l235.22,-193.74a12.19,12.19 0 0,1 15.3,0L530.9,301a12,12 0 0,0 16.9,-1.6l25.5,-31a12,12 0 0,0 -1.7,-16.93Z" />
+</vector>

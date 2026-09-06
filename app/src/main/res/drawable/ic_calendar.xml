@@ -1,0 +1,45 @@
+<!--
+Font Awesome Free License
+––––––––––––––––––––––––-
+
+Font Awesome Free is free, open source, and GPL friendly. You can use it for
+commercial projects, open source projects, or really almost whatever you want.
+Full Font Awesome Free license: https://fontawesome.com/license/free.
+
+# Icons: CC BY 4.0 License (https://creativecommons.org/licenses/by/4.0/)
+In the Font Awesome Free download, the CC BY 4.0 license applies to all icons
+packaged as SVG and JS file types.
+
+# Fonts: SIL OFL 1.1 License (https://scripts.sil.org/OFL)
+In the Font Awesome Free download, the SIL OFL license applies to all icons
+packaged as web and desktop font files.
+
+# Code: MIT License (https://opensource.org/licenses/MIT)
+In the Font Awesome Free download, the MIT license applies to all non-font and
+non-icon files.
+
+# Attribution
+Attribution is required by MIT, SIL OFL, and CC BY licenses. Downloaded Font
+Awesome Free files already contain embedded comments with sufficient
+attribution, so you shouldn't need to do anything additional when using these
+files normally.
+
+We've kept attribution comments terse, so we ask that you do not actively work
+to remove them from files, especially code. They're a great way for folks to
+learn about Font Awesome.
+
+# Brand Icons
+All brand icons are trademarks of their respective owners. The use of these
+trademarks does not indicate endorsement of the trademark holder by Font
+Awesome, nor vice versa. **Please do not use brand logos for any purpose except
+to represent the company, product, or service to which they refer.**
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="448"
+    android:viewportHeight="512">
+    <path
+        android:fillColor="@color/black"
+        android:pathData="M148,288h-40c-6.6,0 -12,-5.4 -12,-12v-40c0,-6.6 5.4,-12 12,-12h40c6.6,0 12,5.4 12,12v40c0,6.6 -5.4,12 -12,12Zm108,-12v-40c0,-6.6 -5.4,-12 -12,-12h-40c-6.6,0 -12,5.4 -12,12v40c0,6.6 5.4,12 12,12h40c6.6,0 12,-5.4 12,-12Zm96,0v-40c0,-6.6 -5.4,-12 -12,-12h-40c-6.6,0 -12,5.4 -12,12v40c0,6.6 5.4,12 12,12h40c6.6,0 12,-5.4 12,-12Zm-96,96v-40c0,-6.6 -5.4,-12 -12,-12h-40c-6.6,0 -12,5.4 -12,12v40c0,6.6 5.4,12 12,12h40c6.6,0 12,-5.4 12,-12Zm-96,0v-40c0,-6.6 -5.4,-12 -12,-12h-40c-6.6,0 -12,5.4 -12,12v40c0,6.6 5.4,12 12,12h40c6.6,0 12,-5.4 12,-12Zm192,0v-40c0,-6.6 -5.4,-12 -12,-12h-40c-6.6,0 -12,5.4 -12,12v40c0,6.6 5.4,12 12,12h40c6.6,0 12,-5.4 12,-12Zm96,-260v352c0,26.5 -21.5,48 -48,48H48c-26.5,0 -48,-21.5 -48,-48V112c0,-26.5 21.5,-48 48,-48h48V12c0,-6.6 5.4,-12 12,-12h40c6.6,0 12,5.4 12,12v52h128V12c0,-6.6 5.4,-12 12,-12h40c6.6,0 12,5.4 12,12v52h48c26.5,0 48,21.5 48,48Zm-48,346V160H48v298c0,3.3 2.7,6 6,6h340c3.3,0 6,-2.7 6,-6Z" />
+</vector>

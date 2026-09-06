@@ -1,8 +1,14 @@
 package com.project.prayerreminder.route
 
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
+import com.project.prayerreminder.R
+
 enum class AppScreen(
     val route: String,
-    val showBottomNavigation: Boolean
+    val showBottomNavigation: Boolean,
+    @param:StringRes val label: Int? = null,
+    @param:DrawableRes val icon: Int? = null
 ) {
     SPLASH(
         route = "splash",
@@ -10,15 +16,21 @@ enum class AppScreen(
     ),
     HOME(
         route = "home",
-        showBottomNavigation = true
+        showBottomNavigation = true,
+        label = R.string.home_label,
+        icon = R.drawable.ic_home
     ),
     CALENDAR(
         route = "calendar",
-        showBottomNavigation = true
+        showBottomNavigation = true,
+        label = R.string.calendar_label,
+        icon = R.drawable.ic_calendar,
     ),
     PROFILE(
         route = "profile",
-        showBottomNavigation = true
+        showBottomNavigation = true,
+        label = R.string.profile_label,
+        icon = R.drawable.ic_profile,
     );
 
     companion object {
