@@ -19,6 +19,7 @@ suspend fun <T> safeApiCall(
                     data = body.data,
                     message = body.status ?: "Success"
                 )
+
                 // Handle empty body
             } else {
                 NetworkResult.Error(
