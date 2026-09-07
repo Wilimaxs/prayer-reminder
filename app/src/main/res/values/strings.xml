@@ -16,4 +16,5 @@
     <string name="islamic_events">Islamic Events</string>
     <string name="my_schedule">My Schedule</string>
     <string name="add_schedule">Add Schedule</string>
+    <string name="close">Close</string>
 </resources>
