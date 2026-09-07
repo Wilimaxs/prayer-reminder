@@ -17,4 +17,8 @@
     <string name="my_schedule">My Schedule</string>
     <string name="add_schedule">Add Schedule</string>
     <string name="close">Close</string>
+    <string name="add_schedule_title">Add to Schedule</string>
+    <string name="add_schedule_subtitle">Create reminders for your personal activities.</string>
+    <string name="save_schedule">Save Schedule</string>
+    <string name="cancel">Cancel</string>
 </resources>

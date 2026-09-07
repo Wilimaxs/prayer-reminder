@@ -8,9 +8,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.stringResource
@@ -23,13 +29,18 @@ import com.project.prayerreminder.feature.calendar.composable.CalendarContent
 import com.project.prayerreminder.feature.calendar.composable.CalendarIslamicEvent
 import com.project.prayerreminder.feature.calendar.composable.CalendarMySchedule
 import com.project.prayerreminder.utils.composables.AppBar
+import com.project.prayerreminder.utils.composables.AppBottomSheet
 import com.project.prayerreminder.utils.composables.AppButton
+import com.project.prayerreminder.utils.composables.BottomSheetButtonConfig
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CalendarScreen(
     modifier: Modifier = Modifier,
-    onAddScheduleClick: () -> Unit = {},
 ) {
+    var showAddScheduleBottomSheet by rememberSaveable {
+        mutableStateOf(false)
+    }
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -42,7 +53,9 @@ fun CalendarScreen(
             AppButton(
                 text = stringResource(R.string.add_schedule),
                 leadingIcon = R.drawable.ic_add,
-                onClick = onAddScheduleClick,
+                onClick = {
+                    showAddScheduleBottomSheet = true
+                },
                 modifier = Modifier.shadow(
                     elevation = 4.dp,
                     shape = MaterialTheme.shapes.extraLarge,
@@ -73,6 +86,34 @@ fun CalendarScreen(
             CalendarMySchedule(
                 isVisible = true,
                 modifier = Modifier.fillMaxWidth(),
+            )
+        }
+    }
+    if (showAddScheduleBottomSheet) {
+        AppBottomSheet(
+            title = stringResource(R.string.add_schedule),
+            subtitle = stringResource(R.string.add_schedule_subtitle),
+            showCloseButton = false,
+            onDismissRequest = {
+                showAddScheduleBottomSheet = false
+            },
+            secondaryButton = BottomSheetButtonConfig(
+                text = stringResource(R.string.cancel),
+                onClick = {
+                    showAddScheduleBottomSheet = false
+                },
+            ),
+            primaryButton = BottomSheetButtonConfig(
+                text = stringResource(R.string.save_schedule),
+                onClick = {
+                    showAddScheduleBottomSheet = false
+                },
+            ),
+        ) {
+            Text(
+                text = "Add Schedule form will be placed here.",
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                style = MaterialTheme.typography.bodyMedium,
             )
         }
     }
