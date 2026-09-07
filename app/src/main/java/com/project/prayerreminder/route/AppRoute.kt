@@ -17,6 +17,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.project.prayerreminder.feature.calendar.CalendarScreen
 import com.project.prayerreminder.feature.home.HomeScreen
 import com.project.prayerreminder.feature.main.MainBottomNavigationScreen
 import com.project.prayerreminder.feature.splash.SplashScreen
@@ -87,12 +88,9 @@ fun AppRoute(
             }
 
             composable(AppScreen.CALENDAR.route) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(text = "Calendar Screen")
-                }
+                CalendarScreen(
+                    modifier = Modifier.fillMaxSize()
+                )
             }
 
             composable(AppScreen.PROFILE.route) {

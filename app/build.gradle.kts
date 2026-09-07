@@ -19,7 +19,6 @@ android {
     defaultConfig {
         applicationId = "com.project.prayerreminder"
         minSdk = 26
-        //Support until android 16
         targetSdk = 37
         versionCode = 1
         versionName = "1.0"
@@ -112,4 +111,7 @@ dependencies {
 
     // Datastore
     implementation(libs.androidx.datastore.preferences)
+
+    // calendar // custom dependecy
+    implementation(libs.kizitonwose.calendar.compose)
 }
