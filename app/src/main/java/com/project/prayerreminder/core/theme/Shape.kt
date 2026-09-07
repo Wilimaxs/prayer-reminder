@@ -22,4 +22,5 @@ object PrayerDimens {
     val StackSmall = 8.dp
     val StackMedium = 16.dp
     val StackLarge = 24.dp
+    val StackExtraLarge = 32.dp
 }

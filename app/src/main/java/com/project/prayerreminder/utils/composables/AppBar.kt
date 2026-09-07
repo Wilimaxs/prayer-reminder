@@ -10,6 +10,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.project.prayerreminder.R
@@ -28,7 +29,8 @@ fun AppBar(
             Text(
                 text = title,
                 style = MaterialTheme.typography.titleLarge.copy(
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.primary,
+                    fontWeight = FontWeight.Bold
                 ),
                 modifier = Modifier.fillMaxWidth(1f),
                 textAlign = TextAlign.Center
@@ -51,7 +53,7 @@ fun AppBar(
 
 @Preview(showBackground = true, showSystemUi = true, name = "Appbar", device = "id:pixel_5")
 @Composable
-fun AppbarPreview() {
+private fun AppbarPreview() {
     PrayerReminderTheme {
         AppBar(title = "Prayer Reminder", canNavigateBack = true)
     }

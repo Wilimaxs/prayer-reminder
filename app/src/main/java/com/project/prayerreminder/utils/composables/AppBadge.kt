@@ -69,7 +69,7 @@ fun AppBadge(
 
 @Preview(showBackground = true, name = "Badge")
 @Composable
-fun AppBadgeIconTextPreview() {
+private fun AppBadgeIconTextPreview() {
     PrayerReminderTheme {
         AppBadge(
             icon = painterResource(R.drawable.ic_location),

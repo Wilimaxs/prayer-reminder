@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -65,14 +66,15 @@ fun HomeCard(
                         verticalArrangement = Arrangement.Center
                     ) {
                         Text(
-                            text = "Sholat Berikutnya",
-                            style = MaterialTheme.typography.titleMedium.copy(
+                            text = stringResource(R.string.next_prayer),
+                            style = MaterialTheme.typography.titleLarge.copy(
                                 fontWeight = FontWeight.Medium,
                             )
                         )
+                        Spacer(modifier = Modifier.height(PrayerDimens.Baseline))
                         Text(
                             text = "Maghrib",
-                            style = MaterialTheme.typography.titleLarge.copy(
+                            style = MaterialTheme.typography.headlineSmall.copy(
                                 fontWeight = FontWeight.Bold
                             )
                         )
@@ -83,10 +85,10 @@ fun HomeCard(
                         containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.1f),
                         containerPadding = PrayerDimens.StackSmall,
                         shapes = PrayerShapes.extraLarge,
-                        iconSize = PrayerDimens.StackLarge
+                        iconSize = PrayerDimens.StackExtraLarge
                     )
                 }
-                Spacer(modifier = Modifier.height(PrayerDimens.StackLarge))
+                Spacer(modifier = Modifier.height(PrayerDimens.StackExtraLarge))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
@@ -97,14 +99,14 @@ fun HomeCard(
                             fontWeight = FontWeight.Bold
                         ),
                     )
-                    Spacer(modifier = Modifier.width(PrayerDimens.Baseline))
+                    Spacer(modifier = Modifier.width(PrayerDimens.StackSmall))
                     AppBadge(
                         icon = painterResource(R.drawable.ic_clock),
                         iconTint = MaterialTheme.colorScheme.primary,
                         containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.1f),
                         containerPadding = PrayerDimens.StackSmall,
                         shapes = PrayerShapes.small,
-                        text = "12 menit lagi"
+                        text = "12 minutes left"
                     )
                 }
             }
@@ -114,7 +116,7 @@ fun HomeCard(
 
 @Preview(showBackground = true, name = "Home Card", device = "id:pixel_5", showSystemUi = true)
 @Composable
-fun HomeCardPreview() {
+private fun HomeCardPreview() {
     PrayerReminderTheme {
         Box(modifier = Modifier.padding(16.dp)) {
             HomeCard(

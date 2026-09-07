@@ -5,6 +5,8 @@
     <string name="home_label">Home</string>
     <string name="calendar_label">Calendar</string>
     <string name="profile_label">Profile</string>
+    <string name="next_prayer">Next Prayer</string>
+    <string name="Greeting">Assalamu\'alaikum</string>
     <string name="prayer_schedule_today">Prayer Schedule Today</string>
     <string name="fajr">Fajr</string>
     <string name="dhuhr">Dhuhr</string>
