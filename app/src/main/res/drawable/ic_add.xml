@@ -1,0 +1,32 @@
+<!--
+MIT License
+
+Copyright (c) 2020 Microsoft Corporation
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="@color/black"
+        android:pathData="M11.8834,3.00673L12,3C12.5128,3 12.9355,3.38604 12.9933,3.88338L13,4V11H20C20.5128,11 20.9355,11.386 20.9933,11.8834L21,12C21,12.5128 20.614,12.9355 20.1166,12.9933L20,13H13V20C13,20.5128 12.614,20.9355 12.1166,20.9933L12,21C11.4872,21 11.0645,20.614 11.0067,20.1166L11,20V13H4C3.48716,13 3.06449,12.614 3.00673,12.1166L3,12C3,11.4872 3.38604,11.0645 3.88338,11.0067L4,11H11V4C11,3.48716 11.386,3.06449 11.8834,3.00673L12,3L11.8834,3.00673Z" />
+</vector>
