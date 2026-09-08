@@ -1,0 +1,134 @@
+package com.project.prayerreminder.feature.profile
+
+import androidx.datastore.preferences.core.Preferences
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.project.prayerreminder.core.data.local.pref.DataStoreManager
+import com.project.prayerreminder.core.data.local.pref.PreferenceKeys
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+@HiltViewModel
+class ProfileViewModel @Inject constructor(
+    private val dataStoreManager: DataStoreManager,
+) : ViewModel() {
+
+    private val _uiState = MutableStateFlow(ProfileUiState())
+    val uiState = _uiState.asStateFlow()
+
+    init {
+        observePrayerSettings()
+    }
+
+    private fun observePrayerSettings() {
+        val defaultSettings = ProfilePrayerSettingsUiState()
+
+        viewModelScope.launch {
+            combine(
+                dataStoreManager.get(
+                    key = PreferenceKeys.CITY_NAME,
+                    defaultValue = defaultSettings.cityName,
+                ),
+                dataStoreManager.get(
+                    key = PreferenceKeys.AUTO_LOCATION,
+                    defaultValue = defaultSettings.isAutoLocationEnabled,
+                ),
+                dataStoreManager.get(
+                    key = PreferenceKeys.CALCULATION_METHOD,
+                    defaultValue = defaultSettings.calculationMethod.apiCode,
+                ),
+                dataStoreManager.get(
+                    key = PreferenceKeys.MADZHAB,
+                    defaultValue = defaultSettings.madhab.storageValue,
+                ),
+            ) { cityName, isAutoLocationEnabled, calculationMethodCode, madhabValue ->
+
+                ProfilePrayerSettingsUiState(
+                    cityName = cityName,
+                    isAutoLocationEnabled = isAutoLocationEnabled,
+                    calculationMethod = PrayerCalculationMethod.fromApiCode(calculationMethodCode),
+                    madhab = AsrMadhab.fromStoredValue(madhabValue),
+                )
+            }
+                .catch {
+                    _uiState.update { currentState ->
+                        currentState.copy(
+                            isLoading = false,
+                            message = ProfileMessage.LoadSettingsFailed,
+                        )
+                    }
+                }
+                .collect { prayerSettings ->
+                    _uiState.update { currentState ->
+                        currentState.copy(
+                            isLoading = false,
+                            prayerSettings = prayerSettings,
+                        )
+                    }
+                }
+        }
+    }
+
+    fun updateAutoLocation(isEnabled: Boolean) {
+        savePreference(
+            key = PreferenceKeys.AUTO_LOCATION,
+            value = isEnabled,
+        )
+    }
+
+    fun updateCityName(cityName: String) {
+        savePreference(
+            key = PreferenceKeys.CITY_NAME,
+            value = cityName,
+        )
+    }
+
+    fun updateCalculationMethod(method: PrayerCalculationMethod) {
+        savePreference(
+            key = PreferenceKeys.CALCULATION_METHOD,
+            value = method.apiCode,
+        )
+    }
+
+    fun updateMadhab(madhab: AsrMadhab) {
+        savePreference(
+            key = PreferenceKeys.MADZHAB,
+            value = madhab.storageValue,
+        )
+    }
+
+    fun clearMessage() {
+        _uiState.update { currentState ->
+            currentState.copy(
+                message = null,
+            )
+        }
+    }
+
+    private fun <T> savePreference(
+        key: Preferences.Key<T>,
+        value: T,
+    ) {
+        viewModelScope.launch {
+            runCatching {
+                dataStoreManager.save(
+                    key = key,
+                    value = value,
+                )
+            }.onFailure {
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        message =
+                            ProfileMessage.SaveSettingFailed,
+                    )
+                }
+            }
+        }
+    }
+}

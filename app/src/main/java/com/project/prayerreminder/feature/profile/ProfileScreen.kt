@@ -14,28 +14,23 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import com.project.prayerreminder.R
 import com.project.prayerreminder.core.theme.PrayerDimens
-import com.project.prayerreminder.core.theme.PrayerReminderTheme
 import com.project.prayerreminder.feature.profile.composable.ProfileHeader
 import com.project.prayerreminder.feature.profile.composable.ProfileSection
 import com.project.prayerreminder.feature.profile.composable.ProfileSettingItem
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
 fun ProfileScreen(
     modifier: Modifier = Modifier,
+    viewModel: ProfileViewModel = hiltViewModel()
 ) {
-
-    var isAutoLocationEnabled by rememberSaveable {
-        mutableStateOf(false)
-    }
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     Scaffold(
         modifier = modifier,
@@ -55,7 +50,7 @@ fun ProfileScreen(
             ),
         ) {
             ProfileHeader(
-                name = "Hamba Tuhan",
+                name = uiState.user.name,
                 onEditClick = {
                     // TODO: Handle edit when phase UI done
                 },
@@ -68,7 +63,7 @@ fun ProfileScreen(
                 ProfileSettingItem(
                     icon = R.drawable.ic_location,
                     title = stringResource(R.string.location),
-                    subtitle = "Bandung, Indonesia",
+                    subtitle = uiState.prayerSettings.cityName,
                     onClick = {
                         // TODO: Open location settings.
                     },
@@ -84,10 +79,8 @@ fun ProfileScreen(
                     ),
                     trailingContent = {
                         Switch(
-                            checked = isAutoLocationEnabled,
-                            onCheckedChange = {
-                                isAutoLocationEnabled = it
-                            },
+                            checked = uiState.prayerSettings.isAutoLocationEnabled,
+                            onCheckedChange = viewModel::updateAutoLocation,
                             modifier = Modifier.scale(0.8f)
                         )
                     },
@@ -98,7 +91,10 @@ fun ProfileScreen(
                 ProfileSettingItem(
                     icon = R.drawable.ic_calculation,
                     title = stringResource(R.string.calculation_method),
-                    subtitle = "Kemenag Indonesia",
+                    subtitle = when (uiState.prayerSettings.calculationMethod) {
+                        PrayerCalculationMethod.KemenagIndonesia ->
+                            "Kemenag Indonesia"
+                    },
                     onClick = {
                         // TODO: Open calculation method selection.
                     },
@@ -109,27 +105,15 @@ fun ProfileScreen(
                 ProfileSettingItem(
                     icon = R.drawable.ic_madhab,
                     title = stringResource(R.string.madhab_asr),
-                    subtitle = "Shafi'i (Standard)",
+                    subtitle =   when (uiState.prayerSettings.madhab) {
+                        AsrMadhab.Shafi -> "Shafi'i (Standard)"
+                        AsrMadhab.Hanafi -> "Hanafi"
+                    },
                     onClick = {
                         // TODO: Open madhab selection.
                     },
                 )
             }
         }
-    }
-}
-
-@Preview(
-    name = "Profile Screen",
-    showBackground = true,
-    showSystemUi = true,
-    device = "id:pixel_5",
-)
-@Composable
-private fun ProfileScreenPreview() {
-    PrayerReminderTheme {
-        ProfileScreen(
-            modifier = Modifier.fillMaxSize(),
-        )
     }
 }

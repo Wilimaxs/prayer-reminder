@@ -2,6 +2,7 @@ package com.project.prayerreminder.core.data.local.pref
 
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.doublePreferencesKey
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 
 object PreferenceKeys {
@@ -10,6 +11,7 @@ object PreferenceKeys {
     val LATITUDE = doublePreferencesKey("latitude")
     val LONGITUDE = doublePreferencesKey("longitude")
     val CITY_NAME = stringPreferencesKey("city_name")
+    val CALCULATION_METHOD = intPreferencesKey("calculation_method")
 
     // Key for complex data (JSON String)
     val PRAYER_ALARM_MAP = stringPreferencesKey("prayer_alarm_map")
