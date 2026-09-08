@@ -1,16 +1,13 @@
 package com.project.prayerreminder.route
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -20,6 +17,7 @@ import androidx.navigation.compose.rememberNavController
 import com.project.prayerreminder.feature.calendar.CalendarScreen
 import com.project.prayerreminder.feature.home.HomeScreen
 import com.project.prayerreminder.feature.main.MainBottomNavigationScreen
+import com.project.prayerreminder.feature.profile.ProfileScreen
 import com.project.prayerreminder.feature.splash.SplashScreen
 
 @Composable
@@ -94,12 +92,9 @@ fun AppRoute(
             }
 
             composable(AppScreen.PROFILE.route) {
-                Box(
+                ProfileScreen(
                     modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(text = "Profile Screen")
-                }
+                )
             }
         }
     }
