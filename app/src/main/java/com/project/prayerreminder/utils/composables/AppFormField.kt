@@ -1,5 +1,8 @@
 package com.project.prayerreminder.utils.composables
 
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,7 +20,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -40,6 +46,7 @@ fun AppFormField(
     enabled: Boolean = true,
     readOnly: Boolean = false,
     singleLine: Boolean = true,
+    onClick: (() -> Unit)? = null,
     minLines: Int = 1,
     maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
     maxLength: Int? = null,
@@ -92,65 +99,87 @@ fun AppFormField(
             Spacer(modifier = Modifier.height(PrayerDimens.StackSmall))
         }
 
-        OutlinedTextField(
-            value = value,
-            onValueChange = { newValue ->
-                val limitedValue = if (maxLength != null) {
-                    newValue.take(maxLength)
+        Box {
+            OutlinedTextField(
+                value = value,
+                onValueChange = { newValue ->
+                    val limitedValue = if (maxLength != null) {
+                        newValue.take(maxLength)
+                    } else {
+                        newValue
+                    }
+
+                    onValueChange(limitedValue)
+                },
+                modifier = Modifier.fillMaxWidth(),
+                enabled = enabled,
+                readOnly = readOnly || onClick != null,
+                singleLine = singleLine,
+                minLines = resolvedMinLines,
+                maxLines = resolvedMaxLines,
+                isError = hasError,
+                textStyle = textStyle,
+                placeholder = if (!placeholder.isNullOrBlank()) {
+                    {
+                        Text(
+                            text = placeholder,
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
+                    }
                 } else {
-                    newValue
-                }
+                    null
+                },
+                leadingIcon = leadingIcon,
+                trailingIcon = trailingIcon,
+                keyboardOptions = keyboardOptions,
+                keyboardActions = keyboardActions,
+                visualTransformation = visualTransformation,
+                shape = shape,
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                    unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+                    disabledTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    errorTextColor = MaterialTheme.colorScheme.onErrorContainer,
 
-                onValueChange(limitedValue)
-            },
-            modifier = Modifier.fillMaxWidth(),
-            enabled = enabled,
-            readOnly = readOnly,
-            singleLine = singleLine,
-            minLines = resolvedMinLines,
-            maxLines = resolvedMaxLines,
-            isError = hasError,
-            textStyle = textStyle,
-            placeholder = if (!placeholder.isNullOrBlank()) {
-                {
-                    Text(
-                        text = placeholder,
-                        style = MaterialTheme.typography.bodyMedium,
-                    )
-                }
-            } else {
-                null
-            },
-            leadingIcon = leadingIcon,
-            trailingIcon = trailingIcon,
-            keyboardOptions = keyboardOptions,
-            keyboardActions = keyboardActions,
-            visualTransformation = visualTransformation,
-            shape = shape,
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedTextColor = MaterialTheme.colorScheme.onSurface,
-                unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
-                disabledTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                errorTextColor = MaterialTheme.colorScheme.onErrorContainer,
+                    focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+                    disabledContainerColor = MaterialTheme.colorScheme.surfaceContainer,
+                    errorContainerColor = MaterialTheme.colorScheme.errorContainer,
 
-                focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
-                unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
-                disabledContainerColor = MaterialTheme.colorScheme.surfaceContainer,
-                errorContainerColor = MaterialTheme.colorScheme.errorContainer,
+                    cursorColor = MaterialTheme.colorScheme.primary,
+                    errorCursorColor = MaterialTheme.colorScheme.error,
 
-                cursorColor = MaterialTheme.colorScheme.primary,
-                errorCursorColor = MaterialTheme.colorScheme.error,
+                    focusedBorderColor = MaterialTheme.colorScheme.primary,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant,
+                    disabledBorderColor = MaterialTheme.colorScheme.outlineVariant,
+                    errorBorderColor = MaterialTheme.colorScheme.error,
 
-                focusedBorderColor = MaterialTheme.colorScheme.primary,
-                unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant,
-                disabledBorderColor = MaterialTheme.colorScheme.outlineVariant,
-                errorBorderColor = MaterialTheme.colorScheme.error,
+                    focusedPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    unfocusedPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    disabledPlaceholderColor = MaterialTheme.colorScheme.outline,
+                ),
+            )
+            if (onClick != null && enabled) {
+                val accessibilityDescription = listOfNotNull(
+                    label,
+                    value.takeIf { it.isNotBlank() },
+                ).joinToString(separator = ", ")
 
-                focusedPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                unfocusedPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                disabledPlaceholderColor = MaterialTheme.colorScheme.outline,
-            ),
-        )
+                Box(
+                    modifier = Modifier
+                        .matchParentSize()
+                        .clip(shape)
+                        .clickable(
+                            role = Role.Button,
+                            onClick = onClick,
+                        )
+                        .semantics {
+                            contentDescription = accessibilityDescription
+                        },
+                )
+            }
+        }
+
 
         when {
             hasError -> {

@@ -21,4 +21,6 @@
     <string name="add_schedule_subtitle">Create reminders for your personal activities.</string>
     <string name="save_schedule">Save Schedule</string>
     <string name="cancel">Cancel</string>
+    <string name="select_time">Select Time</string>
+    <string name="confirm">Confirm</string>
 </resources>
