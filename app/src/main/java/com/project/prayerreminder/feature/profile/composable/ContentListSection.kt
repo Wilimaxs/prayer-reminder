@@ -123,10 +123,16 @@ fun ContentListSection(
                 ProfileSettingUiModel(
                     icon = R.drawable.ic_clock,
                     title = stringResource(R.string.reminder_offset),
-                    subtitle = stringResource(
-                        R.string.minutes_before,
-                        uiState.notificationSettings.reminderOffsetMinutes,
-                    ),
+                    subtitle = if (
+                        uiState.notificationSettings.reminderOffsetMinutes == 0
+                    ) {
+                        stringResource(R.string.at_prayer_time)
+                    } else {
+                        stringResource(
+                            R.string.minutes_before,
+                            uiState.notificationSettings.reminderOffsetMinutes,
+                        )
+                    },
                     action = if (
                         uiState.notificationSettings.isPrayerRemindersEnabled
                     ) {

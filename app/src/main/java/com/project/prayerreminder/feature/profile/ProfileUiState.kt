@@ -29,11 +29,13 @@ data class ProfileBottomSheetUiState(
     val activeBottomSheet: ProfileBottomSheetType? = null,
     val selectedCalculationMethod: PrayerCalculationMethod = PrayerCalculationMethod.KemenagIndonesia,
     val selectedMadhab: AsrMadhab = AsrMadhab.Shafi,
+    val selectedReminderOffsetMinutes: Int = 10,
 )
 
 enum class ProfileBottomSheetType {
     CalculationMethod,
     Madhab,
+    ReminderOffset,
 }
 
 enum class PrayerCalculationMethod(

@@ -73,4 +73,7 @@
 
     <string name="hanafi_description">Asr begins when an object\'s shadow is twice its length.</string>
 
+    <string name="select_reminder_offset">Select Reminder Offset</string>
+    <string name="select_reminder_offset_description">Choose when you want to receive a reminder before prayer time.</string>
+    <string name="at_prayer_time">At prayer time</string>
 </resources>

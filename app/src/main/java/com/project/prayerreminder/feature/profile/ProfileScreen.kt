@@ -23,6 +23,7 @@ import com.project.prayerreminder.feature.profile.composable.ProfileHeader
 import com.project.prayerreminder.feature.profile.composable.ProfileSettingAction
 import com.project.prayerreminder.feature.profile.composable.bottomsheet.CalculationMethodList
 import com.project.prayerreminder.feature.profile.composable.bottomsheet.MadhabList
+import com.project.prayerreminder.feature.profile.composable.bottomsheet.ReminderOffsetList
 import com.project.prayerreminder.utils.composables.AppBottomSheet
 import com.project.prayerreminder.utils.composables.BottomSheetButtonConfig
 
@@ -76,7 +77,9 @@ fun ProfileScreen(
                         }
 
                         ProfileSettingAction.REMINDER_OFFSET -> {
-                            // TODO: Open reminder offset bottom sheet.
+                            viewModel.openBottomSheet(
+                                ProfileBottomSheetType.ReminderOffset,
+                            )
                         }
 
                         ProfileSettingAction.ADZAN_SOUND -> {
@@ -129,6 +132,24 @@ fun ProfileScreen(
                 MadhabList(
                     selectedMadhab = uiState.bottomSheet.selectedMadhab,
                     onSelectedMadhabChange = viewModel::selectMadhab,
+                )
+            }
+        }
+
+        ProfileBottomSheetType.ReminderOffset -> {
+            AppBottomSheet(
+                title = stringResource(R.string.select_reminder_offset),
+                subtitle = stringResource(R.string.select_reminder_offset_description),
+                showCloseButton = false,
+                onDismissRequest = viewModel::dismissBottomSheet,
+                primaryButton = BottomSheetButtonConfig(
+                    text = stringResource(R.string.save),
+                    onClick = viewModel::confirmBottomSheet,
+                ),
+            ) {
+                ReminderOffsetList(
+                    selectedMinutes = uiState.bottomSheet.selectedReminderOffsetMinutes,
+                    onSelectedMinutesChange = viewModel::selectReminderOffset,
                 )
             }
         }

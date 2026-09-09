@@ -25,30 +25,58 @@ class ProfileViewModel @Inject constructor(
     val uiState = _uiState.asStateFlow()
 
     init {
-        observePrayerSettings()
+        observeSettings()
     }
 
-    private fun observePrayerSettings() {
-        val defaultSettings = ProfilePrayerSettingsUiState()
+    private fun observeSettings() {
+        val defaultPrayerSettings = ProfilePrayerSettingsUiState()
+        val defaultNotificationSettings = ProfileNotificationSettingsUiState()
 
         viewModelScope.launch {
+            // Combines all persisted Profile settings into one reactive stream.
             combine(
                 dataStoreManager.get(
                     key = PreferenceKeys.CALCULATION_METHOD,
-                    defaultValue = defaultSettings.calculationMethod.apiCode,
+                    defaultValue = defaultPrayerSettings.calculationMethod.apiCode,
                 ),
                 dataStoreManager.get(
                     key = PreferenceKeys.MADZHAB,
-                    defaultValue = defaultSettings.madhab.apiCode,
+                    defaultValue = defaultPrayerSettings.madhab.apiCode,
                 ),
-            ) { calculationMethodCode, madhabCode ->
+                dataStoreManager.get(
+                    key = PreferenceKeys.PRAYER_REMINDERS_ENABLED,
+                    defaultValue = defaultNotificationSettings.isPrayerRemindersEnabled,
+                ),
+                dataStoreManager.get(
+                    key = PreferenceKeys.REMINDER_OFFSET_MINUTES,
+                    defaultValue = defaultNotificationSettings.reminderOffsetMinutes,
+                ),
+            ) {
+                    calculationMethodCode,
+                    madhabCode,
+                    isPrayerReminderEnabled,
+                    reminderOffsetMinutes,
+                ->
 
-                ProfilePrayerSettingsUiState(
-                    calculationMethod = PrayerCalculationMethod.fromApiCode(calculationMethodCode),
-                    madhab = AsrMadhab.fromApiCode(madhabCode),
+                val prayerSettings = ProfilePrayerSettingsUiState(
+                    calculationMethod = PrayerCalculationMethod.fromApiCode(
+                        calculationMethodCode,
+                    ),
+                    madhab = AsrMadhab.fromApiCode(
+                        madhabCode,
+                    ),
                 )
+
+                val notificationSettings = ProfileNotificationSettingsUiState(
+                    isPrayerRemindersEnabled = isPrayerReminderEnabled,
+                    reminderOffsetMinutes = reminderOffsetMinutes,
+                )
+
+                prayerSettings to notificationSettings
             }
-                .catch {
+                .catch { exception ->
+                    Timber.e(exception)
+
                     _uiState.update { currentState ->
                         currentState.copy(
                             isLoading = false,
@@ -56,11 +84,13 @@ class ProfileViewModel @Inject constructor(
                         )
                     }
                 }
-                .collect { prayerSettings ->
+                .collect { (prayerSettings, notificationSettings) ->
+                    // Updates both Profile setting groups from the latest preferences.
                     _uiState.update { currentState ->
                         currentState.copy(
                             isLoading = false,
                             prayerSettings = prayerSettings,
+                            notificationSettings = notificationSettings,
                         )
                     }
                 }
@@ -68,14 +98,10 @@ class ProfileViewModel @Inject constructor(
     }
 
     fun updatePrayerReminders(isEnabled: Boolean) {
-        _uiState.update { currentState ->
-            currentState.copy(
-                notificationSettings =
-                    currentState.notificationSettings.copy(
-                        isPrayerRemindersEnabled = isEnabled,
-                    ),
-            )
-        }
+        savePreference(
+            key = PreferenceKeys.PRAYER_REMINDERS_ENABLED,
+            value = isEnabled,
+        )
     }
 
     fun clearMessage() {
@@ -103,6 +129,13 @@ class ProfileViewModel @Inject constructor(
                         currentState.bottomSheet.copy(
                             activeBottomSheet = type,
                             selectedMadhab = currentState.prayerSettings.madhab,
+                        )
+                    }
+
+                    ProfileBottomSheetType.ReminderOffset -> {
+                        currentState.bottomSheet.copy(
+                            activeBottomSheet = type,
+                            selectedReminderOffsetMinutes = currentState.notificationSettings.reminderOffsetMinutes,
                         )
                     }
                 },
@@ -134,6 +167,16 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
+    fun selectReminderOffset(minutes: Int) {
+        _uiState.update { currentState ->
+            currentState.copy(
+                bottomSheet = currentState.bottomSheet.copy(
+                    selectedReminderOffsetMinutes = minutes,
+                ),
+            )
+        }
+    }
+
     fun confirmBottomSheet() {
         val currentState = _uiState.value
 
@@ -152,6 +195,13 @@ class ProfileViewModel @Inject constructor(
                         .bottomSheet
                         .selectedMadhab
                         .apiCode,
+                )
+            }
+
+            ProfileBottomSheetType.ReminderOffset -> {
+                savePreference(
+                    key = PreferenceKeys.REMINDER_OFFSET_MINUTES,
+                    value = currentState.bottomSheet.selectedReminderOffsetMinutes,
                 )
             }
 
