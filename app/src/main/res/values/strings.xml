@@ -78,4 +78,29 @@
     <string name="indonesian">Bahasa Indonesia</string>
     <string name="select_language">Select Language</string>
     <string name="select_language_description">Choose the language used throughout the application.</string>
+
+    <string name="version_name">Version %1$s</string>
+    <string name="about_application_description">Prayer Reminder helps users view accurate prayer schedules, manage Islamic activities, and receive prayer reminders based on their location.</string>
+
+    <string name="features">Features</string>
+    <string name="about_feature_prayer_schedule">Prayer Schedule</string>
+    <string name="about_feature_prayer_schedule_description">Accurate daily prayer times powered by Aladhan API.</string>
+    <string name="about_feature_islamic_calendar">Islamic Calendar</string>
+    <string name="about_feature_islamic_calendar_description">View Gregorian dates, Islamic events, and personal schedules.</string>
+    <string name="about_feature_prayer_reminder">Prayer Reminder</string>
+    <string name="about_feature_prayer_reminder_description">Receive notifications before each prayer time.</string>
+    <string name="about_feature_custom_settings">Custom Settings</string>
+    <string name="about_feature_custom_settings_description">Configure calculation method, madhab, reminder, and language.</string>
+
+    <string name="developer">Developer</string>
+    <string name="developed_by">Developed by Wildan</string>
+    <string name="android_developer">Mobile Developer</string>
+
+    <string name="legal_and_information">Legal &amp; Information</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="terms_of_service">Terms of Service</string>
+    <string name="open_source_licenses">Open Source Licenses</string>
+
+    <string name="made_with_for_muslims">Made with 💖 for Muslims</string>
+    <string name="application_copyright">© 2026 %1$s</string>
 </resources>

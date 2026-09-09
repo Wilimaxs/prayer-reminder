@@ -32,6 +32,7 @@ import com.project.prayerreminder.utils.composables.BottomSheetButtonConfig
 @Composable
 fun ProfileScreen(
     modifier: Modifier = Modifier,
+    onNavigateToAbout: () -> Unit = {},
     viewModel: ProfileViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -90,7 +91,7 @@ fun ProfileScreen(
                         }
 
                         ProfileSettingAction.ABOUT_APPLICATION -> {
-                            // TODO: Open about application.
+                            onNavigateToAbout()
                         }
                     }
                 },

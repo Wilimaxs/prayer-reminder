@@ -31,6 +31,10 @@ enum class AppScreen(
         showBottomNavigation = true,
         label = R.string.profile_label,
         icon = R.drawable.ic_profile,
+    ),
+    ABOUT(
+        route = "about",
+        showBottomNavigation = false,
     );
 
     companion object {

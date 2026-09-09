@@ -26,6 +26,7 @@ import com.project.prayerreminder.feature.calendar.CalendarScreen
 import com.project.prayerreminder.feature.home.HomeScreen
 import com.project.prayerreminder.feature.main.MainBottomNavigationScreen
 import com.project.prayerreminder.feature.profile.ProfileScreen
+import com.project.prayerreminder.feature.profile.about.AboutScreen
 import com.project.prayerreminder.feature.splash.SplashScreen
 import com.project.prayerreminder.utils.composables.AppSnackbarHost
 import com.project.prayerreminder.utils.composables.LocalAppSnackbarHostState
@@ -111,6 +112,19 @@ fun AppRoute(
                     composable(AppScreen.PROFILE.route) {
                         ProfileScreen(
                             modifier = Modifier.fillMaxSize(),
+                            onNavigateToAbout = {
+                                navController.navigate(AppScreen.ABOUT.route) {
+                                    launchSingleTop = true
+                                }
+                            },
+                        )
+                    }
+                    composable(AppScreen.ABOUT.route) {
+                        AboutScreen(
+                            modifier = Modifier.fillMaxSize(),
+                            onNavigateBack = {
+                                navController.popBackStack()
+                            },
                         )
                     }
                 }
