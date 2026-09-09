@@ -26,7 +26,6 @@ import com.project.prayerreminder.feature.profile.ProfileUiState
 
 // Identifies which profile setting item was selected.
 enum class ProfileSettingAction {
-    LOCATION,
     CALCULATION_METHOD,
     MADHAB,
     REMINDER_OFFSET,
@@ -68,7 +67,6 @@ private sealed interface ProfileTrailingUiModel {
 @Composable
 fun ContentListSection(
     uiState: ProfileUiState,
-    onAutoLocationChange: (Boolean) -> Unit,
     onPrayerRemindersChange: (Boolean) -> Unit,
     onItemClick: (ProfileSettingAction) -> Unit,
     modifier: Modifier = Modifier,
@@ -77,21 +75,6 @@ fun ContentListSection(
         ProfileSectionUiModel(
             title = stringResource(R.string.prayer_settings),
             items = listOf(
-                ProfileSettingUiModel(
-                    icon = R.drawable.ic_location,
-                    title = stringResource(R.string.location),
-                    subtitle = uiState.prayerSettings.cityName,
-                    action = ProfileSettingAction.LOCATION,
-                ),
-                ProfileSettingUiModel(
-                    icon = R.drawable.ic_gps,
-                    title = stringResource(R.string.auto_location),
-                    subtitle = stringResource(R.string.auto_location_description),
-                    trailing = ProfileTrailingUiModel.Toggle(
-                        checked = uiState.prayerSettings.isAutoLocationEnabled,
-                        onCheckedChange = onAutoLocationChange,
-                    ),
-                ),
                 ProfileSettingUiModel(
                     icon = R.drawable.ic_calculation,
                     title = stringResource(R.string.calculation_method),
@@ -244,8 +227,6 @@ fun ContentListSection(
                             }
                         },
                     )
-
-                    // Displays a divider only between setting items.
                     if (index < section.items.lastIndex) {
                         HorizontalDivider(
                             color = MaterialTheme.colorScheme.outlineVariant,

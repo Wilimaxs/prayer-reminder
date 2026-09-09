@@ -34,14 +34,6 @@ class ProfileViewModel @Inject constructor(
         viewModelScope.launch {
             combine(
                 dataStoreManager.get(
-                    key = PreferenceKeys.CITY_NAME,
-                    defaultValue = defaultSettings.cityName,
-                ),
-                dataStoreManager.get(
-                    key = PreferenceKeys.AUTO_LOCATION,
-                    defaultValue = defaultSettings.isAutoLocationEnabled,
-                ),
-                dataStoreManager.get(
                     key = PreferenceKeys.CALCULATION_METHOD,
                     defaultValue = defaultSettings.calculationMethod.apiCode,
                 ),
@@ -49,11 +41,9 @@ class ProfileViewModel @Inject constructor(
                     key = PreferenceKeys.MADZHAB,
                     defaultValue = defaultSettings.madhab.apiCode,
                 ),
-            ) { cityName, isAutoLocationEnabled, calculationMethodCode, madhabCode ->
+            ) { calculationMethodCode, madhabCode ->
 
                 ProfilePrayerSettingsUiState(
-                    cityName = cityName,
-                    isAutoLocationEnabled = isAutoLocationEnabled,
                     calculationMethod = PrayerCalculationMethod.fromApiCode(calculationMethodCode),
                     madhab = AsrMadhab.fromApiCode(madhabCode),
                 )
@@ -75,20 +65,6 @@ class ProfileViewModel @Inject constructor(
                     }
                 }
         }
-    }
-
-    fun updateAutoLocation(isEnabled: Boolean) {
-        savePreference(
-            key = PreferenceKeys.AUTO_LOCATION,
-            value = isEnabled,
-        )
-    }
-
-    fun updateCityName(cityName: String) {
-        savePreference(
-            key = PreferenceKeys.CITY_NAME,
-            value = cityName,
-        )
     }
 
     fun updatePrayerReminders(isEnabled: Boolean) {

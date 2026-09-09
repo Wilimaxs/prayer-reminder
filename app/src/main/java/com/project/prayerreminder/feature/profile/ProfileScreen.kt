@@ -59,13 +59,9 @@ fun ProfileScreen(
 
             ContentListSection(
                 uiState = uiState,
-                onAutoLocationChange = viewModel::updateAutoLocation,
                 onPrayerRemindersChange = viewModel::updatePrayerReminders,
                 onItemClick = { action ->
                     when (action) {
-                        ProfileSettingAction.LOCATION -> {
-                            // TODO: Open location settings.
-                        }
 
                         ProfileSettingAction.CALCULATION_METHOD -> {
                             viewModel.openBottomSheet(

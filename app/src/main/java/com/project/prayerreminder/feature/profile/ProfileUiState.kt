@@ -15,8 +15,6 @@ data class ProfileUserUiState(
 )
 
 data class ProfilePrayerSettingsUiState(
-    val cityName: String = "Bandung, Indonesia",
-    val isAutoLocationEnabled: Boolean = false,
     val calculationMethod: PrayerCalculationMethod = PrayerCalculationMethod.KemenagIndonesia,
     val madhab: AsrMadhab = AsrMadhab.Shafi,
 )
@@ -26,7 +24,7 @@ data class ProfileNotificationSettingsUiState(
     val reminderOffsetMinutes: Int = 10,
 )
 
-// For bottomsheet
+// For BottomSheet
 data class ProfileBottomSheetUiState(
     val activeBottomSheet: ProfileBottomSheetType? = null,
     val selectedCalculationMethod: PrayerCalculationMethod = PrayerCalculationMethod.KemenagIndonesia,

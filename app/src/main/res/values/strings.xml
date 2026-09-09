@@ -35,9 +35,6 @@
     <string name="edit_profile_picture">Edit profile picture</string>
 
     <string name="prayer_settings">PRAYER SETTINGS</string>
-    <string name="location">Location</string>
-    <string name="auto_location">Auto Location</string>
-    <string name="auto_location_description">Update prayer times based on GPS</string>
     <string name="calculation_method">Calculation Method</string>
     <string name="madhab_asr">Madhab</string>
     <string name="notifications">NOTIFICATIONS</string>

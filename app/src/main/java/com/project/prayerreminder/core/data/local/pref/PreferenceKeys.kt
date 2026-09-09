@@ -6,7 +6,6 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 
 object PreferenceKeys {
-    val AUTO_LOCATION = booleanPreferencesKey("auto_location")
     val LATITUDE = doublePreferencesKey("latitude")
     val LONGITUDE = doublePreferencesKey("longitude")
     val CITY_NAME = stringPreferencesKey("city_name")
