@@ -8,27 +8,21 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Switch
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
-import androidx.compose.ui.res.stringResource
-import com.project.prayerreminder.R
-import com.project.prayerreminder.core.theme.PrayerDimens
-import com.project.prayerreminder.feature.profile.composable.ProfileHeader
-import com.project.prayerreminder.feature.profile.composable.ProfileSection
-import com.project.prayerreminder.feature.profile.composable.ProfileSettingItem
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.project.prayerreminder.core.theme.PrayerDimens
+import com.project.prayerreminder.feature.profile.composable.ContentListSection
+import com.project.prayerreminder.feature.profile.composable.ProfileHeader
+import com.project.prayerreminder.feature.profile.composable.ProfileSettingAction
 
 @Composable
 fun ProfileScreen(
     modifier: Modifier = Modifier,
-    viewModel: ProfileViewModel = hiltViewModel()
+    viewModel: ProfileViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -45,75 +39,53 @@ fun ProfileScreen(
                     horizontal = PrayerDimens.ScreenMargin,
                     vertical = PrayerDimens.StackLarge,
                 ),
-            verticalArrangement = Arrangement.spacedBy(
-                PrayerDimens.StackLarge,
-            ),
+            verticalArrangement = Arrangement.spacedBy(PrayerDimens.StackLarge),
         ) {
             ProfileHeader(
                 name = uiState.user.name,
                 onEditClick = {
-                    // TODO: Handle edit when phase UI done
+                    // TODO: Open profile picture selector.
                 },
                 modifier = Modifier.fillMaxWidth(),
             )
-            ProfileSection(
-                title = stringResource(R.string.prayer_settings),
+
+            ContentListSection(
+                uiState = uiState,
+                onAutoLocationChange = viewModel::updateAutoLocation,
+                onPrayerRemindersChange = viewModel::updatePrayerReminders,
+                onItemClick = { action ->
+                    when (action) {
+                        ProfileSettingAction.LOCATION -> {
+                            // TODO: Open location settings.
+                        }
+
+                        ProfileSettingAction.CALCULATION_METHOD -> {
+                            // TODO: Open calculation method selection.
+                        }
+
+                        ProfileSettingAction.MADHAB -> {
+                            // TODO: Open madhab selection.
+                        }
+
+                        ProfileSettingAction.REMINDER_OFFSET -> {
+                            // TODO: Open reminder offset bottom sheet.
+                        }
+
+                        ProfileSettingAction.ADZAN_SOUND -> {
+                            // TODO: Open adzan sound selection.
+                        }
+
+                        ProfileSettingAction.LANGUAGE -> {
+                            // TODO: Open language selection.
+                        }
+
+                        ProfileSettingAction.ABOUT_APPLICATION -> {
+                            // TODO: Open about application.
+                        }
+                    }
+                },
                 modifier = Modifier.fillMaxWidth(),
-            ) {
-                ProfileSettingItem(
-                    icon = R.drawable.ic_location,
-                    title = stringResource(R.string.location),
-                    subtitle = uiState.prayerSettings.cityName,
-                    onClick = {
-                        // TODO: Open location settings.
-                    },
-                )
-
-                HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
-
-                ProfileSettingItem(
-                    icon = R.drawable.ic_gps,
-                    title = stringResource(R.string.auto_location),
-                    subtitle = stringResource(
-                        R.string.auto_location_description,
-                    ),
-                    trailingContent = {
-                        Switch(
-                            checked = uiState.prayerSettings.isAutoLocationEnabled,
-                            onCheckedChange = viewModel::updateAutoLocation,
-                            modifier = Modifier.scale(0.8f)
-                        )
-                    },
-                )
-
-                HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
-
-                ProfileSettingItem(
-                    icon = R.drawable.ic_calculation,
-                    title = stringResource(R.string.calculation_method),
-                    subtitle = when (uiState.prayerSettings.calculationMethod) {
-                        PrayerCalculationMethod.KemenagIndonesia ->
-                            "Kemenag Indonesia"
-                    },
-                    onClick = {
-                        // TODO: Open calculation method selection.
-                    },
-                )
-
-                HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
-
-                ProfileSettingItem(
-                    icon = R.drawable.ic_madhab,
-                    title = stringResource(R.string.madhab_asr),
-                    subtitle =   when (uiState.prayerSettings.madhab) {
-                        AsrMadhab.Shafi -> "Shafi'i (Standard)"
-                        AsrMadhab.Hanafi -> "Hanafi"
-                    },
-                    onClick = {
-                        // TODO: Open madhab selection.
-                    },
-                )
-            }
+            )
         }
     }
 }

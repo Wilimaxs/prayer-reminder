@@ -47,15 +47,15 @@ class ProfileViewModel @Inject constructor(
                 ),
                 dataStoreManager.get(
                     key = PreferenceKeys.MADZHAB,
-                    defaultValue = defaultSettings.madhab.storageValue,
+                    defaultValue = defaultSettings.madhab.apiCode,
                 ),
-            ) { cityName, isAutoLocationEnabled, calculationMethodCode, madhabValue ->
+            ) { cityName, isAutoLocationEnabled, calculationMethodCode, madhabCode ->
 
                 ProfilePrayerSettingsUiState(
                     cityName = cityName,
                     isAutoLocationEnabled = isAutoLocationEnabled,
                     calculationMethod = PrayerCalculationMethod.fromApiCode(calculationMethodCode),
-                    madhab = AsrMadhab.fromStoredValue(madhabValue),
+                    madhab = AsrMadhab.fromApiCode(madhabCode),
                 )
             }
                 .catch {
@@ -98,10 +98,21 @@ class ProfileViewModel @Inject constructor(
         )
     }
 
+    fun updatePrayerReminders(isEnabled: Boolean) {
+        _uiState.update { currentState ->
+            currentState.copy(
+                notificationSettings =
+                    currentState.notificationSettings.copy(
+                        isPrayerRemindersEnabled = isEnabled,
+                    ),
+            )
+        }
+    }
+
     fun updateMadhab(madhab: AsrMadhab) {
         savePreference(
             key = PreferenceKeys.MADZHAB,
-            value = madhab.storageValue,
+            value = madhab.apiCode,
         )
     }
 

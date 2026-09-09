@@ -4,6 +4,7 @@ data class ProfileUiState(
     val isLoading: Boolean = true,
     val user: ProfileUserUiState = ProfileUserUiState(),
     val prayerSettings: ProfilePrayerSettingsUiState = ProfilePrayerSettingsUiState(),
+    val notificationSettings: ProfileNotificationSettingsUiState = ProfileNotificationSettingsUiState(),
     val message: ProfileMessage? = null,
 )
 
@@ -19,15 +20,24 @@ data class ProfilePrayerSettingsUiState(
     val madhab: AsrMadhab = AsrMadhab.Shafi,
 )
 
+data class ProfileNotificationSettingsUiState(
+    val isPrayerRemindersEnabled: Boolean = true,
+    val reminderOffsetMinutes: Int = 10,
+)
+
 enum class PrayerCalculationMethod(
     val apiCode: Int,
 ) {
-    KemenagIndonesia(apiCode = 20);
+    KemenagIndonesia(apiCode = 20),
+    MuslimWorldLeague(apiCode = 3),
+    JakimMalaysia(apiCode = 17);
 
     companion object {
-        fun fromApiCode(apiCode: Int): PrayerCalculationMethod {
-            return entries.firstOrNull {
-                it.apiCode == apiCode
+        fun fromApiCode(
+            apiCode: Int,
+        ): PrayerCalculationMethod {
+            return entries.firstOrNull { method ->
+                method.apiCode == apiCode
             } ?: KemenagIndonesia
         }
     }
@@ -35,21 +45,16 @@ enum class PrayerCalculationMethod(
 
 enum class AsrMadhab(
     val apiCode: Int,
-    val storageValue: String,
 ) {
-    Shafi(
-        apiCode = 0,
-        storageValue = "shafi",
-    ),
-    Hanafi(
-        apiCode = 1,
-        storageValue = "hanafi",
-    );
+    Shafi(apiCode = 0),
+    Hanafi(apiCode = 1);
 
     companion object {
-        fun fromStoredValue(value: String): AsrMadhab {
-            return entries.firstOrNull {
-                it.storageValue == value
+        fun fromApiCode(
+            apiCode: Int,
+        ): AsrMadhab {
+            return entries.firstOrNull { madhab ->
+                madhab.apiCode == apiCode
             } ?: Shafi
         }
     }

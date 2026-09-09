@@ -7,12 +7,13 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 
 object PreferenceKeys {
     val AUTO_LOCATION = booleanPreferencesKey("auto_location")
-    val MADZHAB = stringPreferencesKey("madzhab")
     val LATITUDE = doublePreferencesKey("latitude")
     val LONGITUDE = doublePreferencesKey("longitude")
     val CITY_NAME = stringPreferencesKey("city_name")
     val CALCULATION_METHOD = intPreferencesKey("calculation_method")
-
-    // Key for complex data (JSON String)
-    val PRAYER_ALARM_MAP = stringPreferencesKey("prayer_alarm_map")
+    val MADZHAB = intPreferencesKey("madhab_api_code")
+    val PRAYER_REMINDERS_ENABLED = booleanPreferencesKey("prayer_reminders_enabled")
+    val REMINDER_OFFSET_MINUTES = intPreferencesKey("reminder_offset_minutes")
+    val ADZAN_SOUND = stringPreferencesKey("adzan_sound")
+    val APP_LANGUAGE = stringPreferencesKey("app_language")
 }
