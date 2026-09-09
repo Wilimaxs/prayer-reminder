@@ -35,6 +35,10 @@ enum class AppScreen(
     ABOUT(
         route = "about",
         showBottomNavigation = false,
+    ),
+    TERMS_OF_SERVICE(
+        route = "terms_of_service",
+        showBottomNavigation = false,
     );
 
     companion object {

@@ -1,4 +1,4 @@
-package com.project.prayerreminder.feature.profile.about
+package com.project.prayerreminder.feature.profile.terms
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,25 +14,23 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import com.project.prayerreminder.BuildConfig
 import com.project.prayerreminder.R
 import com.project.prayerreminder.core.theme.PrayerDimens
 import com.project.prayerreminder.core.theme.PrayerReminderTheme
-import com.project.prayerreminder.feature.profile.about.composable.AboutDeveloper
-import com.project.prayerreminder.feature.profile.about.composable.AboutFeature
-import com.project.prayerreminder.feature.profile.about.composable.AboutHeader
-import com.project.prayerreminder.feature.profile.about.composable.AboutLegalInformation
+import com.project.prayerreminder.feature.profile.about.terms.composable.TermsHeader
+import com.project.prayerreminder.feature.profile.about.terms.composable.TermsResponsibilities
+import com.project.prayerreminder.feature.profile.about.terms.composable.TermsThirdParty
+import com.project.prayerreminder.feature.profile.about.terms.composable.TermsUsage
 import com.project.prayerreminder.utils.composables.AppBar
 
 @Composable
-fun AboutScreen(
+fun TermsScreen(
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
-    onNavigateToTerms: () -> Unit = {},
 ) {
     val appName = stringResource(R.string.app_name)
 
@@ -40,7 +38,7 @@ fun AboutScreen(
         modifier = modifier,
         topBar = {
             AppBar(
-                title = stringResource(R.string.about_application),
+                title = stringResource(R.string.terms_of_service),
                 canNavigateBack = true,
                 navigateBack = onNavigateBack,
             )
@@ -56,54 +54,68 @@ fun AboutScreen(
                     horizontal = PrayerDimens.ScreenMargin,
                     vertical = PrayerDimens.StackLarge,
                 ),
-            horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(
                 PrayerDimens.StackExtraLarge,
             ),
         ) {
-            AboutHeader(
+            TermsHeader(
                 appName = appName,
-                versionName = stringResource(R.string.version_name, BuildConfig.VERSION_NAME),
-                description = stringResource(R.string.about_application_description),
                 modifier = Modifier.fillMaxWidth(),
             )
 
-            AboutFeature(
+            TermsUsage(
+                appName = appName,
                 modifier = Modifier.fillMaxWidth(),
             )
 
-            AboutDeveloper(
-                developerImage = painterResource(R.drawable.img_developer),
+            TermsResponsibilities(
                 modifier = Modifier.fillMaxWidth(),
             )
 
-            AboutLegalInformation(
-                onPrivacyPolicyClick = {
-                    // TODO: Open privacy policy.
-                },
-                onTermsOfServiceClick = onNavigateToTerms,
-                onOpenSourceLicensesClick = {
-                    // TODO: Open open-source licenses.
-                },
+            TermsThirdParty(
+                appName = appName,
                 modifier = Modifier.fillMaxWidth(),
             )
 
             Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        vertical = PrayerDimens.StackLarge,
+                    ),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(
-                    PrayerDimens.Baseline,
+                    PrayerDimens.StackSmall,
                 ),
             ) {
                 Text(
-                    text = stringResource(R.string.made_with_for_muslims),
+                    text = appName,
+                    color = MaterialTheme.colorScheme.primary,
+                    style = MaterialTheme.typography.titleLarge.copy(
+                        fontWeight = FontWeight.Bold,
+                    ),
+                    textAlign = TextAlign.Center,
+                )
+
+                Text(
+                    text = stringResource(R.string.developer_email),
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     style = MaterialTheme.typography.bodySmall,
                     textAlign = TextAlign.Center,
                 )
 
                 Text(
-                    text = stringResource(R.string.application_copyright, appName),
+                    text = stringResource(R.string.developer_phone),
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    style = MaterialTheme.typography.bodySmall,
+                    textAlign = TextAlign.Center,
+                )
+
+                Text(
+                    text = stringResource(
+                        R.string.terms_footer_copyright,
+                    ),
+                    color = MaterialTheme.colorScheme.outline,
                     style = MaterialTheme.typography.bodySmall,
                     textAlign = TextAlign.Center,
                 )
@@ -112,16 +124,11 @@ fun AboutScreen(
     }
 }
 
-@Preview(
-    name = "About Screen",
-    showBackground = true,
-    widthDp = 412,
-    heightDp = 915,
-)
+@Preview(name = "Terms Screen", showBackground = true, widthDp = 412, heightDp = 915)
 @Composable
-private fun AboutScreenPreview() {
+private fun TermsScreenPreview() {
     PrayerReminderTheme {
-        AboutScreen(
+        TermsScreen(
             onNavigateBack = {},
         )
     }

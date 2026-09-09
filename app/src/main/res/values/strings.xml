@@ -103,4 +103,38 @@
 
     <string name="made_with_for_muslims">Made with 💖 for Muslims</string>
     <string name="application_copyright">© 2026 %1$s</string>
+
+    <string name="acceptance_of_terms">Acceptance of Terms</string>
+    <string name="acceptance_of_terms_description">By using %1$s, you agree to these terms and conditions. If you do not agree with these terms, please discontinue using the application.</string>
+
+    <string name="application_usage">Application Usage</string>
+    <string name="usage_view_prayer_schedules">View prayer schedules</string>
+    <string name="usage_manage_islamic_calendar">Manage Islamic calendar events</string>
+    <string name="usage_receive_prayer_notifications">Receive prayer notifications</string>
+    <string name="usage_customize_preferences">Customize application preferences</string>
+
+    <string name="prayer_time_accuracy">Prayer Time Accuracy</string>
+    <string name="prayer_time_accuracy_description">%1$s uses external calculation services to provide prayer schedules. Users should verify prayer times with local religious authorities because geographical and atmospheric variations may occur.</string>
+
+    <string name="user_responsibilities">User Responsibilities</string>
+    <string name="responsibility_verify_prayer_times">Verifying prayer times with local religious authorities</string>
+    <string name="responsibility_manage_location_permission">Managing location permission and device settings</string>
+    <string name="responsibility_use_application_appropriately">Using the application appropriately</string>
+    <string name="responsibility_manage_notifications">Managing notification preferences and permissions</string>
+
+    <string name="third_party_services">Third Party Services</string>
+    <string name="aladhan_api">Aladhan API</string>
+    <string name="aladhan_api_description">Provides prayer time calculation and Islamic calendar data.</string>
+    <string name="firebase">Firebase</string>
+    <string name="firebase_description">Provides remote configuration, crash reporting, and performance monitoring.</string>
+
+    <string name="limitation_of_liability">Limitation of Liability</string>
+    <string name="limitation_of_liability_description">%1$s is provided as an informational application. The developer is not responsible for differences in prayer times, missed notifications, or missed religious obligations.</string>
+
+    <string name="changes_to_application">Changes to Application</string>
+    <string name="changes_to_application_description">The developer may update, modify, or discontinue application features at any time to improve the service, maintain security, or comply with regulations.</string>
+
+    <string name="developer_email">wildan27370@gmail.com</string>
+    <string name="developer_phone">(+62)8132–2325–423</string>
+    <string name="terms_footer_copyright">© 2026 • Spiritual Discipline</string>
 </resources>
