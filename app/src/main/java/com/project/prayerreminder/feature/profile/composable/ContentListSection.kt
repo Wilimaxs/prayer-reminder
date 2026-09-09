@@ -23,6 +23,7 @@ import com.project.prayerreminder.core.theme.PrayerDimens
 import com.project.prayerreminder.feature.profile.AsrMadhab
 import com.project.prayerreminder.feature.profile.PrayerCalculationMethod
 import com.project.prayerreminder.feature.profile.ProfileUiState
+import com.project.prayerreminder.utils.enumeration.AppLanguage
 
 // Identifies which profile setting item was selected.
 enum class ProfileSettingAction {
@@ -156,7 +157,17 @@ fun ContentListSection(
                     icon = R.drawable.ic_language,
                     title = stringResource(R.string.language),
                     subtitle = stringResource(R.string.language_description),
-                    trailing = ProfileTrailingUiModel.TextWithArrow(text = stringResource(R.string.english)),
+                    trailing = ProfileTrailingUiModel.TextWithArrow(
+                        text = when (uiState.appearanceSettings.language) {
+                            AppLanguage.English -> {
+                                stringResource(R.string.english)
+                            }
+
+                            AppLanguage.Indonesian -> {
+                                stringResource(R.string.indonesian)
+                            }
+                        },
+                    ),
                     action = ProfileSettingAction.LANGUAGE,
                 ),
             ),

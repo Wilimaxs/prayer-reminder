@@ -22,6 +22,7 @@ import com.project.prayerreminder.feature.profile.composable.ContentListSection
 import com.project.prayerreminder.feature.profile.composable.ProfileHeader
 import com.project.prayerreminder.feature.profile.composable.ProfileSettingAction
 import com.project.prayerreminder.feature.profile.composable.bottomsheet.CalculationMethodList
+import com.project.prayerreminder.feature.profile.composable.bottomsheet.LanguageList
 import com.project.prayerreminder.feature.profile.composable.bottomsheet.MadhabList
 import com.project.prayerreminder.feature.profile.composable.bottomsheet.ReminderOffsetList
 import com.project.prayerreminder.utils.composables.AppBottomSheet
@@ -87,7 +88,9 @@ fun ProfileScreen(
                         }
 
                         ProfileSettingAction.LANGUAGE -> {
-                            // TODO: Open language selection.
+                            viewModel.openBottomSheet(
+                                ProfileBottomSheetType.Language,
+                            )
                         }
 
                         ProfileSettingAction.ABOUT_APPLICATION -> {
@@ -150,6 +153,24 @@ fun ProfileScreen(
                 ReminderOffsetList(
                     selectedMinutes = uiState.bottomSheet.selectedReminderOffsetMinutes,
                     onSelectedMinutesChange = viewModel::selectReminderOffset,
+                )
+            }
+        }
+
+        ProfileBottomSheetType.Language -> {
+            AppBottomSheet(
+                title = stringResource(R.string.select_language),
+                subtitle = stringResource(R.string.select_language_description),
+                showCloseButton = false,
+                onDismissRequest = viewModel::dismissBottomSheet,
+                primaryButton = BottomSheetButtonConfig(
+                    text = stringResource(R.string.save),
+                    onClick = viewModel::confirmBottomSheet,
+                ),
+            ) {
+                LanguageList(
+                    selectedLanguage = uiState.bottomSheet.selectedLanguage,
+                    onSelectedLanguageChange = viewModel::selectLanguage,
                 )
             }
         }

@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.prayerreminder.core.data.local.pref.DataStoreManager
 import com.project.prayerreminder.core.data.local.pref.PreferenceKeys
+import com.project.prayerreminder.utils.enumeration.AppLanguage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -31,9 +32,9 @@ class ProfileViewModel @Inject constructor(
     private fun observeSettings() {
         val defaultPrayerSettings = ProfilePrayerSettingsUiState()
         val defaultNotificationSettings = ProfileNotificationSettingsUiState()
+        val defaultAppearanceSettings = ProfileAppearanceSettingsUiState()
 
         viewModelScope.launch {
-            // Combines all persisted Profile settings into one reactive stream.
             combine(
                 dataStoreManager.get(
                     key = PreferenceKeys.CALCULATION_METHOD,
@@ -51,11 +52,16 @@ class ProfileViewModel @Inject constructor(
                     key = PreferenceKeys.REMINDER_OFFSET_MINUTES,
                     defaultValue = defaultNotificationSettings.reminderOffsetMinutes,
                 ),
+                dataStoreManager.get(
+                    key = PreferenceKeys.APP_LANGUAGE,
+                    defaultValue = defaultAppearanceSettings.language.languageTag,
+                ),
             ) {
                     calculationMethodCode,
                     madhabCode,
                     isPrayerReminderEnabled,
                     reminderOffsetMinutes,
+                    languageTag,
                 ->
 
                 val prayerSettings = ProfilePrayerSettingsUiState(
@@ -72,7 +78,15 @@ class ProfileViewModel @Inject constructor(
                     reminderOffsetMinutes = reminderOffsetMinutes,
                 )
 
-                prayerSettings to notificationSettings
+                val appearanceSettings = ProfileAppearanceSettingsUiState(
+                    language = AppLanguage.fromLanguageTag(languageTag),
+                )
+
+                Triple(
+                    prayerSettings,
+                    notificationSettings,
+                    appearanceSettings,
+                )
             }
                 .catch { exception ->
                     Timber.e(exception)
@@ -84,13 +98,14 @@ class ProfileViewModel @Inject constructor(
                         )
                     }
                 }
-                .collect { (prayerSettings, notificationSettings) ->
+                .collect { (prayerSettings, notificationSettings, appearanceSettings) ->
                     // Updates both Profile setting groups from the latest preferences.
                     _uiState.update { currentState ->
                         currentState.copy(
                             isLoading = false,
                             prayerSettings = prayerSettings,
                             notificationSettings = notificationSettings,
+                            appearanceSettings = appearanceSettings,
                         )
                     }
                 }
@@ -138,6 +153,14 @@ class ProfileViewModel @Inject constructor(
                             selectedReminderOffsetMinutes = currentState.notificationSettings.reminderOffsetMinutes,
                         )
                     }
+
+                    ProfileBottomSheetType.Language -> {
+                        currentState.bottomSheet.copy(
+                            activeBottomSheet = type,
+                            selectedLanguage =
+                                currentState.appearanceSettings.language,
+                        )
+                    }
                 },
             )
         }
@@ -177,6 +200,16 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
+    fun selectLanguage(language: AppLanguage) {
+        _uiState.update { currentState ->
+            currentState.copy(
+                bottomSheet = currentState.bottomSheet.copy(
+                    selectedLanguage = language,
+                ),
+            )
+        }
+    }
+
     fun confirmBottomSheet() {
         val currentState = _uiState.value
 
@@ -202,6 +235,13 @@ class ProfileViewModel @Inject constructor(
                 savePreference(
                     key = PreferenceKeys.REMINDER_OFFSET_MINUTES,
                     value = currentState.bottomSheet.selectedReminderOffsetMinutes,
+                )
+            }
+
+            ProfileBottomSheetType.Language -> {
+                savePreference(
+                    key = PreferenceKeys.APP_LANGUAGE,
+                    value = currentState.bottomSheet.selectedLanguage.languageTag,
                 )
             }
 

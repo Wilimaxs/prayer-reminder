@@ -1,10 +1,13 @@
 package com.project.prayerreminder.feature.profile
 
+import com.project.prayerreminder.utils.enumeration.AppLanguage
+
 data class ProfileUiState(
     val isLoading: Boolean = true,
     val user: ProfileUserUiState = ProfileUserUiState(),
     val prayerSettings: ProfilePrayerSettingsUiState = ProfilePrayerSettingsUiState(),
     val notificationSettings: ProfileNotificationSettingsUiState = ProfileNotificationSettingsUiState(),
+    val appearanceSettings: ProfileAppearanceSettingsUiState = ProfileAppearanceSettingsUiState(),
     val bottomSheet: ProfileBottomSheetUiState = ProfileBottomSheetUiState(),
     val message: ProfileMessage? = null,
 )
@@ -24,18 +27,24 @@ data class ProfileNotificationSettingsUiState(
     val reminderOffsetMinutes: Int = 10,
 )
 
+data class ProfileAppearanceSettingsUiState(
+    val language: AppLanguage = AppLanguage.English,
+)
+
 // For BottomSheet
 data class ProfileBottomSheetUiState(
     val activeBottomSheet: ProfileBottomSheetType? = null,
     val selectedCalculationMethod: PrayerCalculationMethod = PrayerCalculationMethod.KemenagIndonesia,
     val selectedMadhab: AsrMadhab = AsrMadhab.Shafi,
     val selectedReminderOffsetMinutes: Int = 10,
+    val selectedLanguage: AppLanguage = AppLanguage.English,
 )
 
 enum class ProfileBottomSheetType {
     CalculationMethod,
     Madhab,
     ReminderOffset,
+    Language,
 }
 
 enum class PrayerCalculationMethod(
