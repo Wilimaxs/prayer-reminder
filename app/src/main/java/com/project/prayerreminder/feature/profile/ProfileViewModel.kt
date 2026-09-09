@@ -102,13 +102,6 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    fun updateMadhab(madhab: AsrMadhab) {
-        savePreference(
-            key = PreferenceKeys.MADZHAB,
-            value = madhab.apiCode,
-        )
-    }
-
     fun clearMessage() {
         _uiState.update { currentState ->
             currentState.copy(
@@ -129,6 +122,13 @@ class ProfileViewModel @Inject constructor(
                             selectedCalculationMethod = currentState.prayerSettings.calculationMethod,
                         )
                     }
+
+                    ProfileBottomSheetType.Madhab -> {
+                        currentState.bottomSheet.copy(
+                            activeBottomSheet = type,
+                            selectedMadhab = currentState.prayerSettings.madhab,
+                        )
+                    }
                 },
             )
         }
@@ -146,6 +146,18 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
+    fun selectMadhab(
+        madhab: AsrMadhab,
+    ) {
+        _uiState.update { currentState ->
+            currentState.copy(
+                bottomSheet = currentState.bottomSheet.copy(
+                    selectedMadhab = madhab,
+                ),
+            )
+        }
+    }
+
     fun confirmBottomSheet() {
         val currentState = _uiState.value
 
@@ -154,6 +166,16 @@ class ProfileViewModel @Inject constructor(
                 savePreference(
                     key = PreferenceKeys.CALCULATION_METHOD,
                     value = currentState.bottomSheet.selectedCalculationMethod.apiCode,
+                )
+            }
+
+            ProfileBottomSheetType.Madhab -> {
+                savePreference(
+                    key = PreferenceKeys.MADZHAB,
+                    value = currentState
+                        .bottomSheet
+                        .selectedMadhab
+                        .apiCode,
                 )
             }
 

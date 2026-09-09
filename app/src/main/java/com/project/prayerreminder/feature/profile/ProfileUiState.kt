@@ -30,10 +30,12 @@ data class ProfileNotificationSettingsUiState(
 data class ProfileBottomSheetUiState(
     val activeBottomSheet: ProfileBottomSheetType? = null,
     val selectedCalculationMethod: PrayerCalculationMethod = PrayerCalculationMethod.KemenagIndonesia,
+    val selectedMadhab: AsrMadhab = AsrMadhab.Shafi,
 )
 
 enum class ProfileBottomSheetType {
     CalculationMethod,
+    Madhab,
 }
 
 enum class PrayerCalculationMethod(

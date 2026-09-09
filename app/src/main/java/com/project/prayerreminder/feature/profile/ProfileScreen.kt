@@ -22,6 +22,7 @@ import com.project.prayerreminder.feature.profile.composable.ContentListSection
 import com.project.prayerreminder.feature.profile.composable.ProfileHeader
 import com.project.prayerreminder.feature.profile.composable.ProfileSettingAction
 import com.project.prayerreminder.feature.profile.composable.bottomsheet.CalculationMethodList
+import com.project.prayerreminder.feature.profile.composable.bottomsheet.MadhabList
 import com.project.prayerreminder.utils.composables.AppBottomSheet
 import com.project.prayerreminder.utils.composables.BottomSheetButtonConfig
 
@@ -73,7 +74,9 @@ fun ProfileScreen(
                         }
 
                         ProfileSettingAction.MADHAB -> {
-                            // TODO: Open madhab selection.
+                            viewModel.openBottomSheet(
+                                ProfileBottomSheetType.Madhab,
+                            )
                         }
 
                         ProfileSettingAction.REMINDER_OFFSET -> {
@@ -97,21 +100,43 @@ fun ProfileScreen(
             )
         }
     }
-    if (uiState.bottomSheet.activeBottomSheet == ProfileBottomSheetType.CalculationMethod) {
-        AppBottomSheet(
-            title = stringResource(R.string.select_calculation_method),
-            subtitle = stringResource(R.string.select_calculation_method_description),
-            showCloseButton = false,
-            onDismissRequest = viewModel::dismissBottomSheet,
-            primaryButton = BottomSheetButtonConfig(
-                text = stringResource(R.string.save),
-                onClick = viewModel::confirmBottomSheet
-            ),
-        ) {
-            CalculationMethodList(
-                selectedMethod = uiState.bottomSheet.selectedCalculationMethod,
-                onSelectedMethodChange = viewModel::selectCalculationMethod,
-            )
+    when (uiState.bottomSheet.activeBottomSheet) {
+        ProfileBottomSheetType.CalculationMethod -> {
+            AppBottomSheet(
+                title = stringResource(R.string.select_calculation_method),
+                subtitle = stringResource(R.string.select_calculation_method_description),
+                showCloseButton = false,
+                onDismissRequest = viewModel::dismissBottomSheet,
+                primaryButton = BottomSheetButtonConfig(
+                    text = stringResource(R.string.save),
+                    onClick = viewModel::confirmBottomSheet,
+                ),
+            ) {
+                CalculationMethodList(
+                    selectedMethod = uiState.bottomSheet.selectedCalculationMethod,
+                    onSelectedMethodChange = viewModel::selectCalculationMethod,
+                )
+            }
         }
+
+        ProfileBottomSheetType.Madhab -> {
+            AppBottomSheet(
+                title = stringResource(R.string.select_madhab),
+                subtitle = stringResource(R.string.select_madhab_description),
+                showCloseButton = false,
+                onDismissRequest = viewModel::dismissBottomSheet,
+                primaryButton = BottomSheetButtonConfig(
+                    text = stringResource(R.string.save),
+                    onClick = viewModel::confirmBottomSheet,
+                ),
+            ) {
+                MadhabList(
+                    selectedMadhab = uiState.bottomSheet.selectedMadhab,
+                    onSelectedMadhabChange = viewModel::selectMadhab,
+                )
+            }
+        }
+
+        null -> Unit
     }
 }

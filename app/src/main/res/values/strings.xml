@@ -39,9 +39,7 @@
     <string name="auto_location">Auto Location</string>
     <string name="auto_location_description">Update prayer times based on GPS</string>
     <string name="calculation_method">Calculation Method</string>
-
-    <string name="madhab_asr">Madhab (Asr)</string>
-
+    <string name="madhab_asr">Madhab</string>
     <string name="notifications">NOTIFICATIONS</string>
     <string name="prayer_reminders">Prayer Reminders</string>
     <string name="prayer_reminders_description">Alert for all 5 prayers</string>
@@ -70,5 +68,12 @@
     <string name="kemenag_indonesia_description">Recommended for Indonesia</string>
     <string name="muslim_world_league_description">Standard for Europe and Far East</string>
     <string name="jakim_malaysia_description">Official calculation method for Malaysia</string>
+
+    <string name="select_madhab">Select Asr Madhab</string>
+    <string name="select_madhab_description">Choose the madhab used to determine the start of Asr prayer.</string>
+
+    <string name="shafi_description">Asr begins when an object\'s shadow equals its length.</string>
+
+    <string name="hanafi_description">Asr begins when an object\'s shadow is twice its length.</string>
 
 </resources>
