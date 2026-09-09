@@ -1,5 +1,7 @@
 package com.project.prayerreminder.route
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
@@ -78,6 +80,18 @@ fun AppRoute(
                 NavHost(
                     navController = navController,
                     startDestination = AppScreen.SPLASH.route,
+                    enterTransition = {
+                        EnterTransition.None
+                    },
+                    exitTransition = {
+                        ExitTransition.None
+                    },
+                    popEnterTransition = {
+                        EnterTransition.None
+                    },
+                    popExitTransition = {
+                        ExitTransition.None
+                    },
                     modifier = Modifier
                         .padding(navigationPadding)
                         .consumeWindowInsets(navigationPadding)
