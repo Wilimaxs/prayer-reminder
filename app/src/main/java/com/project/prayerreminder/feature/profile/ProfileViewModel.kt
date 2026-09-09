@@ -12,7 +12,9 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
+import kotlin.coroutines.cancellation.CancellationException
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
@@ -116,16 +118,18 @@ class ProfileViewModel @Inject constructor(
         value: T,
     ) {
         viewModelScope.launch {
-            runCatching {
+            try {
                 dataStoreManager.save(
                     key = key,
                     value = value,
                 )
-            }.onFailure {
+            } catch (exception: CancellationException) {
+                throw exception
+            } catch (exception: Exception) {
+                Timber.e(exception)
                 _uiState.update { currentState ->
                     currentState.copy(
-                        message =
-                            ProfileMessage.SaveSettingFailed,
+                        message = ProfileMessage.SaveSettingFailed,
                     )
                 }
             }
