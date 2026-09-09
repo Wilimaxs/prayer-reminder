@@ -137,4 +137,20 @@
     <string name="developer_email">wildan27370@gmail.com</string>
     <string name="developer_phone">(+62)8132–2325–423</string>
     <string name="terms_footer_copyright">© 2026 • Spiritual Discipline</string>
+
+    <string name="open_source_licenses_description">%1$s is built using high-quality open-source software. We are grateful to the community for their contributions.</string>
+
+    <string name="license_jetpack_compose">Jetpack Compose &amp; Material 3</string>
+    <string name="license_room_datastore">AndroidX Room &amp; DataStore</string>
+    <string name="license_hilt">Dagger Hilt</string>
+    <string name="license_retrofit_okhttp">Retrofit &amp; OkHttp</string>
+    <string name="license_gson">Gson</string>
+    <string name="license_firebase">Firebase Android SDK</string>
+    <string name="license_timber">Timber</string>
+    <string name="license_kizitonwose_calendar">Kizitonwose Calendar</string>
+
+    <string name="apache_license_2_0">Apache License 2.0</string>
+    <string name="mit_license">MIT License</string>
+
+    <string name="additional_licenses_description">Additional licenses may apply to third-party services and assets. All trademarks are the property of their respective owners.</string>
 </resources>

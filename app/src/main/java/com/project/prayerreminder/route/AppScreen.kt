@@ -39,6 +39,10 @@ enum class AppScreen(
     TERMS_OF_SERVICE(
         route = "terms_of_service",
         showBottomNavigation = false,
+    ),
+    OPEN_SOURCE_LICENSES(
+        route = "open_source_licenses",
+        showBottomNavigation = false,
     );
 
     companion object {

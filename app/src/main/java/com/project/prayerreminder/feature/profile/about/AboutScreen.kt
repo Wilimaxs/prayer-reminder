@@ -33,6 +33,7 @@ fun AboutScreen(
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
     onNavigateToTerms: () -> Unit = {},
+    onNavigateToOpenSourceLicenses: () -> Unit = {},
 ) {
     val appName = stringResource(R.string.app_name)
 
@@ -82,9 +83,7 @@ fun AboutScreen(
                     // TODO: Open privacy policy.
                 },
                 onTermsOfServiceClick = onNavigateToTerms,
-                onOpenSourceLicensesClick = {
-                    // TODO: Open open-source licenses.
-                },
+                onOpenSourceLicensesClick = onNavigateToOpenSourceLicenses,
                 modifier = Modifier.fillMaxWidth(),
             )
 
