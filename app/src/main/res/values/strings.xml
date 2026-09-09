@@ -41,8 +41,6 @@
     <string name="prayer_reminders">Prayer Reminders</string>
     <string name="prayer_reminders_description">Alert for all 5 prayers</string>
     <string name="reminder_offset">Reminder Offset</string>
-    <string name="adzan_sound">Adzan Sound</string>
-    <string name="default_value">Default</string>
 
     <string name="appearance">APPEARANCE</string>
     <string name="language">Language</string>

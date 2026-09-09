@@ -83,10 +83,6 @@ fun ProfileScreen(
                             )
                         }
 
-                        ProfileSettingAction.ADZAN_SOUND -> {
-                            // TODO: Open adzan sound selection.
-                        }
-
                         ProfileSettingAction.LANGUAGE -> {
                             viewModel.openBottomSheet(
                                 ProfileBottomSheetType.Language,

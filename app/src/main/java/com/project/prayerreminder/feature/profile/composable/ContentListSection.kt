@@ -30,7 +30,6 @@ enum class ProfileSettingAction {
     CALCULATION_METHOD,
     MADHAB,
     REMINDER_OFFSET,
-    ADZAN_SOUND,
     LANGUAGE,
     ABOUT_APPLICATION,
 }
@@ -141,12 +140,6 @@ fun ContentListSection(
                     } else {
                         null
                     }
-                ),
-                ProfileSettingUiModel(
-                    icon = R.drawable.ic_adzan,
-                    title = stringResource(R.string.adzan_sound),
-                    subtitle = stringResource(R.string.default_value),
-                    action = ProfileSettingAction.ADZAN_SOUND,
                 ),
             ),
         ),

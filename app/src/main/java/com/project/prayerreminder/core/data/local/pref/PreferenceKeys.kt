@@ -13,6 +13,5 @@ object PreferenceKeys {
     val MADZHAB = intPreferencesKey("madhab_api_code")
     val PRAYER_REMINDERS_ENABLED = booleanPreferencesKey("prayer_reminders_enabled")
     val REMINDER_OFFSET_MINUTES = intPreferencesKey("reminder_offset_minutes")
-    val ADZAN_SOUND = stringPreferencesKey("adzan_sound")
     val APP_LANGUAGE = stringPreferencesKey("app_language")
 }
