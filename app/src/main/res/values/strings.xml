@@ -63,4 +63,12 @@
     <string name="shafi_standard">Shafi\'i (Standard)</string>
     <string name="hanafi">Hanafi</string>
 
+    <string name="select_calculation_method">Select Prayer Calculation Method</string>
+    <string name="select_calculation_method_description">Choose the prayer calculation method that best matches your region.</string>
+    <string name="save">Save</string>
+
+    <string name="kemenag_indonesia_description">Recommended for Indonesia</string>
+    <string name="muslim_world_league_description">Standard for Europe and Far East</string>
+    <string name="jakim_malaysia_description">Official calculation method for Malaysia</string>
+
 </resources>

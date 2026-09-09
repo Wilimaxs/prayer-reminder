@@ -5,6 +5,7 @@ data class ProfileUiState(
     val user: ProfileUserUiState = ProfileUserUiState(),
     val prayerSettings: ProfilePrayerSettingsUiState = ProfilePrayerSettingsUiState(),
     val notificationSettings: ProfileNotificationSettingsUiState = ProfileNotificationSettingsUiState(),
+    val bottomSheet: ProfileBottomSheetUiState = ProfileBottomSheetUiState(),
     val message: ProfileMessage? = null,
 )
 
@@ -24,6 +25,16 @@ data class ProfileNotificationSettingsUiState(
     val isPrayerRemindersEnabled: Boolean = true,
     val reminderOffsetMinutes: Int = 10,
 )
+
+// For bottomsheet
+data class ProfileBottomSheetUiState(
+    val activeBottomSheet: ProfileBottomSheetType? = null,
+    val selectedCalculationMethod: PrayerCalculationMethod = PrayerCalculationMethod.KemenagIndonesia,
+)
+
+enum class ProfileBottomSheetType {
+    CalculationMethod,
+}
 
 enum class PrayerCalculationMethod(
     val apiCode: Int,

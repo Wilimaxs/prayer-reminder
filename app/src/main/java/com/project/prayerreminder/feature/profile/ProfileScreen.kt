@@ -8,17 +8,24 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.project.prayerreminder.R
 import com.project.prayerreminder.core.theme.PrayerDimens
 import com.project.prayerreminder.feature.profile.composable.ContentListSection
 import com.project.prayerreminder.feature.profile.composable.ProfileHeader
 import com.project.prayerreminder.feature.profile.composable.ProfileSettingAction
+import com.project.prayerreminder.feature.profile.composable.bottomsheet.CalculationMethodList
+import com.project.prayerreminder.utils.composables.AppBottomSheet
+import com.project.prayerreminder.utils.composables.BottomSheetButtonConfig
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
     modifier: Modifier = Modifier,
@@ -60,7 +67,9 @@ fun ProfileScreen(
                         }
 
                         ProfileSettingAction.CALCULATION_METHOD -> {
-                            // TODO: Open calculation method selection.
+                            viewModel.openBottomSheet(
+                                ProfileBottomSheetType.CalculationMethod,
+                            )
                         }
 
                         ProfileSettingAction.MADHAB -> {
@@ -85,6 +94,23 @@ fun ProfileScreen(
                     }
                 },
                 modifier = Modifier.fillMaxWidth(),
+            )
+        }
+    }
+    if (uiState.bottomSheet.activeBottomSheet == ProfileBottomSheetType.CalculationMethod) {
+        AppBottomSheet(
+            title = stringResource(R.string.select_calculation_method),
+            subtitle = stringResource(R.string.select_calculation_method_description),
+            showCloseButton = false,
+            onDismissRequest = viewModel::dismissBottomSheet,
+            primaryButton = BottomSheetButtonConfig(
+                text = stringResource(R.string.save),
+                onClick = viewModel::confirmBottomSheet
+            ),
+        ) {
+            CalculationMethodList(
+                selectedMethod = uiState.bottomSheet.selectedCalculationMethod,
+                onSelectedMethodChange = viewModel::selectCalculationMethod,
             )
         }
     }

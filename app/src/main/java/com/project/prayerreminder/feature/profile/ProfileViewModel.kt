@@ -91,13 +91,6 @@ class ProfileViewModel @Inject constructor(
         )
     }
 
-    fun updateCalculationMethod(method: PrayerCalculationMethod) {
-        savePreference(
-            key = PreferenceKeys.CALCULATION_METHOD,
-            value = method.apiCode,
-        )
-    }
-
     fun updatePrayerReminders(isEnabled: Boolean) {
         _uiState.update { currentState ->
             currentState.copy(
@@ -120,6 +113,62 @@ class ProfileViewModel @Inject constructor(
         _uiState.update { currentState ->
             currentState.copy(
                 message = null,
+            )
+        }
+    }
+
+    fun openBottomSheet(
+        type: ProfileBottomSheetType,
+    ) {
+        _uiState.update { currentState ->
+            currentState.copy(
+                bottomSheet = when (type) {
+                    ProfileBottomSheetType.CalculationMethod -> {
+                        currentState.bottomSheet.copy(
+                            activeBottomSheet = type,
+                            selectedCalculationMethod = currentState.prayerSettings.calculationMethod,
+                        )
+                    }
+                },
+            )
+        }
+    }
+
+    fun selectCalculationMethod(
+        method: PrayerCalculationMethod,
+    ) {
+        _uiState.update { currentState ->
+            currentState.copy(
+                bottomSheet = currentState.bottomSheet.copy(
+                    selectedCalculationMethod = method,
+                ),
+            )
+        }
+    }
+
+    fun confirmBottomSheet() {
+        val currentState = _uiState.value
+
+        when (currentState.bottomSheet.activeBottomSheet) {
+            ProfileBottomSheetType.CalculationMethod -> {
+                savePreference(
+                    key = PreferenceKeys.CALCULATION_METHOD,
+                    value = currentState.bottomSheet.selectedCalculationMethod.apiCode,
+                )
+            }
+
+            null -> return
+        }
+
+        dismissBottomSheet()
+    }
+
+    fun dismissBottomSheet() {
+        _uiState.update { currentState ->
+            currentState.copy(
+                bottomSheet = currentState.bottomSheet.copy(
+                    activeBottomSheet = null,
+                ),
             )
         }
     }
