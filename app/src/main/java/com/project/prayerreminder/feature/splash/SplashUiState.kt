@@ -9,6 +9,7 @@ data class SplashUiState(
     val isFinished: Boolean = false,
     val result: SplashResult? = null,
     val errorMessage: String? = null,
+    val locationCheckMode: SplashLocationCheckMode? = null,
 )
 
 enum class SplashProgressMessage {
@@ -29,4 +30,9 @@ enum class SplashResult {
     CacheReady,
     SyncSuccess,
     CalendarSyncFailed,
+}
+
+enum class SplashLocationCheckMode {
+    Optional,
+    Required,
 }

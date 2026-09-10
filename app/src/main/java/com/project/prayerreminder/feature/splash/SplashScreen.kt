@@ -25,10 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -68,9 +65,6 @@ fun SplashScreen(
                 as android.location.LocationManager
     }
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    var locationRequestKey by rememberSaveable {
-        mutableIntStateOf(0)
-    }
 
     val synchronizationErrorTitle = stringResource(R.string.splash_sync_failed_title)
     val synchronizationErrorSubtitle = stringResource(R.string.splash_tap_to_retry)
@@ -146,12 +140,39 @@ fun SplashScreen(
     val settingsLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult(),
     ) {
-        // Triggers permission and location checks after returning from Settings.
-        locationRequestKey++
+        // Rechecks the required location after returning from Android Settings.
+        viewModel.onLocationSettingsReturned()
     }
 
-    LaunchedEffect(locationRequestKey) {
-        requestLocationAccess()
+    // Requests location only according to the cache condition determined by ViewModel.
+    LaunchedEffect(uiState.locationCheckMode) {
+        when (uiState.locationCheckMode) {
+            SplashLocationCheckMode.Required -> {
+                requestLocationAccess()
+            }
+
+            SplashLocationCheckMode.Optional -> {
+                when {
+                    !hasLocationPermission() -> {
+                        viewModel.onLocationUnavailable(
+                            LocationSettingsTarget.Application,
+                        )
+                    }
+
+                    !LocationManagerCompat.isLocationEnabled(locationManager) -> {
+                        viewModel.onLocationUnavailable(
+                            LocationSettingsTarget.Location,
+                        )
+                    }
+
+                    else -> {
+                        requestDeviceLocation()
+                    }
+                }
+            }
+
+            null -> Unit
+        }
     }
 
     LaunchedEffect(uiState.isFinished, uiState.result) {

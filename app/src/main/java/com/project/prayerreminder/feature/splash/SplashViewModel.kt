@@ -3,6 +3,7 @@ package com.project.prayerreminder.feature.splash
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.prayerreminder.core.NetworkResult
+import com.project.prayerreminder.core.data.local.entity.PrayerEntity
 import com.project.prayerreminder.core.data.local.pref.DataStoreManager
 import com.project.prayerreminder.core.data.local.pref.PreferenceKeys
 import com.project.prayerreminder.core.data.repository.PrayerRepository
@@ -19,6 +20,10 @@ import javax.inject.Inject
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import kotlin.coroutines.cancellation.CancellationException
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.sin
+import kotlin.math.sqrt
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
@@ -32,26 +37,109 @@ class SplashViewModel @Inject constructor(
     private var progressJob: Job? = null
     private var lastLatitude: Double? = null
     private var lastLongitude: Double? = null
+    private var cachedPrayerBeforeLocation: PrayerEntity? = null
+    private var lastShouldCompareLocation = false
 
-    // Shows the fallback dialog when the device location cannot be used.
+    init {
+        checkCacheBeforeLocation()
+    }
+
+    // Checks Room before deciding whether location permission is required.
+    private fun checkCacheBeforeLocation() {
+        _uiState.update { currentState ->
+            currentState.copy(
+                isInitializing = true,
+                progressMessage = SplashProgressMessage.CheckingPrayerSchedule,
+                errorMessage = null,
+            )
+        }
+
+        startProgress()
+
+        viewModelScope.launch {
+            try {
+                val currentDate = LocalDate.now()
+                val formattedDate = currentDate.format(DATE_FORMATTER)
+
+                cachedPrayerBeforeLocation = prayerRepository.getPrayerScheduleByDate(
+                    date = formattedDate,
+                )
+
+                val hasIslamicCalendar = prayerRepository.hasIslamicCalendarForYear(
+                    year = currentDate.year,
+                )
+
+                val requiresLocation = cachedPrayerBeforeLocation == null ||
+                        !hasIslamicCalendar
+
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        progressMessage = SplashProgressMessage.CheckingLocation,
+                        locationCheckMode = if (requiresLocation) {
+                            SplashLocationCheckMode.Required
+                        } else {
+                            SplashLocationCheckMode.Optional
+                        },
+                    )
+                }
+            } catch (error: CancellationException) {
+                throw error
+            } catch (error: Exception) {
+                Timber.e(error, "Failed to check cached startup data")
+                finishWithError("Unable to check cached prayer data.")
+            }
+        }
+    }
+
+    // Uses cache silently when location is optional, otherwise displays the fallback dialog.
     fun onLocationUnavailable(
         settingsTarget: LocationSettingsTarget,
     ) {
-        if (initializationJob?.isActive == true) return
+        when (_uiState.value.locationCheckMode) {
+            SplashLocationCheckMode.Optional -> {
+                val cachedPrayer = cachedPrayerBeforeLocation
 
+                if (cachedPrayer != null) {
+                    initializeApp(
+                        latitude = cachedPrayer.latitude,
+                        longitude = cachedPrayer.longitude,
+                        shouldCompareLocation = false,
+                    )
+                }
+            }
+
+            SplashLocationCheckMode.Required -> {
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        showLocationDialog = true,
+                        locationCheckMode = null,
+                        locationSettingsTarget = settingsTarget,
+                        progressMessage = SplashProgressMessage.CheckingLocation,
+                    )
+                }
+            }
+
+            null -> Unit
+        }
+    }
+
+    // Hides the location dialog while Android Settings is open.
+    fun onLocationSettingsOpened() {
         _uiState.update { currentState ->
             currentState.copy(
-                showLocationDialog = true,
-                locationSettingsTarget = settingsTarget,
-                progressMessage = SplashProgressMessage.CheckingLocation,
+                showLocationDialog = false,
+                locationCheckMode = null,
             )
         }
     }
 
-    // Hides the dialog while the user checks Android location settings.
-    fun onLocationSettingsOpened() {
+    // Requests another required location check after returning from Settings.
+    fun onLocationSettingsReturned() {
         _uiState.update { currentState ->
-            currentState.copy(showLocationDialog = false)
+            currentState.copy(
+                locationCheckMode = SplashLocationCheckMode.Required,
+                progressMessage = SplashProgressMessage.CheckingLocation,
+            )
         }
     }
 
@@ -63,6 +151,7 @@ class SplashViewModel @Inject constructor(
         initializeApp(
             latitude = latitude,
             longitude = longitude,
+            shouldCompareLocation = true,
         )
     }
 
@@ -71,18 +160,52 @@ class SplashViewModel @Inject constructor(
         initializeApp(
             latitude = DEFAULT_LATITUDE,
             longitude = DEFAULT_LONGITUDE,
+            shouldCompareLocation = false,
         )
     }
 
-    // Repeats the latest failed initialization when the error Snackbar is tapped.
-    fun retryInitialization() {
-        val latitude = lastLatitude ?: return
-        val longitude = lastLongitude ?: return
+    // Calculates the distance between two coordinates using the Haversine formula.
+    private fun calculateDistanceKm(
+        startLatitude: Double,
+        startLongitude: Double,
+        endLatitude: Double,
+        endLongitude: Double,
+    ): Double {
+        val latitudeDistance = Math.toRadians(endLatitude - startLatitude)
+        val longitudeDistance = Math.toRadians(endLongitude - startLongitude)
 
-        initializeApp(
-            latitude = latitude,
-            longitude = longitude,
+        val startLatitudeRadians = Math.toRadians(startLatitude)
+        val endLatitudeRadians = Math.toRadians(endLatitude)
+
+        val calculation = sin(latitudeDistance / 2) *
+                sin(latitudeDistance / 2) +
+                cos(startLatitudeRadians) *
+                cos(endLatitudeRadians) *
+                sin(longitudeDistance / 2) *
+                sin(longitudeDistance / 2)
+
+        val normalizedCalculation = calculation.coerceIn(0.0, 1.0)
+
+        return EARTH_RADIUS_KM * 2 * atan2(
+            sqrt(normalizedCalculation),
+            sqrt(1 - normalizedCalculation),
         )
+    }
+
+    // Repeats either cache checking or the latest synchronization.
+    fun retryInitialization() {
+        val latitude = lastLatitude
+        val longitude = lastLongitude
+
+        if (latitude != null && longitude != null) {
+            initializeApp(
+                latitude = latitude,
+                longitude = longitude,
+                shouldCompareLocation = lastShouldCompareLocation,
+            )
+        } else {
+            checkCacheBeforeLocation()
+        }
     }
 
     // Removes an error after it has been delivered to the Snackbar host.
@@ -96,11 +219,13 @@ class SplashViewModel @Inject constructor(
     private fun initializeApp(
         latitude: Double,
         longitude: Double,
+        shouldCompareLocation: Boolean,
     ) {
         if (initializationJob?.isActive == true || _uiState.value.isFinished) return
 
         lastLatitude = latitude
         lastLongitude = longitude
+        lastShouldCompareLocation = shouldCompareLocation
 
         _uiState.update { currentState ->
             currentState.copy(
@@ -108,6 +233,7 @@ class SplashViewModel @Inject constructor(
                 progressMessage = SplashProgressMessage.CheckingPrayerSchedule,
                 isInitializing = true,
                 showLocationDialog = false,
+                locationCheckMode = null,
                 result = null,
                 errorMessage = null,
             )
@@ -126,7 +252,21 @@ class SplashViewModel @Inject constructor(
                     date = formattedDate,
                 )
 
-                if (cachedPrayerSchedule == null) {
+                // Compares coordinates only when they come from the actual device location.
+                val hasMovedFar = if (shouldCompareLocation) {
+                    cachedPrayerSchedule?.let { cachedPrayer ->
+                        calculateDistanceKm(
+                            startLatitude = cachedPrayer.latitude,
+                            startLongitude = cachedPrayer.longitude,
+                            endLatitude = latitude,
+                            endLongitude = longitude,
+                        ) >= LOCATION_SYNC_DISTANCE_KM
+                    } ?: false
+                } else {
+                    false
+                }
+
+                if (cachedPrayerSchedule == null || hasMovedFar) {
                     _uiState.update { currentState ->
                         currentState.copy(
                             progressMessage = SplashProgressMessage.SynchronizingPrayerSchedule,
@@ -286,5 +426,7 @@ class SplashViewModel @Inject constructor(
         private const val DEFAULT_MADHAB = 0
         private const val PROGRESS_STEP_DELAY = 250L
         private const val FINISH_DELAY = 250L
+        private const val LOCATION_SYNC_DISTANCE_KM = 30.0
+        private const val EARTH_RADIUS_KM = 6371.0
     }
 }
