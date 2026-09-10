@@ -30,6 +30,7 @@ import com.project.prayerreminder.feature.main.MainBottomNavigationScreen
 import com.project.prayerreminder.feature.profile.ProfileScreen
 import com.project.prayerreminder.feature.profile.about.AboutScreen
 import com.project.prayerreminder.feature.profile.about.licenses.OpenSourceLicensesScreen
+import com.project.prayerreminder.feature.profile.about.privacy.PrivacyPolicyScreen
 import com.project.prayerreminder.feature.profile.terms.TermsScreen
 import com.project.prayerreminder.feature.splash.SplashScreen
 import com.project.prayerreminder.utils.composables.AppSnackbarHost
@@ -148,6 +149,13 @@ fun AppRoute(
                                     launchSingleTop = true
                                 }
                             },
+                            onNavigateToPrivacyPolicy = {
+                                navController.navigate(
+                                    AppScreen.PRIVACY_POLICY.route,
+                                ) {
+                                    launchSingleTop = true
+                                }
+                            },
                             onNavigateToOpenSourceLicenses = {
                                 navController.navigate(
                                     AppScreen.OPEN_SOURCE_LICENSES.route,
@@ -167,6 +175,14 @@ fun AppRoute(
                     }
                     composable(AppScreen.OPEN_SOURCE_LICENSES.route) {
                         OpenSourceLicensesScreen(
+                            modifier = Modifier.fillMaxSize(),
+                            onNavigateBack = {
+                                navController.popBackStack()
+                            },
+                        )
+                    }
+                    composable(AppScreen.PRIVACY_POLICY.route) {
+                        PrivacyPolicyScreen(
                             modifier = Modifier.fillMaxSize(),
                             onNavigateBack = {
                                 navController.popBackStack()

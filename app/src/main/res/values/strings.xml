@@ -153,4 +153,33 @@
     <string name="mit_license">MIT License</string>
 
     <string name="additional_licenses_description">Additional licenses may apply to third-party services and assets. All trademarks are the property of their respective owners.</string>
+
+    <string name="official_document">OFFICIAL DOCUMENT</string>
+
+    <string name="privacy_introduction">%1$s respects your privacy and processes only the information required to provide prayer schedules, reminders, application preferences, and reliable application performance.</string>
+
+    <string name="information_we_process">Information We Process</string>
+
+    <string name="location_data">Location Data</string>
+    <string name="location_data_privacy_description">Precise or approximate device location is used to request prayer schedules. Coordinates are sent to the Aladhan API when schedule synchronization is performed.</string>
+
+    <string name="application_preferences">Application Preferences</string>
+    <string name="application_preferences_privacy_description">Calculation method, Asr madhab, language, reminder status, and reminder offset are stored locally on your device.</string>
+
+    <string name="personal_schedule_data">Personal Schedule Data</string>
+    <string name="personal_schedule_data_description">Schedule titles, dates, times, and reminder preferences created by you are stored locally on your device.</string>
+
+    <string name="diagnostic_performance_data">Diagnostic &amp; Performance Data</string>
+    <string name="diagnostic_performance_data_description">Firebase may process crash reports, application state, device metadata, installation identifiers, performance metrics, and network timing to help improve application stability.</string>
+
+    <string name="how_we_use_information">How We Use Information</string>
+    <string name="use_location_for_prayer_schedule">Requesting prayer schedules from Aladhan based on your device location.</string>
+    <string name="use_local_application_data">Storing prayer schedules, personal schedules, and application preferences locally.</string>
+    <string name="use_data_for_reminders">Scheduling prayer alarms, notifications, and personal schedule reminders.</string>
+    <string name="use_diagnostic_data">Identifying crashes and monitoring application performance through Firebase.</string>
+
+    <string name="data_storage_and_security">Data Storage &amp; Security</string>
+    <string name="data_storage_and_security_description">Prayer schedules, personal schedules, and application preferences are stored locally on your device. Location coordinates are transmitted to Aladhan only when prayer schedules are synchronized. Firebase may process technical diagnostic and performance data on Google infrastructure. The application does not provide user accounts or store your personal data on a developer-operated backend.</string>
+
+    <string name="privacy_contact_description">For privacy-related questions, contact:</string>
 </resources>

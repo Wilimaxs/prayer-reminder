@@ -40,6 +40,10 @@ enum class AppScreen(
         route = "terms_of_service",
         showBottomNavigation = false,
     ),
+    PRIVACY_POLICY(
+        route = "privacy_policy",
+        showBottomNavigation = false,
+    ),
     OPEN_SOURCE_LICENSES(
         route = "open_source_licenses",
         showBottomNavigation = false,

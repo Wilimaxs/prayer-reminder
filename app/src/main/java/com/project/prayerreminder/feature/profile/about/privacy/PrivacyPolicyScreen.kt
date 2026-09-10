@@ -1,4 +1,4 @@
-package com.project.prayerreminder.feature.profile.about
+package com.project.prayerreminder.feature.profile.about.privacy
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,27 +14,22 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import com.project.prayerreminder.BuildConfig
 import com.project.prayerreminder.R
 import com.project.prayerreminder.core.theme.PrayerDimens
 import com.project.prayerreminder.core.theme.PrayerReminderTheme
-import com.project.prayerreminder.feature.profile.about.composable.AboutDeveloper
-import com.project.prayerreminder.feature.profile.about.composable.AboutFeature
-import com.project.prayerreminder.feature.profile.about.composable.AboutHeader
-import com.project.prayerreminder.feature.profile.about.composable.AboutLegalInformation
+import com.project.prayerreminder.feature.profile.about.privacy.composable.PrivacyDataUsage
+import com.project.prayerreminder.feature.profile.about.privacy.composable.PrivacyHeader
+import com.project.prayerreminder.feature.profile.about.privacy.composable.PrivacyInformation
 import com.project.prayerreminder.utils.composables.AppBar
 
 @Composable
-fun AboutScreen(
+fun PrivacyPolicyScreen(
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
-    onNavigateToTerms: () -> Unit = {},
-    onNavigateToPrivacyPolicy: () -> Unit = {},
-    onNavigateToOpenSourceLicenses: () -> Unit = {},
 ) {
     val appName = stringResource(R.string.app_name)
 
@@ -42,7 +37,7 @@ fun AboutScreen(
         modifier = modifier,
         topBar = {
             AppBar(
-                title = stringResource(R.string.about_application),
+                title = stringResource(R.string.privacy_policy),
                 canNavigateBack = true,
                 navigateBack = onNavigateBack,
             )
@@ -58,50 +53,62 @@ fun AboutScreen(
                     horizontal = PrayerDimens.ScreenMargin,
                     vertical = PrayerDimens.StackLarge,
                 ),
-            horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(
                 PrayerDimens.StackExtraLarge,
             ),
         ) {
-            AboutHeader(
+            PrivacyHeader(
                 appName = appName,
-                versionName = stringResource(R.string.version_name, BuildConfig.VERSION_NAME),
-                description = stringResource(R.string.about_application_description),
                 modifier = Modifier.fillMaxWidth(),
             )
 
-            AboutFeature(
+            PrivacyInformation(
                 modifier = Modifier.fillMaxWidth(),
             )
 
-            AboutDeveloper(
-                developerImage = painterResource(R.drawable.img_developer),
-                modifier = Modifier.fillMaxWidth(),
-            )
-
-            AboutLegalInformation(
-                onPrivacyPolicyClick = onNavigateToPrivacyPolicy,
-                onTermsOfServiceClick = onNavigateToTerms,
-                onOpenSourceLicensesClick = onNavigateToOpenSourceLicenses,
+            PrivacyDataUsage(
                 modifier = Modifier.fillMaxWidth(),
             )
 
             Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        vertical = PrayerDimens.StackLarge,
+                    ),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(
-                    PrayerDimens.Baseline,
+                    PrayerDimens.StackSmall,
                 ),
             ) {
                 Text(
-                    text = stringResource(R.string.made_with_for_muslims),
+                    text = appName,
+                    color = MaterialTheme.colorScheme.primary,
+                    style = MaterialTheme.typography.titleLarge.copy(
+                        fontWeight = FontWeight.Bold,
+                    ),
+                    textAlign = TextAlign.Center,
+                )
+
+                Text(
+                    text = stringResource(R.string.privacy_contact_description),
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     style = MaterialTheme.typography.bodySmall,
                     textAlign = TextAlign.Center,
                 )
 
                 Text(
-                    text = stringResource(R.string.application_copyright, appName),
+                    text = stringResource(R.string.developer_email),
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    style = MaterialTheme.typography.bodySmall.copy(
+                        fontWeight = FontWeight.Medium,
+                    ),
+                    textAlign = TextAlign.Center,
+                )
+
+                Text(
+                    text = stringResource(R.string.application_copyright, appName),
+                    color = MaterialTheme.colorScheme.outline,
                     style = MaterialTheme.typography.bodySmall,
                     textAlign = TextAlign.Center,
                 )
@@ -111,15 +118,15 @@ fun AboutScreen(
 }
 
 @Preview(
-    name = "About Screen",
+    name = "Privacy Policy Screen",
     showBackground = true,
     widthDp = 412,
     heightDp = 915,
 )
 @Composable
-private fun AboutScreenPreview() {
+private fun PrivacyPolicyScreenPreview() {
     PrayerReminderTheme {
-        AboutScreen(
+        PrivacyPolicyScreen(
             onNavigateBack = {},
         )
     }
