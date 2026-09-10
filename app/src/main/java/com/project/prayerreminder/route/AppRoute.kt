@@ -15,8 +15,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.navigation.NavHostController
@@ -33,8 +35,13 @@ import com.project.prayerreminder.feature.profile.about.licenses.OpenSourceLicen
 import com.project.prayerreminder.feature.profile.about.privacy.PrivacyPolicyScreen
 import com.project.prayerreminder.feature.profile.terms.TermsScreen
 import com.project.prayerreminder.feature.splash.SplashScreen
+import com.project.prayerreminder.feature.splash.SplashResult
+import com.project.prayerreminder.R
+import com.project.prayerreminder.utils.composables.AppSnackbarType
 import com.project.prayerreminder.utils.composables.AppSnackbarHost
 import com.project.prayerreminder.utils.composables.LocalAppSnackbarHostState
+import com.project.prayerreminder.utils.composables.showAppSnackbar
+import kotlinx.coroutines.launch
 
 @Composable
 fun AppRoute(
@@ -44,6 +51,11 @@ fun AppRoute(
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentScreen = backStackEntry?.destination?.route
     val snackbarHostState = remember { SnackbarHostState() }
+    val coroutineScope = rememberCoroutineScope()
+    val syncSuccessTitle = stringResource(R.string.splash_sync_success_title)
+    val syncSuccessSubtitle = stringResource(R.string.splash_sync_success_description)
+    val calendarSyncFailedTitle = stringResource(R.string.splash_calendar_sync_failed_title)
+    val calendarSyncFailedSubtitle = stringResource(R.string.splash_calendar_sync_failed_description)
 
     val showBottomNavigation = AppScreen.entries.firstOrNull { screen ->
         screen.route == currentScreen
@@ -102,13 +114,38 @@ fun AppRoute(
                     composable(AppScreen.SPLASH.route) {
                         SplashScreen(
                             modifier = Modifier.fillMaxSize(),
-                            onFinished = {
+                            onFinished = { result ->
                                 navController.navigate(AppScreen.HOME.route) {
                                     popUpTo(AppScreen.SPLASH.route) {
                                         inclusive = true
                                     }
 
                                     launchSingleTop = true
+                                }
+
+                                // Displays synchronization feedback after Home is opened.
+                                when (result) {
+                                    SplashResult.SyncSuccess -> {
+                                        coroutineScope.launch {
+                                            snackbarHostState.showAppSnackbar(
+                                                title = syncSuccessTitle,
+                                                subtitle = syncSuccessSubtitle,
+                                                type = AppSnackbarType.SUCCESS,
+                                            )
+                                        }
+                                    }
+
+                                    SplashResult.CalendarSyncFailed -> {
+                                        coroutineScope.launch {
+                                            snackbarHostState.showAppSnackbar(
+                                                title = calendarSyncFailedTitle,
+                                                subtitle = calendarSyncFailedSubtitle,
+                                                type = AppSnackbarType.ERROR,
+                                            )
+                                        }
+                                    }
+
+                                    SplashResult.CacheReady -> Unit
                                 }
                             }
                         )

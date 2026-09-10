@@ -1,53 +1,190 @@
 package com.project.prayerreminder.feature.splash
 
+import android.Manifest
+import android.annotation.SuppressLint
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.provider.Settings
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.core.content.ContextCompat
+import androidx.core.location.LocationManagerCompat
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
+import com.google.android.gms.tasks.CancellationTokenSource
 import com.project.prayerreminder.R
 import com.project.prayerreminder.core.theme.PrayerDimens
+import com.project.prayerreminder.utils.composables.AppButton
+import com.project.prayerreminder.utils.composables.AppButtonVariant
+import com.project.prayerreminder.utils.composables.AppSnackbarType
+import com.project.prayerreminder.utils.composables.LocalAppSnackbarHostState
+import com.project.prayerreminder.utils.composables.showAppSnackbar
+import androidx.core.net.toUri
 
+@SuppressLint("MissingPermission")
 @Composable
 fun SplashScreen(
     modifier: Modifier,
-    onFinished: () -> Unit,
+    onFinished: (SplashResult) -> Unit,
     viewModel: SplashViewModel = hiltViewModel(),
 ) {
+    val context = LocalContext.current
+    val snackbarHostState = LocalAppSnackbarHostState.current
+    val fusedLocationClient = remember(context) {
+        LocationServices.getFusedLocationProviderClient(context)
+    }
+    val locationManager = remember(context) {
+        context.getSystemService(android.content.Context.LOCATION_SERVICE)
+                as android.location.LocationManager
+    }
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    var locationRequestKey by rememberSaveable {
+        mutableIntStateOf(0)
+    }
 
-    LaunchedEffect(uiState.currentProgress) {
-        if (uiState.currentProgress >= 1f) {
-            onFinished()
+    val synchronizationErrorTitle = stringResource(R.string.splash_sync_failed_title)
+    val synchronizationErrorSubtitle = stringResource(R.string.splash_tap_to_retry)
+
+    // Checks whether either precise or approximate location permission is available.
+    fun hasLocationPermission(): Boolean {
+        val hasFineLocation = ContextCompat.checkSelfPermission(
+            context,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+        ) == PackageManager.PERMISSION_GRANTED
+        val hasCoarseLocation = ContextCompat.checkSelfPermission(
+            context,
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+        ) == PackageManager.PERMISSION_GRANTED
+
+        return hasFineLocation || hasCoarseLocation
+    }
+
+    // Requests a fresh device location after permission and location services are available.
+    val requestDeviceLocation = {
+        if (!hasLocationPermission()) {
+            viewModel.onLocationUnavailable(LocationSettingsTarget.Application)
+        } else if (!LocationManagerCompat.isLocationEnabled(locationManager)) {
+            viewModel.onLocationUnavailable(LocationSettingsTarget.Location)
+        } else {
+            val cancellationTokenSource = CancellationTokenSource()
+
+            fusedLocationClient.getCurrentLocation(
+                Priority.PRIORITY_BALANCED_POWER_ACCURACY,
+                cancellationTokenSource.token,
+            ).addOnSuccessListener { location ->
+                if (location != null) {
+                    viewModel.onLocationAvailable(
+                        latitude = location.latitude,
+                        longitude = location.longitude,
+                    )
+                } else {
+                    viewModel.onLocationUnavailable(LocationSettingsTarget.Location)
+                }
+            }.addOnFailureListener {
+                viewModel.onLocationUnavailable(LocationSettingsTarget.Location)
+            }
         }
     }
 
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestMultiplePermissions(),
+    ) { permissions ->
+        val permissionGranted = permissions[Manifest.permission.ACCESS_FINE_LOCATION] == true ||
+                permissions[Manifest.permission.ACCESS_COARSE_LOCATION] == true
+
+        if (permissionGranted) {
+            requestDeviceLocation()
+        } else {
+            viewModel.onLocationUnavailable(LocationSettingsTarget.Application)
+        }
+    }
+
+    // Requests permission on the first launch or reads location when it is already granted.
+    fun requestLocationAccess() {
+        if (hasLocationPermission()) {
+            requestDeviceLocation()
+        } else {
+            permissionLauncher.launch(
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                ),
+            )
+        }
+    }
+
+    val settingsLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult(),
+    ) {
+        // Triggers permission and location checks after returning from Settings.
+        locationRequestKey++
+    }
+
+    LaunchedEffect(locationRequestKey) {
+        requestLocationAccess()
+    }
+
+    LaunchedEffect(uiState.isFinished, uiState.result) {
+        val result = uiState.result
+
+        if (uiState.isFinished && result != null) {
+            onFinished(result)
+        }
+    }
+
+    // Displays initialization errors and allows retry by tapping the Snackbar.
+    LaunchedEffect(uiState.errorMessage) {
+        val errorMessage = uiState.errorMessage ?: return@LaunchedEffect
+        viewModel.onErrorShown()
+
+        snackbarHostState.showAppSnackbar(
+            title = synchronizationErrorTitle,
+            subtitle = "$errorMessage $synchronizationErrorSubtitle",
+            type = AppSnackbarType.ERROR,
+            duration = SnackbarDuration.Long,
+            onClick = viewModel::retryInitialization,
+        )
+    }
+
     Scaffold(
-        modifier = modifier
+        modifier = modifier,
     ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Center,
         ) {
             Image(
                 painter = painterResource(R.drawable.ic_splash_logo),
@@ -56,18 +193,82 @@ fun SplashScreen(
             Spacer(modifier = Modifier.height(PrayerDimens.StackSmall))
             Text(
                 text = stringResource(R.string.splash_title),
-                style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
+                style = MaterialTheme.typography.titleLarge.copy(
+                    fontWeight = FontWeight.Bold,
+                ),
             )
             Spacer(modifier = Modifier.height(PrayerDimens.Baseline))
             Text(
                 text = stringResource(R.string.splash_subtitle),
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.bodyMedium,
             )
             Spacer(modifier = Modifier.height(PrayerDimens.StackMedium))
             LinearProgressIndicator(
                 modifier = Modifier.fillMaxWidth(0.5f),
-                progress = { uiState.currentProgress }
+                progress = { uiState.currentProgress },
+            )
+            Spacer(modifier = Modifier.height(PrayerDimens.StackSmall))
+            Text(
+                text = stringResource(uiState.progressMessage.textRes),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
     }
+
+    if (uiState.showLocationDialog) {
+        AlertDialog(
+            onDismissRequest = {},
+            title = {
+                Text(text = stringResource(R.string.splash_location_unavailable_title))
+            },
+            text = {
+                Text(text = stringResource(R.string.splash_location_unavailable_description))
+            },
+            confirmButton = {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(PrayerDimens.StackSmall),
+                ) {
+                    AppButton(
+                        text = stringResource(R.string.continue_with_jakarta),
+                        onClick = viewModel::continueWithDefaultLocation,
+                        modifier = Modifier.weight(1f),
+                        variant = AppButtonVariant.Outlined,
+                    )
+                    AppButton(
+                        text = stringResource(R.string.open_settings),
+                        onClick = {
+                            val intent = when (uiState.locationSettingsTarget) {
+                                LocationSettingsTarget.Location -> {
+                                    Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                                }
+
+                                LocationSettingsTarget.Application -> {
+                                    Intent(
+                                        Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                        "package:${context.packageName}".toUri(),
+                                    )
+                                }
+                            }
+
+                            viewModel.onLocationSettingsOpened()
+                            settingsLauncher.launch(intent)
+                        },
+                        modifier = Modifier.weight(1f),
+                    )
+                }
+            },
+        )
+    }
 }
+
+private val SplashProgressMessage.textRes: Int
+    get() = when (this) {
+        SplashProgressMessage.CheckingLocation -> R.string.splash_checking_location
+        SplashProgressMessage.CheckingPrayerSchedule -> R.string.splash_checking_prayer_schedule
+        SplashProgressMessage.SynchronizingPrayerSchedule -> R.string.splash_syncing_prayer_schedule
+        SplashProgressMessage.CheckingIslamicCalendar -> R.string.splash_checking_islamic_calendar
+        SplashProgressMessage.SynchronizingIslamicCalendar -> R.string.splash_syncing_islamic_calendar
+        SplashProgressMessage.Finishing -> R.string.splash_finishing
+    }
