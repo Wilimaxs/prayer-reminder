@@ -33,5 +33,6 @@ fun PersonalScheduleEntity.toCalendarUiState(): CalendarPersonalScheduleUiState 
         title = title,
         time = scheduleTime,
         isReminderEnabled = isReminderEnabled,
+        reminderOffsetMinutes = reminderOffsetMinutes,
     )
 }

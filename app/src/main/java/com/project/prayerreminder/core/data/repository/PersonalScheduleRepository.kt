@@ -17,4 +17,14 @@ class PersonalScheduleRepository @Inject constructor(
     ): Flow<List<PersonalScheduleEntity>> {
         return personalScheduleDao.getSchedulesByDate(date)
     }
+
+    // Creates a new schedule or updates an existing schedule with the same ID.
+    suspend fun upsertSchedule(schedule: PersonalScheduleEntity) {
+        personalScheduleDao.upsertSchedule(schedule)
+    }
+
+    // Deletes a personal schedule using its Room ID.
+    suspend fun deleteSchedule(scheduleId: Long) {
+        personalScheduleDao.deleteScheduleById(scheduleId)
+    }
 }

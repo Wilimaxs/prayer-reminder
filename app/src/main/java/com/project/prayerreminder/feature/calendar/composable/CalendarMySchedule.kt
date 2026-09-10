@@ -1,6 +1,7 @@
 package com.project.prayerreminder.feature.calendar.composable
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -32,6 +33,7 @@ import com.project.prayerreminder.feature.calendar.CalendarPersonalScheduleUiSta
 @Composable
 fun CalendarMySchedule(
     schedules: List<CalendarPersonalScheduleUiState>,
+    onScheduleClick: (CalendarPersonalScheduleUiState) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     if (schedules.isEmpty()) return
@@ -59,6 +61,9 @@ fun CalendarMySchedule(
                     title = schedule.title,
                     time = schedule.time,
                     isReminderEnabled = schedule.isReminderEnabled,
+                    onClick = {
+                        onScheduleClick(schedule)
+                    },
                 )
             }
         }
@@ -70,10 +75,13 @@ private fun MyScheduleItem(
     title: String,
     time: String,
     isReminderEnabled: Boolean,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Card(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick),
         shape = MaterialTheme.shapes.large,
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
@@ -150,6 +158,7 @@ private fun CalendarMySchedulePreview() {
                     isReminderEnabled = true,
                 ),
             ),
+            onScheduleClick = {},
             modifier = Modifier.padding(PrayerDimens.ScreenMargin),
         )
     }

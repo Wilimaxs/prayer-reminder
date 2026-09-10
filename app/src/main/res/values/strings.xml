@@ -39,6 +39,9 @@
     <string name="add_schedule_title">Add to Schedule</string>
     <string name="add_schedule_subtitle">Create reminders for your personal activities.</string>
     <string name="save_schedule">Save Schedule</string>
+    <string name="delete_schedule">Delete</string>
+    <string name="delete_schedule_confirmation_title">Delete Schedule?</string>
+    <string name="delete_schedule_confirmation_description">This schedule will be permanently deleted and cannot be restored.</string>
     <string name="cancel">Cancel</string>
     <string name="select_time">Select Time</string>
     <string name="confirm">Confirm</string>

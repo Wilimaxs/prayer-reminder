@@ -8,9 +8,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -33,6 +35,7 @@ import com.project.prayerreminder.feature.calendar.composable.ReminderListBefore
 import com.project.prayerreminder.utils.composables.AppBar
 import com.project.prayerreminder.utils.composables.AppBottomSheet
 import com.project.prayerreminder.utils.composables.AppButton
+import com.project.prayerreminder.utils.composables.AppButtonVariant
 import com.project.prayerreminder.utils.composables.BottomSheetButtonConfig
 import java.time.LocalDate
 import java.time.LocalTime
@@ -48,6 +51,8 @@ fun CalendarScreen(
     CalendarScreenContent(
         uiState = uiState,
         onDateSelected = viewModel::selectDate,
+        onSaveSchedule = viewModel::saveSchedule,
+        onDeleteSchedule = viewModel::deleteSchedule,
         modifier = modifier,
     )
 }
@@ -57,10 +62,20 @@ fun CalendarScreen(
 private fun CalendarScreenContent(
     uiState: CalendarUiState,
     onDateSelected: (LocalDate) -> Unit,
+    onSaveSchedule: (Long?, String, LocalDate, LocalTime, Boolean, Int) -> Unit,
+    onDeleteSchedule: (Long) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var showAddScheduleBottomSheet by rememberSaveable {
+    var showScheduleBottomSheet by rememberSaveable {
         mutableStateOf(false)
+    }
+
+    var showDeleteConfirmation by rememberSaveable {
+        mutableStateOf(false)
+    }
+
+    var editingScheduleId by rememberSaveable {
+        mutableStateOf<Long?>(null)
     }
 
     var showReminderBeforeBottomSheet by rememberSaveable {
@@ -109,7 +124,15 @@ private fun CalendarScreenContent(
                 text = stringResource(R.string.add_schedule),
                 leadingIcon = R.drawable.ic_add,
                 onClick = {
-                    showAddScheduleBottomSheet = true
+                    // Opens a clean form for a new schedule.
+                    editingScheduleId = null
+                    scheduleTitle = ""
+                    selectedHour = 19
+                    selectedMinute = 30
+                    isReminderEnabled = true
+                    reminderBeforeMinutes = 30
+                    pendingReminderBeforeMinutes = 30
+                    showScheduleBottomSheet = true
                 },
                 modifier = Modifier.shadow(
                     elevation = 4.dp,
@@ -142,28 +165,64 @@ private fun CalendarScreenContent(
             )
             CalendarMySchedule(
                 schedules = uiState.personalSchedules,
+                onScheduleClick = { schedule ->
+                    // Opens the same form with the selected schedule values.
+                    val scheduleTime = runCatching {
+                        LocalTime.parse(schedule.time)
+                    }.getOrDefault(LocalTime.of(19, 30))
+
+                    editingScheduleId = schedule.id
+                    scheduleTitle = schedule.title
+                    selectedHour = scheduleTime.hour
+                    selectedMinute = scheduleTime.minute
+                    isReminderEnabled = schedule.isReminderEnabled
+                    reminderBeforeMinutes = schedule.reminderOffsetMinutes
+                    pendingReminderBeforeMinutes = schedule.reminderOffsetMinutes
+                    showScheduleBottomSheet = true
+                },
                 modifier = Modifier.fillMaxWidth(),
             )
         }
     }
-    if (showAddScheduleBottomSheet) {
+    if (showScheduleBottomSheet) {
         AppBottomSheet(
             title = stringResource(R.string.add_schedule),
             subtitle = stringResource(R.string.add_schedule_subtitle),
             showCloseButton = false,
             onDismissRequest = {
-                showAddScheduleBottomSheet = false
+                showScheduleBottomSheet = false
+                editingScheduleId = null
             },
             secondaryButton = BottomSheetButtonConfig(
-                text = stringResource(R.string.cancel),
+                text = stringResource(
+                    if (editingScheduleId == null) {
+                        R.string.cancel
+                    } else {
+                        R.string.delete_schedule
+                    }
+                ),
                 onClick = {
-                    showAddScheduleBottomSheet = false
+                    if (editingScheduleId == null) {
+                        showScheduleBottomSheet = false
+                    } else {
+                        showDeleteConfirmation = true
+                    }
                 },
             ),
             primaryButton = BottomSheetButtonConfig(
                 text = stringResource(R.string.save_schedule),
+                enabled = scheduleTitle.isNotBlank(),
                 onClick = {
-                    showAddScheduleBottomSheet = false
+                    onSaveSchedule(
+                        editingScheduleId,
+                        scheduleTitle,
+                        uiState.selectedDate,
+                        selectedTime,
+                        isReminderEnabled,
+                        reminderBeforeMinutes,
+                    )
+                    showScheduleBottomSheet = false
+                    editingScheduleId = null
                 },
             ),
         ) {
@@ -172,8 +231,7 @@ private fun CalendarScreenContent(
                 onTitleChange = {
                     scheduleTitle = it
                 },
-                // Masih static selama fase UI.
-                selectedDateText = "21 July 2026",
+                selectedDateText = uiState.selectedDateText,
                 selectedTime = selectedTime,
                 onTimeChange = {
                     selectedHour = it.hour
@@ -228,5 +286,46 @@ private fun CalendarScreenContent(
                 },
             )
         }
+    }
+    if (showDeleteConfirmation) {
+        AlertDialog(
+            onDismissRequest = {
+                showDeleteConfirmation = false
+            },
+            title = {
+                Text(
+                    text = stringResource(
+                        R.string.delete_schedule_confirmation_title,
+                    ),
+                )
+            },
+            text = {
+                Text(
+                    text = stringResource(
+                        R.string.delete_schedule_confirmation_description,
+                    ),
+                )
+            },
+            dismissButton = {
+                AppButton(
+                    text = stringResource(R.string.cancel),
+                    onClick = {
+                        showDeleteConfirmation = false
+                    },
+                    variant = AppButtonVariant.Outlined,
+                )
+            },
+            confirmButton = {
+                AppButton(
+                    text = stringResource(R.string.delete_schedule),
+                    onClick = {
+                        editingScheduleId?.let(onDeleteSchedule)
+                        showDeleteConfirmation = false
+                        showScheduleBottomSheet = false
+                        editingScheduleId = null
+                    },
+                )
+            },
+        )
     }
 }

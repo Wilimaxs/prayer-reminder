@@ -2,6 +2,7 @@ package com.project.prayerreminder.feature.calendar
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.project.prayerreminder.core.data.local.entity.PersonalScheduleEntity
 import com.project.prayerreminder.core.data.local.pref.DataStoreManager
 import com.project.prayerreminder.core.data.local.pref.PreferenceKeys
 import com.project.prayerreminder.core.data.repository.PersonalScheduleRepository
@@ -9,6 +10,7 @@ import com.project.prayerreminder.core.data.repository.PrayerRepository
 import com.project.prayerreminder.feature.calendar.mapper.toCalendarUiState
 import com.project.prayerreminder.feature.calendar.mapper.toIslamicEventUiStates
 import com.project.prayerreminder.utils.enumeration.AppLanguage
+import com.project.prayerreminder.utils.extensions.toLocalizedGregorianDate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,10 +21,13 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.time.LocalDate
+import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
+import kotlin.coroutines.cancellation.CancellationException
 
 @HiltViewModel
 class CalendarViewModel @Inject constructor(
@@ -52,6 +57,7 @@ class CalendarViewModel @Inject constructor(
                 CalendarUiState(
                     isLoading = false,
                     selectedDate = date,
+                    selectedDateText = formattedDate.toLocalizedGregorianDate(language),
                     islamicEvents = islamicCalendar
                         ?.toIslamicEventUiStates(language)
                         .orEmpty(),
@@ -87,7 +93,52 @@ class CalendarViewModel @Inject constructor(
         selectedDate.value = date
     }
 
+    // Saves a new schedule or applies changes to the selected schedule.
+    fun saveSchedule(
+        scheduleId: Long?,
+        title: String,
+        date: LocalDate,
+        time: LocalTime,
+        isReminderEnabled: Boolean,
+        reminderOffsetMinutes: Int,
+    ) {
+        if (title.isBlank()) return
+
+        viewModelScope.launch {
+            try {
+                personalScheduleRepository.upsertSchedule(
+                    PersonalScheduleEntity(
+                        id = scheduleId ?: 0L,
+                        title = title.trim(),
+                        scheduleDate = date.format(DATE_FORMATTER),
+                        scheduleTime = time.format(TIME_FORMATTER),
+                        isReminderEnabled = isReminderEnabled,
+                        reminderOffsetMinutes = reminderOffsetMinutes,
+                    )
+                )
+            } catch (error: CancellationException) {
+                throw error
+            } catch (error: Exception) {
+                Timber.e(error, "Failed to save personal schedule")
+            }
+        }
+    }
+
+    // Deletes the selected schedule after confirmation from the UI.
+    fun deleteSchedule(scheduleId: Long) {
+        viewModelScope.launch {
+            try {
+                personalScheduleRepository.deleteSchedule(scheduleId)
+            } catch (error: CancellationException) {
+                throw error
+            } catch (error: Exception) {
+                Timber.e(error, "Failed to delete personal schedule")
+            }
+        }
+    }
+
     companion object {
         private val DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+        private val TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm")
     }
 }

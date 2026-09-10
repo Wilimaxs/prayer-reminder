@@ -5,6 +5,7 @@ import java.time.LocalDate
 data class CalendarUiState(
     val isLoading: Boolean = true,
     val selectedDate: LocalDate = LocalDate.now(),
+    val selectedDateText: String = "",
     val islamicEvents: List<CalendarIslamicEventUiState> = emptyList(),
     val personalSchedules: List<CalendarPersonalScheduleUiState> = emptyList(),
     val errorMessage: String? = null,
@@ -20,4 +21,5 @@ data class CalendarPersonalScheduleUiState(
     val title: String,
     val time: String,
     val isReminderEnabled: Boolean,
+    val reminderOffsetMinutes: Int = 30,
 )
