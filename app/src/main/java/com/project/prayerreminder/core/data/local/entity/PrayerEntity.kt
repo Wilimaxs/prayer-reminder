@@ -20,6 +20,7 @@ data class PrayerEntity(
     val hijriMonthEn: String,
     val hijriMonthAr: String,
     val hijriYear: String,
+    val hijriHolidays: List<String>,
     val dayNameEn: String,
     val latitude: Double,
     val longitude: Double

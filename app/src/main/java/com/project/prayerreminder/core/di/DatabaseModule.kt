@@ -3,6 +3,7 @@ package com.project.prayerreminder.core.di
 import android.content.Context
 import androidx.room.Room
 import com.project.prayerreminder.core.data.local.AppDatabase
+import com.project.prayerreminder.core.data.local.dao.PersonalScheduleDao
 import com.project.prayerreminder.core.data.local.dao.PrayerDao
 import dagger.Module
 import dagger.Provides
@@ -33,5 +34,13 @@ object DatabaseModule {
         appDatabase: AppDatabase
     ): PrayerDao {
         return appDatabase.prayerDao()
+    }
+
+    @Provides
+    @Singleton
+    fun providePersonalScheduleDao(
+        appDatabase: AppDatabase,
+    ): PersonalScheduleDao {
+        return appDatabase.personalScheduleDao()
     }
 }

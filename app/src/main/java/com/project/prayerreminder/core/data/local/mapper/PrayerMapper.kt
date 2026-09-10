@@ -3,12 +3,19 @@ package com.project.prayerreminder.core.data.local.mapper
 import com.project.prayerreminder.core.data.local.entity.PrayerEntity
 import com.project.prayerreminder.core.data.remote.model.PrayerDataDto
 
-fun PrayerDataDto.toEntity(latitude: Double, longitude: Double): PrayerEntity? {
-    val dateStr = this.date?.gregorian?.date ?: return null
-    val timingsDto = this.timings ?: return null
+fun PrayerDataDto.toEntity(
+    latitude: Double,
+    longitude: Double,
+): PrayerEntity? {
+    val dateStr = date?.gregorian?.date ?: return null
+    val timingsDto = timings ?: return null
 
+    // Removes timezone information from prayer time values.
     fun cleanTime(time: String?): String {
-        return time?.split(" ")?.firstOrNull() ?: ""
+        return time
+            ?.split(" ")
+            ?.firstOrNull()
+            .orEmpty()
     }
 
     return PrayerEntity(
@@ -20,14 +27,15 @@ fun PrayerDataDto.toEntity(latitude: Double, longitude: Double): PrayerEntity? {
         maghrib = cleanTime(timingsDto.maghrib),
         isha = cleanTime(timingsDto.isha),
         imsak = cleanTime(timingsDto.imsak),
-        readableDate = this.date.readable.orEmpty(),
-        hijriDate = this.date.hijri?.date.orEmpty(),
-        hijriDay = this.date.hijri?.day.orEmpty(),
-        hijriMonthEn = this.date.hijri?.month?.en.orEmpty(),
-        hijriMonthAr = this.date.hijri?.month?.ar.orEmpty(),
-        hijriYear = this.date.hijri?.year.orEmpty(),
-        dayNameEn = this.date.gregorian.weekday?.en.orEmpty(),
+        readableDate = date.readable.orEmpty(),
+        hijriDate = date.hijri?.date.orEmpty(),
+        hijriDay = date.hijri?.day.orEmpty(),
+        hijriMonthEn = date.hijri?.month?.en.orEmpty(),
+        hijriMonthAr = date.hijri?.month?.ar.orEmpty(),
+        hijriYear = date.hijri?.year.orEmpty(),
+        hijriHolidays = date.hijri?.holidays.orEmpty(),
+        dayNameEn = date.gregorian.weekday?.en.orEmpty(),
         latitude = latitude,
-        longitude = longitude
+        longitude = longitude,
     )
 }
