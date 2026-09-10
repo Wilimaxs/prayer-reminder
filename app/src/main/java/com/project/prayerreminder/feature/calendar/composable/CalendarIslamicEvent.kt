@@ -20,14 +20,14 @@ import androidx.compose.ui.unit.dp
 import com.project.prayerreminder.R
 import com.project.prayerreminder.core.theme.PrayerDimens
 import com.project.prayerreminder.core.theme.PrayerReminderTheme
+import com.project.prayerreminder.feature.calendar.CalendarIslamicEventUiState
 
 @Composable
 fun CalendarIslamicEvent(
-    isVisible: Boolean,
+    events: List<CalendarIslamicEventUiState>,
     modifier: Modifier = Modifier,
 ) {
-    // visibility if there are no any events in this date
-    if (!isVisible) return
+    if (events.isEmpty()) return
 
     Column(
         modifier = modifier.fillMaxWidth(),
@@ -49,15 +49,12 @@ fun CalendarIslamicEvent(
                 PrayerDimens.StackSmall,
             ),
         ) {
-            IslamicEventItem(
-                title = "Islamic New Year",
-                hijriDate = "1 Muharram 1448 H",
-            )
-
-            IslamicEventItem(
-                title = "Prophet Muhammad’s Birthday",
-                hijriDate = "12 Rabi' al-Awwal 1448 H",
-            )
+            events.forEach { event ->
+                IslamicEventItem(
+                    title = event.title,
+                    hijriDate = event.hijriDate,
+                )
+            }
         }
     }
 }
@@ -107,7 +104,12 @@ private fun IslamicEventItem(
 private fun CalendarIslamicEventPreview() {
     PrayerReminderTheme {
         CalendarIslamicEvent(
-            isVisible = true,
+            events = listOf(
+                CalendarIslamicEventUiState(
+                    title = "Islamic New Year",
+                    hijriDate = "1 Muharram 1448 H",
+                ),
+            ),
             modifier = Modifier.padding(PrayerDimens.ScreenMargin),
         )
     }

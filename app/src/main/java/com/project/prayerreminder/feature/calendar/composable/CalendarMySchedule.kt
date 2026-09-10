@@ -27,13 +27,14 @@ import androidx.compose.ui.unit.dp
 import com.project.prayerreminder.R
 import com.project.prayerreminder.core.theme.PrayerDimens
 import com.project.prayerreminder.core.theme.PrayerReminderTheme
+import com.project.prayerreminder.feature.calendar.CalendarPersonalScheduleUiState
 
 @Composable
 fun CalendarMySchedule(
-    isVisible: Boolean,
+    schedules: List<CalendarPersonalScheduleUiState>,
     modifier: Modifier = Modifier,
 ) {
-    if (!isVisible) return
+    if (schedules.isEmpty()) return
 
     Column(
         modifier = modifier.fillMaxWidth(),
@@ -48,22 +49,18 @@ fun CalendarMySchedule(
 
         Spacer(modifier = Modifier.height(PrayerDimens.StackMedium))
 
-        // Data still in development
         Column(
             verticalArrangement = Arrangement.spacedBy(
                 PrayerDimens.StackSmall,
             ),
         ) {
-            MyScheduleItem(
-                title = "Weekly Study",
-                time = "19:30 WIB",
-                isReminderEnabled = true,
-            )
-            MyScheduleItem(
-                title = "Weekly Sport",
-                time = "06:00 WIB",
-                isReminderEnabled = false,
-            )
+            schedules.forEach { schedule ->
+                MyScheduleItem(
+                    title = schedule.title,
+                    time = schedule.time,
+                    isReminderEnabled = schedule.isReminderEnabled,
+                )
+            }
         }
     }
 }
@@ -145,7 +142,14 @@ private fun MyScheduleItem(
 private fun CalendarMySchedulePreview() {
     PrayerReminderTheme {
         CalendarMySchedule(
-            isVisible = true,
+            schedules = listOf(
+                CalendarPersonalScheduleUiState(
+                    id = 1L,
+                    title = "Weekly Study",
+                    time = "19:30",
+                    isReminderEnabled = true,
+                ),
+            ),
             modifier = Modifier.padding(PrayerDimens.ScreenMargin),
         )
     }

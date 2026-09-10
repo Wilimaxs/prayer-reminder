@@ -20,11 +20,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.project.prayerreminder.R
 import com.project.prayerreminder.core.theme.PrayerDimens
-import com.project.prayerreminder.core.theme.PrayerReminderTheme
 import com.project.prayerreminder.feature.calendar.composable.CalendarAddScheduleContent
 import com.project.prayerreminder.feature.calendar.composable.CalendarContent
 import com.project.prayerreminder.feature.calendar.composable.CalendarIslamicEvent
@@ -34,11 +34,29 @@ import com.project.prayerreminder.utils.composables.AppBar
 import com.project.prayerreminder.utils.composables.AppBottomSheet
 import com.project.prayerreminder.utils.composables.AppButton
 import com.project.prayerreminder.utils.composables.BottomSheetButtonConfig
+import java.time.LocalDate
 import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CalendarScreen(
+    modifier: Modifier = Modifier,
+    viewModel: CalendarViewModel = hiltViewModel(),
+) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    CalendarScreenContent(
+        uiState = uiState,
+        onDateSelected = viewModel::selectDate,
+        modifier = modifier,
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun CalendarScreenContent(
+    uiState: CalendarUiState,
+    onDateSelected: (LocalDate) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var showAddScheduleBottomSheet by rememberSaveable {
@@ -113,15 +131,17 @@ fun CalendarScreen(
             ),
         ) {
             CalendarContent(
+                selectedDate = uiState.selectedDate,
+                onDateSelected = onDateSelected,
                 modifier = Modifier.fillMaxWidth(),
             )
 
             CalendarIslamicEvent(
-                isVisible = true,
+                events = uiState.islamicEvents,
                 modifier = Modifier.fillMaxWidth(),
             )
             CalendarMySchedule(
-                isVisible = true,
+                schedules = uiState.personalSchedules,
                 modifier = Modifier.fillMaxWidth(),
             )
         }
@@ -208,13 +228,5 @@ fun CalendarScreen(
                 },
             )
         }
-    }
-}
-
-@Preview(showBackground = true, showSystemUi = true, name = "Calendar", device = "id:pixel_5")
-@Composable
-private fun CalendarScreenPreview() {
-    PrayerReminderTheme {
-        CalendarScreen(modifier = Modifier)
     }
 }

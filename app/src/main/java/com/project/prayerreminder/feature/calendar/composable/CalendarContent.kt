@@ -17,10 +17,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -45,21 +41,15 @@ import java.time.YearMonth
 
 @Composable
 fun CalendarContent(
+    selectedDate: LocalDate,
+    onDateSelected: (LocalDate) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    // Initial Date still in development
-    val initialDate = remember {
-        LocalDate.of(2026, Month.JULY, 21)
-    }
-    // State for selected date still in development
-    var selectedDate by remember {
-        mutableStateOf(initialDate)
-    }
-    // Calendar state still in development
+    // Keeps navigation limited to the selected Gregorian year.
     val calendarState = rememberCalendarState(
-        startMonth = YearMonth.of(initialDate.year, Month.JANUARY),
-        endMonth = YearMonth.of(initialDate.year, Month.DECEMBER),
-        firstVisibleMonth = YearMonth.from(initialDate),
+        startMonth = YearMonth.of(selectedDate.year, Month.JANUARY),
+        endMonth = YearMonth.of(selectedDate.year, Month.DECEMBER),
+        firstVisibleMonth = YearMonth.from(selectedDate),
         firstDayOfWeek = DayOfWeek.SUNDAY,
         outDateStyle = OutDateStyle.EndOfRow,
     )
@@ -153,7 +143,7 @@ fun CalendarContent(
                                     .clickable(
                                         interactionSource = null,
                                         indication = null,
-                                        onClick = { selectedDate = day.date }
+                                        onClick = { onDateSelected(day.date) }
                                     ),
                                 contentAlignment = Alignment.Center,
                             ) {
@@ -198,6 +188,8 @@ private fun CalendarContentLightPreview() {
                 .padding(16.dp),
         ) {
             CalendarContent(
+                selectedDate = LocalDate.of(2026, Month.JULY, 21),
+                onDateSelected = {},
                 modifier = Modifier.fillMaxWidth(),
             )
         }
