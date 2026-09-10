@@ -119,14 +119,6 @@ class ProfileViewModel @Inject constructor(
         )
     }
 
-    fun clearMessage() {
-        _uiState.update { currentState ->
-            currentState.copy(
-                message = null,
-            )
-        }
-    }
-
     fun openBottomSheet(
         type: ProfileBottomSheetType,
     ) {

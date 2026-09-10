@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="splash_subtitle">Disiplin Spiritual</string>
+    <string name="splash_checking_location">Memeriksa lokasi perangkat…</string>
+    <string name="splash_checking_prayer_schedule">Memeriksa jadwal salat…</string>
+    <string name="splash_syncing_prayer_schedule">Memperbarui jadwal salat…</string>
+    <string name="splash_checking_islamic_calendar">Memeriksa kalender Islam…</string>
+    <string name="splash_syncing_islamic_calendar">Memperbarui kalender Islam…</string>
+    <string name="splash_finishing">Menyelesaikan pengaturan…</string>
+    <string name="splash_location_unavailable_title">Lokasi tidak tersedia</string>
+    <string name="splash_location_unavailable_description">Prayer Reminder tidak dapat mengakses lokasi Anda saat ini. Jika Anda melanjutkan, Jakarta, Indonesia akan digunakan sebagai lokasi default.</string>
+    <string name="continue_with_jakarta">Lanjutkan</string>
+    <string name="open_settings">Buka pengaturan</string>
+    <string name="splash_sync_success_title">Jadwal diperbarui</string>
+    <string name="splash_sync_success_description">Jadwal salat dan data kalender sudah siap.</string>
+    <string name="splash_sync_failed_title">Gagal memperbarui data</string>
+    <string name="splash_tap_to_retry">Ketuk pesan ini untuk mencoba lagi.</string>
+    <string name="splash_calendar_sync_failed_title">Pembaruan kalender gagal</string>
+    <string name="splash_calendar_sync_failed_description">Jadwal salat sudah siap, tetapi data kalender Islam tidak dapat diperbarui.</string>
+    <string name="home_label">Beranda</string>
+    <string name="calendar_label">Kalender</string>
+    <string name="profile_label">Profil</string>
+    <string name="next_prayer">Salat Berikutnya</string>
+    <string name="Greeting">Assalamu\'alaikum</string>
+    <string name="prayer_schedule_today">Jadwal Salat Hari Ini</string>
+    <string name="minutes_left">Sisa %1$d menit</string>
+    <string name="home_data_empty">Jadwal salat tidak tersedia.</string>
+    <string name="home_data_error">Gagal memuat jadwal salat.</string>
+    <string name="fajr">Subuh</string>
+    <string name="dhuhr">Zuhur</string>
+    <string name="asr">Asar</string>
+    <string name="maghrib">Magrib</string>
+    <string name="isha">Isya</string>
+    <string name="islamic_events">Peristiwa Islam</string>
+    <string name="my_schedule">Jadwal Saya</string>
+    <string name="add_schedule">Tambah Jadwal</string>
+    <string name="close">Tutup</string>
+    <string name="add_schedule_title">Tambah ke Jadwal</string>
+    <string name="add_schedule_subtitle">Buat pengingat untuk aktivitas pribadi Anda.</string>
+    <string name="save_schedule">Simpan Jadwal</string>
+    <string name="delete_schedule">Hapus</string>
+    <string name="delete_schedule_confirmation_title">Hapus Jadwal?</string>
+    <string name="delete_schedule_confirmation_description">Jadwal ini akan dihapus secara permanen dan tidak dapat dipulihkan.</string>
+    <string name="cancel">Batal</string>
+    <string name="select_time">Pilih Waktu</string>
+    <string name="confirm">Konfirmasi</string>
+    <string name="schedule_title">Judul Jadwal</string>
+    <string name="schedule_title_placeholder">Contoh: Pengajian di Masjid</string>
+    <string name="date">Tanggal</string>
+    <string name="time">Waktu</string>
+    <string name="reminder">Pengingat</string>
+    <string name="remind_before">Ingatkan Sebelum</string>
+    <string name="select_reminder_time">Pilih Waktu Pengingat</string>
+    <string name="select_reminder_time_subtitle">Pilih kapan Anda ingin diingatkan.</string>
+    <string name="minutes_before">%1$d menit sebelumnya</string>
+    <string name="edit_profile_picture">Edit foto profil</string>
+
+    <string name="prayer_settings">PENGATURAN SALAT</string>
+    <string name="calculation_method">Metode Perhitungan</string>
+    <string name="madhab_asr">Mazhab</string>
+    <string name="notifications">NOTIFIKASI</string>
+    <string name="prayer_reminders">Pengingat Salat</string>
+    <string name="prayer_reminders_description">Peringatan untuk ke-5 waktu salat</string>
+    <string name="reminder_offset">Waktu Pengingat</string>
+
+    <string name="appearance">TAMPILAN</string>
+    <string name="language">Bahasa</string>
+    <string name="language_description">Pilih bahasa yang Anda inginkan</string>
+    <string name="english">Inggris</string>
+
+    <string name="application">APLIKASI</string>
+    <string name="about_application">Tentang Aplikasi</string>
+
+    <string name="kemenag_indonesia">Kemenag Indonesia</string>
+    <string name="muslim_world_league">Muslim World League</string>
+    <string name="jakim_malaysia">Jabatan Kemajuan Islam Malaysia (JAKIM)</string>
+    <string name="shafi_standard">Syafi\'i (Standar)</string>
+    <string name="hanafi">Hanafi</string>
+
+    <string name="select_calculation_method">Pilih Metode Perhitungan Salat</string>
+    <string name="select_calculation_method_description">Pilih metode perhitungan salat yang paling sesuai dengan wilayah Anda.</string>
+    <string name="save">Simpan</string>
+
+    <string name="kemenag_indonesia_description">Direkomendasikan untuk Indonesia</string>
+    <string name="muslim_world_league_description">Standar untuk Eropa dan Timur Jauh</string>
+    <string name="jakim_malaysia_description">Metode perhitungan resmi untuk Malaysia</string>
+
+    <string name="select_madhab">Pilih Mazhab Asar</string>
+    <string name="select_madhab_description">Pilih mazhab yang digunakan untuk menentukan waktu mulai salat Asar.</string>
+
+    <string name="shafi_description">Asar dimulai ketika bayangan benda sama dengan panjangnya.</string>
+
+    <string name="hanafi_description">Asar dimulai ketika bayangan benda dua kali panjangnya.</string>
+
+    <string name="select_reminder_offset">Pilih Waktu Pengingat</string>
+    <string name="select_reminder_offset_description">Pilih kapan Anda ingin menerima pengingat sebelum waktu salat.</string>
+    <string name="at_prayer_time">Saat waktu salat</string>
+
+    <string name="indonesian">Bahasa Indonesia</string>
+    <string name="select_language">Pilih Bahasa</string>
+    <string name="select_language_description">Pilih bahasa yang digunakan di seluruh aplikasi.</string>
+
+    <string name="version_name">Versi %1$s</string>
+    <string name="about_application_description">Prayer Reminder membantu pengguna melihat jadwal salat yang akurat, mengelola aktivitas Islam, dan menerima pengingat salat berdasarkan lokasi mereka.</string>
+
+    <string name="features">Fitur</string>
+    <string name="about_feature_prayer_schedule">Jadwal Salat</string>
+    <string name="about_feature_prayer_schedule_description">Waktu salat harian yang akurat didukung oleh Aladhan API.</string>
+    <string name="about_feature_islamic_calendar">Kalender Islam</string>
+    <string name="about_feature_islamic_calendar_description">Lihat tanggal Masehi, acara Islam, dan jadwal pribadi.</string>
+    <string name="about_feature_prayer_reminder">Pengingat Salat</string>
+    <string name="about_feature_prayer_reminder_description">Terima notifikasi sebelum setiap waktu salat.</string>
+    <string name="about_feature_custom_settings">Pengaturan Kustom</string>
+    <string name="about_feature_custom_settings_description">Konfigurasikan metode perhitungan, mazhab, pengingat, dan bahasa.</string>
+
+    <string name="developer">Pengembang</string>
+    <string name="developed_by">Dikembangkan oleh Wildan</string>
+    <string name="android_developer">Pengembang Mobile</string>
+
+    <string name="legal_and_information">Hukum &amp; Informasi</string>
+    <string name="privacy_policy">Kebijakan Privasi</string>
+    <string name="terms_of_service">Ketentuan Layanan</string>
+    <string name="open_source_licenses">Lisensi Sumber Terbuka</string>
+
+    <string name="made_with_for_muslims">Dibuat dengan 💖 untuk Umat Muslim</string>
+    <string name="application_copyright">© 2026 %1$s</string>
+
+    <string name="acceptance_of_terms">Penerimaan Ketentuan</string>
+    <string name="acceptance_of_terms_description">Dengan menggunakan %1$s, Anda menyetujui syarat dan ketentuan ini. Jika Anda tidak setuju dengan ketentuan ini, harap hentikan penggunaan aplikasi.</string>
+
+    <string name="application_usage">Penggunaan Aplikasi</string>
+    <string name="usage_view_prayer_schedules">Melihat jadwal salat</string>
+    <string name="usage_manage_islamic_calendar">Mengelola acara kalender Islam</string>
+    <string name="usage_receive_prayer_notifications">Menerima notifikasi salat</string>
+    <string name="usage_customize_preferences">Menyesuaikan preferensi aplikasi</string>
+
+    <string name="prayer_time_accuracy">Akurasi Waktu Salat</string>
+    <string name="prayer_time_accuracy_description">%1$s menggunakan layanan perhitungan eksternal untuk menyediakan jadwal salat. Pengguna harus memverifikasi waktu salat dengan otoritas keagamaan setempat karena variasi geografis dan atmosfer mungkin terjadi.</string>
+
+    <string name="user_responsibilities">Tanggung Jawab Pengguna</string>
+    <string name="responsibility_verify_prayer_times">Memverifikasi waktu salat dengan otoritas keagamaan setempat</string>
+    <string name="responsibility_manage_location_permission">Mengelola izin lokasi dan pengaturan perangkat</string>
+    <string name="responsibility_use_application_appropriately">Menggunakan aplikasi secara tepat</string>
+    <string name="responsibility_manage_notifications">Mengelola preferensi dan izin notifikasi</string>
+
+    <string name="third_party_services">Layanan Pihak Ketiga</string>
+    <string name="aladhan_api">Aladhan API</string>
+    <string name="aladhan_api_description">Menyediakan perhitungan waktu salat dan data kalender Islam.</string>
+    <string name="firebase">Firebase</string>
+    <string name="firebase_description">Menyediakan konfigurasi jarak jauh, pelaporan kerusakan, dan pemantauan performa.</string>
+
+    <string name="limitation_of_liability">Batasan Tanggung Jawab</string>
+    <string name="limitation_of_liability_description">%1$s disediakan sebagai aplikasi informasi. Pengembang tidak bertanggung jawab atas perbedaan waktu salat, notifikasi yang terlewat, atau kewajiban agama yang terlewat.</string>
+
+    <string name="changes_to_application">Perubahan pada Aplikasi</string>
+    <string name="changes_to_application_description">Pengembang dapat memperbarui, memodifikasi, atau menghentikan fitur aplikasi kapan saja untuk meningkatkan layanan, menjaga keamanan, atau mematuhi peraturan.</string>
+
+    <string name="developer_email">wildan27370@gmail.com</string>
+    <string name="developer_phone">(+62)8132–2325–423</string>
+    <string name="terms_footer_copyright">© 2026 • Disiplin Spiritual</string>
+
+    <string name="open_source_licenses_description">%1$s dibangun menggunakan perangkat lunak sumber terbuka berkualitas tinggi. Kami berterima kasih kepada komunitas atas kontribusi mereka.</string>
+
+    <string name="license_jetpack_compose">Jetpack Compose &amp; Material 3</string>
+    <string name="license_room_datastore">AndroidX Room &amp; DataStore</string>
+    <string name="license_hilt">Dagger Hilt</string>
+    <string name="license_retrofit_okhttp">Retrofit &amp; OkHttp</string>
+    <string name="license_gson">Gson</string>
+    <string name="license_firebase">Firebase Android SDK</string>
+    <string name="license_timber">Timber</string>
+    <string name="license_kizitonwose_calendar">Kizitonwose Calendar</string>
+
+    <string name="apache_license_2_0">Apache License 2.0</string>
+    <string name="mit_license">Lisensi MIT</string>
+
+    <string name="additional_licenses_description">Lisensi tambahan mungkin berlaku untuk layanan dan aset pihak ketiga. Semua merek dagang adalah milik pemiliknya masing-masing.</string>
+
+    <string name="official_document">DOKUMEN RESMI</string>
+
+    <string name="privacy_introduction">%1$s menghormati privasi Anda dan hanya memproses informasi yang diperlukan untuk menyediakan jadwal salat, pengingat, preferensi aplikasi, dan performa aplikasi yang andal.</string>
+
+    <string name="information_we_process">Informasi yang Kami Proses</string>
+
+    <string name="location_data">Data Lokasi</string>
+    <string name="location_data_privacy_description">Lokasi perangkat yang tepat atau perkiraan digunakan untuk meminta jadwal salat. Koordinat dikirim ke Aladhan API saat sinkronisasi jadwal dilakukan.</string>
+
+    <string name="application_preferences">Preferensi Aplikasi</string>
+    <string name="application_preferences_privacy_description">Metode perhitungan, mazhab Asar, bahasa, status pengingat, dan waktu pengingat disimpan secara lokal di perangkat Anda.</string>
+
+    <string name="personal_schedule_data">Data Jadwal Pribadi</string>
+    <string name="personal_schedule_data_description">Judul jadwal, tanggal, waktu, dan preferensi pengingat yang Anda buat disimpan secara lokal di perangkat Anda.</string>
+
+    <string name="diagnostic_performance_data">Data Diagnostik &amp; Performa</string>
+    <string name="diagnostic_performance_data_description">Firebase dapat memproses laporan kerusakan, status aplikasi, metadata perangkat, pengidentifikasi instalasi, metrik performa, dan waktu jaringan untuk membantu meningkatkan stabilitas aplikasi.</string>
+
+    <string name="how_we_use_information">Cara Kami Menggunakan Informasi</string>
+    <string name="use_location_for_prayer_schedule">Meminta jadwal salat dari Aladhan berdasarkan lokasi perangkat Anda.</string>
+    <string name="use_local_application_data">Menyimpan jadwal salat, jadwal pribadi, dan preferensi aplikasi secara lokal.</string>
+    <string name="use_data_for_reminders">Menjadwalkan alarm salat, notifikasi, dan pengingat jadwal pribadi.</string>
+    <string name="use_diagnostic_data">Mengidentifikasi kerusakan dan memantau performa aplikasi melalui Firebase.</string>
+
+    <string name="data_storage_and_security">Penyimpanan &amp; Keamanan Data</string>
+    <string name="data_storage_and_security_description">Jadwal salat, jadwal pribadi, dan preferensi aplikasi disimpan secara lokal di perangkat Anda. Koordinat lokasi dikirim ke Aladhan hanya saat jadwal salat disinkronkan. Firebase dapat memproses data diagnostik dan performa teknis di infrastruktur Google. Aplikasi tidak menyediakan akun pengguna atau menyimpan data pribadi Anda di backend yang dioperasikan pengembang.</string>
+
+    <string name="privacy_contact_description">Untuk pertanyaan terkait privasi, hubungi:</string>
+</resources>

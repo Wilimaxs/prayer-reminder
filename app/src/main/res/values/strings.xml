@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">Prayer Reminder</string>
-    <string name="splash_title">Prayer Reminder</string>
+    <string name="app_name" translatable="false">Prayer Reminder</string>
+    <string name="splash_title" translatable="false">Prayer Reminder</string>
     <string name="splash_subtitle">Spiritual Discipline</string>
     <string name="splash_checking_location">Checking device location…</string>
     <string name="splash_checking_prayer_schedule">Checking prayer schedule…</string>
