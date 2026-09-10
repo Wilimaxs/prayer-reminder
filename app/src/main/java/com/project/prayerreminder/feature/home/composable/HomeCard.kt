@@ -26,10 +26,13 @@ import com.project.prayerreminder.R
 import com.project.prayerreminder.core.theme.PrayerDimens
 import com.project.prayerreminder.core.theme.PrayerReminderTheme
 import com.project.prayerreminder.core.theme.PrayerShapes
+import com.project.prayerreminder.feature.home.HomeNextPrayerUiState
+import com.project.prayerreminder.feature.home.HomePrayer
 import com.project.prayerreminder.utils.composables.AppBadge
 
 @Composable
 fun HomeCard(
+    nextPrayer: HomeNextPrayerUiState?,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -73,7 +76,9 @@ fun HomeCard(
                         )
                         Spacer(modifier = Modifier.height(PrayerDimens.Baseline))
                         Text(
-                            text = "Maghrib",
+                            text = nextPrayer?.let { prayer ->
+                                stringResource(prayer.prayer.nameRes)
+                            }.orEmpty(),
                             style = MaterialTheme.typography.headlineSmall.copy(
                                 fontWeight = FontWeight.Bold
                             )
@@ -94,20 +99,25 @@ fun HomeCard(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "17:52",
+                        text = nextPrayer?.time ?: "--:--",
                         style = MaterialTheme.typography.displayMedium.copy(
                             fontWeight = FontWeight.Bold
                         ),
                     )
                     Spacer(modifier = Modifier.width(PrayerDimens.StackSmall))
-                    AppBadge(
-                        icon = painterResource(R.drawable.ic_clock),
-                        iconTint = MaterialTheme.colorScheme.primary,
-                        containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.1f),
-                        containerPadding = PrayerDimens.StackSmall,
-                        shapes = PrayerShapes.small,
-                        text = "12 minutes left"
-                    )
+                    nextPrayer?.let { prayer ->
+                        AppBadge(
+                            icon = painterResource(R.drawable.ic_clock),
+                            iconTint = MaterialTheme.colorScheme.primary,
+                            containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.1f),
+                            containerPadding = PrayerDimens.StackSmall,
+                            shapes = PrayerShapes.small,
+                            text = stringResource(
+                                R.string.minutes_left,
+                                prayer.remainingMinutes,
+                            ),
+                        )
+                    }
                 }
             }
         }
@@ -120,6 +130,11 @@ private fun HomeCardPreview() {
     PrayerReminderTheme {
         Box(modifier = Modifier.padding(16.dp)) {
             HomeCard(
+                nextPrayer = HomeNextPrayerUiState(
+                    prayer = HomePrayer.Maghrib,
+                    time = "17:52",
+                    remainingMinutes = 12,
+                ),
                 modifier = Modifier.fillMaxWidth()
             )
         }

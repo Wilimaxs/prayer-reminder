@@ -23,7 +23,11 @@ import com.project.prayerreminder.core.theme.PrayerDimens
 import com.project.prayerreminder.core.theme.PrayerReminderTheme
 
 @Composable
-fun HomeHeader() {
+fun HomeHeader(
+    locationName: String,
+    gregorianDate: String,
+    hijriDate: String,
+) {
     Column {
         Text(
             text = stringResource(R.string.Greeting),
@@ -44,7 +48,7 @@ fun HomeHeader() {
             )
             Spacer(modifier = Modifier.width(PrayerDimens.Baseline))
             Text(
-                text = "Jakarta, Indonesia",
+                text = locationName,
                 color = MaterialTheme.colorScheme.primary,
                 style = MaterialTheme.typography.titleSmall
             )
@@ -54,7 +58,7 @@ fun HomeHeader() {
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = "21 July 2026",
+                text = gregorianDate,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 style = MaterialTheme.typography.bodySmall
             )
@@ -66,7 +70,7 @@ fun HomeHeader() {
             )
             Spacer(modifier = Modifier.width(PrayerDimens.StackSmall))
             Text(
-                text = "5 Muharram 1448 H",
+                text = hijriDate,
                 color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
                 style = MaterialTheme.typography.bodySmall
             )
@@ -78,6 +82,10 @@ fun HomeHeader() {
 @Composable
 private fun HomeHeaderPreview() {
     PrayerReminderTheme {
-        HomeHeader()
+        HomeHeader(
+            locationName = "Jakarta, Indonesia",
+            gregorianDate = "September 10, 2026",
+            hijriDate = "28 Rabi al-Awwal 1448 H",
+        )
     }
 }

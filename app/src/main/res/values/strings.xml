@@ -24,6 +24,9 @@
     <string name="next_prayer">Next Prayer</string>
     <string name="Greeting">Assalamu\'alaikum</string>
     <string name="prayer_schedule_today">Prayer Schedule Today</string>
+    <string name="minutes_left">%1$d minutes left</string>
+    <string name="home_data_empty">Prayer schedule is not available.</string>
+    <string name="home_data_error">Unable to load prayer schedule.</string>
     <string name="fajr">Fajr</string>
     <string name="dhuhr">Dhuhr</string>
     <string name="asr">Asr</string>

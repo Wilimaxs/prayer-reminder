@@ -1,7 +1,5 @@
 package com.project.prayerreminder.feature.home.composable
 
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,9 +26,12 @@ import androidx.compose.ui.unit.dp
 import com.project.prayerreminder.R
 import com.project.prayerreminder.core.theme.PrayerDimens
 import com.project.prayerreminder.core.theme.PrayerReminderTheme
+import com.project.prayerreminder.feature.home.HomePrayer
+import com.project.prayerreminder.feature.home.HomePrayerUiState
 
 @Composable
 fun HomeSchedule(
+    prayers: List<HomePrayerUiState>,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -44,72 +45,39 @@ fun HomeSchedule(
             ),
         )
         Spacer(modifier = Modifier.height(PrayerDimens.StackMedium))
-        // TODO: dummy list schedule prayer
         Column(
             verticalArrangement = Arrangement.spacedBy(
                 PrayerDimens.StackSmall,
             ),
         ) {
-            PrayerScheduleItem(
-                prayerName = R.string.fajr,
-                prayerTime = "04:35",
-                prayerIcon = R.drawable.ic_fajr,
-                isActive = false,
-            )
-
-            PrayerScheduleItem(
-                prayerName = R.string.dhuhr,
-                prayerTime = "11:58",
-                prayerIcon = R.drawable.ic_dhuhr,
-                isActive = false,
-            )
-
-            PrayerScheduleItem(
-                prayerName = R.string.asr,
-                prayerTime = "15:21",
-                prayerIcon = R.drawable.ic_asr,
-                isActive = true,
-            )
-
-            PrayerScheduleItem(
-                prayerName = R.string.maghrib,
-                prayerTime = "17:52",
-                prayerIcon = R.drawable.ic_maghrib,
-                isActive = false,
-            )
-
-            PrayerScheduleItem(
-                prayerName = R.string.isha,
-                prayerTime = "19:03",
-                prayerIcon = R.drawable.ic_isha,
-                isActive = false,
-            )
+            prayers.forEach { prayer ->
+                PrayerScheduleItem(
+                    prayer = prayer,
+                )
+            }
         }
     }
 }
 
 @Composable
 private fun PrayerScheduleItem(
-    @StringRes prayerName: Int,
-    prayerTime: String,
-    @DrawableRes prayerIcon: Int,
-    isActive: Boolean,
+    prayer: HomePrayerUiState,
     modifier: Modifier = Modifier,
 ) {
     // Calculate the container color
-    val containerColor = if (isActive) {
+    val containerColor = if (prayer.isActive) {
         MaterialTheme.colorScheme.primaryContainer
     } else {
         MaterialTheme.colorScheme.surfaceContainerLow
     }
     // Calculate the main content color
-    val mainContentColor = if (isActive) {
+    val mainContentColor = if (prayer.isActive) {
         MaterialTheme.colorScheme.onPrimaryContainer
     } else {
         MaterialTheme.colorScheme.onSurface
     }
     // Calculate the icon color
-    val iconColor = if (isActive) {
+    val iconColor = if (prayer.isActive) {
         MaterialTheme.colorScheme.onPrimaryContainer
     } else {
         MaterialTheme.colorScheme.onSurfaceVariant
@@ -136,7 +104,7 @@ private fun PrayerScheduleItem(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
-                painter = painterResource(prayerIcon),
+                painter = painterResource(prayer.prayer.iconRes),
                 contentDescription = null,
                 tint = iconColor,
                 modifier = Modifier.size(24.dp),
@@ -147,10 +115,10 @@ private fun PrayerScheduleItem(
             )
 
             Text(
-                text = stringResource(prayerName),
+                text = stringResource(prayer.prayer.nameRes),
                 color = mainContentColor,
                 style = MaterialTheme.typography.bodyLarge.copy(
-                    fontWeight = if (isActive) {
+                    fontWeight = if (prayer.isActive) {
                         FontWeight.Bold
                     } else {
                         FontWeight.Medium
@@ -160,7 +128,7 @@ private fun PrayerScheduleItem(
             )
 
             Text(
-                text = prayerTime,
+                text = prayer.time,
                 color = mainContentColor,
                 style = MaterialTheme.typography.bodyLarge.copy(
                     fontWeight = FontWeight.Bold,
@@ -173,7 +141,7 @@ private fun PrayerScheduleItem(
 
             Icon(
                 painter = painterResource(
-                    if (isActive) {
+                    if (prayer.isActive) {
                         R.drawable.ic_notifications_active
                     } else {
                         R.drawable.ic_notifications
@@ -192,6 +160,13 @@ private fun PrayerScheduleItem(
 private fun HomeSchedulePreview() {
     PrayerReminderTheme {
         HomeSchedule(
+            prayers = listOf(
+                HomePrayerUiState(HomePrayer.Fajr, "04:35", false),
+                HomePrayerUiState(HomePrayer.Dhuhr, "11:58", false),
+                HomePrayerUiState(HomePrayer.Asr, "15:21", true),
+                HomePrayerUiState(HomePrayer.Maghrib, "17:52", false),
+                HomePrayerUiState(HomePrayer.Isha, "19:03", false),
+            ),
             modifier = Modifier.padding(16.dp),
         )
     }
