@@ -135,27 +135,29 @@ private fun PrayerScheduleItem(
                 ),
             )
 
-            Spacer(
-                modifier = Modifier.width(PrayerDimens.StackLarge),
-            )
+            if (prayer.isReminderEnabled) {
+                Spacer(
+                    modifier = Modifier.width(PrayerDimens.StackLarge),
+                )
 
-            Icon(
-                painter = painterResource(
-                    if (prayer.isActive) {
-                        R.drawable.ic_notifications_active
-                    } else {
-                        R.drawable.ic_notifications
-                    }
-                ),
-                contentDescription = null,
-                tint = iconColor,
-                modifier = Modifier.size(24.dp),
-            )
+                Icon(
+                    painter = painterResource(
+                        if (prayer.isActive) {
+                            R.drawable.ic_notifications_active
+                        } else {
+                            R.drawable.ic_notifications
+                        }
+                    ),
+                    contentDescription = null,
+                    tint = iconColor,
+                    modifier = Modifier.size(24.dp),
+                )
+            }
         }
     }
 }
 
-@Preview(showBackground = true, name = "Home Schedule",)
+@Preview(showBackground = true, name = "Home Schedule")
 @Composable
 private fun HomeSchedulePreview() {
     PrayerReminderTheme {

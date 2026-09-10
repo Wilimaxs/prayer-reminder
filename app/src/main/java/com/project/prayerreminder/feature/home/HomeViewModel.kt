@@ -54,6 +54,15 @@ class HomeViewModel @Inject constructor(
             replay = 1,
         )
 
+    private val prayerRemindersEnabled = dataStoreManager.get(
+        key = PreferenceKeys.PRAYER_REMINDERS_ENABLED,
+        defaultValue = false,
+    ).shareIn(
+        scope = viewModelScope,
+        started = SharingStarted.Eagerly,
+        replay = 1,
+    )
+
     private val currentDateTime = flow {
         while (currentCoroutineContext().isActive) {
             emit(LocalDateTime.now())
@@ -111,9 +120,10 @@ class HomeViewModel @Inject constructor(
     val uiState: StateFlow<HomeUiState> = combine(
         prayerSchedules,
         appLanguage,
+        prayerRemindersEnabled,
         locationName,
         currentDateTime,
-    ) { schedules, language, locationName, dateTime ->
+    ) { schedules, language, isReminderEnabled, locationName, dateTime ->
         val today = dateTime.toLocalDate()
         val todaySchedule = schedules.firstOrNull { schedule ->
             schedule.date == today.format(DATE_FORMATTER)
@@ -128,6 +138,7 @@ class HomeViewModel @Inject constructor(
                 currentDateTime = dateTime,
                 locationName = locationName,
                 language = language,
+                isReminderEnabled = isReminderEnabled,
             ),
         )
     }.catch { error ->

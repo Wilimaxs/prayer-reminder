@@ -246,7 +246,6 @@ private fun CalendarScreenContent(
                     reminderBeforeMinutes,
                 ),
                 onReminderBeforeClick = {
-                    // Salin pilihan lama agar tombol Cancel tidak mengubah data.
                     pendingReminderBeforeMinutes = reminderBeforeMinutes
                     showReminderBeforeBottomSheet = true
                 },

@@ -28,6 +28,7 @@ data class HomePrayerUiState(
     val prayer: HomePrayer,
     val time: String,
     val isActive: Boolean,
+    val isReminderEnabled: Boolean = false,
 )
 
 enum class HomePrayer(

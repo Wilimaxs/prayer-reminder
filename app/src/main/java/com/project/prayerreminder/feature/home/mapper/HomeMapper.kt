@@ -19,8 +19,12 @@ fun PrayerEntity.toHomeContentUiState(
     currentDateTime: LocalDateTime,
     locationName: String,
     language: AppLanguage,
+    isReminderEnabled: Boolean,
 ): HomeContentUiState {
-    val prayerTimes = toPrayerUiStates(currentDateTime.toLocalTime())
+    val prayerTimes = toPrayerUiStates(
+        currentTime = currentDateTime.toLocalTime(),
+        isReminderEnabled = isReminderEnabled,
+    )
     val nextPrayer = findNextPrayer(
         prayerTimes = prayerTimes,
         nextDaySchedule = nextDaySchedule,
@@ -44,6 +48,7 @@ fun PrayerEntity.toHomeContentUiState(
 // Builds the five ordered prayer items and marks the current prayer period.
 private fun PrayerEntity.toPrayerUiStates(
     currentTime: LocalTime,
+    isReminderEnabled: Boolean,
 ): List<HomePrayerUiState> {
     val prayerTimes = listOf(
         HomePrayer.Fajr to fajr,
@@ -66,6 +71,7 @@ private fun PrayerEntity.toPrayerUiStates(
             prayer = prayer,
             time = time,
             isActive = index == activePrayerIndex,
+            isReminderEnabled = isReminderEnabled,
         )
     }
 }
