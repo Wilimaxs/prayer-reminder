@@ -8,6 +8,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -24,6 +28,9 @@ fun AppBar(
     navigateBack: () -> Unit = {},
     title: String,
 ) {
+    var isBackEnabled by remember {
+        mutableStateOf(true)
+    }
     TopAppBar(
         title = {
             Text(
@@ -39,7 +46,16 @@ fun AppBar(
         modifier = modifier,
         navigationIcon = {
             if (canNavigateBack) {
-                IconButton(onClick = navigateBack) {
+                IconButton(
+                    enabled = isBackEnabled,
+                    onClick = {
+                        // Prevents multiple back navigation from rapid taps.
+                        if (isBackEnabled) {
+                            isBackEnabled = false
+                            navigateBack()
+                        }
+                    },
+                ) {
                     Icon(
                         painter = painterResource(R.drawable.ic_back_arrow),
                         contentDescription = null,
