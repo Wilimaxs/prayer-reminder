@@ -2,11 +2,13 @@ package com.project.prayerreminder.feature.splash
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.project.prayerreminder.core.NetworkResult
 import com.project.prayerreminder.core.data.local.entity.PrayerEntity
 import com.project.prayerreminder.core.data.local.pref.DataStoreManager
 import com.project.prayerreminder.core.data.local.pref.PreferenceKeys
 import com.project.prayerreminder.core.data.repository.PrayerRepository
+import com.project.prayerreminder.core.onError
+import com.project.prayerreminder.core.onLoading
+import com.project.prayerreminder.core.onSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.Job
@@ -282,29 +284,23 @@ class SplashViewModel @Inject constructor(
                         defaultValue = DEFAULT_MADHAB,
                     ).first()
 
-                    when (
-                        val prayerResult = prayerRepository.syncPrayerSchedules(
-                            year = currentDate.year,
-                            month = currentDate.monthValue,
-                            latitude = latitude,
-                            longitude = longitude,
-                            calculationMethod = calculationMethod,
-                            madhab = madhab,
+                    prayerRepository.syncPrayerSchedules(
+                        year = currentDate.year,
+                        month = currentDate.monthValue,
+                        latitude = latitude,
+                        longitude = longitude,
+                        calculationMethod = calculationMethod,
+                        madhab = madhab,
+                    ).onSuccess {
+                        didSynchronize = true
+                    }.onError { error ->
+                        finishWithError(error.message)
+                        return@launch
+                    }.onLoading {
+                        finishWithError(
+                            message = "Prayer schedule synchronization did not finish.",
                         )
-                    ) {
-                        is NetworkResult.Success -> {
-                            didSynchronize = true
-                        }
-
-                        is NetworkResult.Error -> {
-                            finishWithError(prayerResult.message)
-                            return@launch
-                        }
-
-                        NetworkResult.Loading -> {
-                            finishWithError("Prayer schedule synchronization did not finish.")
-                            return@launch
-                        }
+                        return@launch
                     }
                 }
 
@@ -327,21 +323,16 @@ class SplashViewModel @Inject constructor(
                         )
                     }
 
-                    when (
-                        prayerRepository.syncIslamicCalendar(
-                            year = currentDate.year,
-                            latitude = latitude,
-                            longitude = longitude,
-                        )
-                    ) {
-                        is NetworkResult.Success -> {
-                            didSynchronize = true
-                        }
-
-                        is NetworkResult.Error,
-                        NetworkResult.Loading -> {
-                            calendarSyncFailed = true
-                        }
+                    prayerRepository.syncIslamicCalendar(
+                        year = currentDate.year,
+                        latitude = latitude,
+                        longitude = longitude,
+                    ).onSuccess {
+                        didSynchronize = true
+                    }.onError {
+                        calendarSyncFailed = true
+                    }.onLoading {
+                        calendarSyncFailed = true
                     }
                 }
 
