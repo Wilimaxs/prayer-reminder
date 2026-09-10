@@ -8,7 +8,6 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 object PreferenceKeys {
     val LATITUDE = doublePreferencesKey("latitude")
     val LONGITUDE = doublePreferencesKey("longitude")
-    val CITY_NAME = stringPreferencesKey("city_name")
     val CALCULATION_METHOD = intPreferencesKey("calculation_method")
     val MADZHAB = intPreferencesKey("madhab_api_code")
     val PRAYER_REMINDERS_ENABLED = booleanPreferencesKey("prayer_reminders_enabled")
