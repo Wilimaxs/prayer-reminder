@@ -6,22 +6,15 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "prayer_schedules")
 data class PrayerEntity(
     @PrimaryKey
-    val date: String, // Format: "DD-MM-YYYY" (Example: "05-09-2026")
+    val date: String, // Format: "DD-MM-YYYY"
     val fajr: String,
-    val sunrise: String,
     val dhuhr: String,
     val asr: String,
     val maghrib: String,
     val isha: String,
-    val imsak: String,
-    val readableDate: String,
-    val hijriDate: String,
-    val hijriDay: String,
-    val hijriMonthEn: String,
-    val hijriMonthAr: String,
-    val hijriYear: String,
-    val hijriHolidays: List<String>,
-    val dayNameEn: String,
+    val hijriDay: Int,
+    val hijriMonth: Int,
+    val hijriYear: Int,
     val latitude: Double,
-    val longitude: Double
+    val longitude: Double,
 )

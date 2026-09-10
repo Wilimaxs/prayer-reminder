@@ -18,3 +18,30 @@ fun DayOfWeek.toNarrowName(locale: Locale): String {
         locale,
     )
 }
+
+data class DateParts(
+    val day: Int,
+    val month: Int,
+    val year: Int,
+)
+
+// Converts a "DD-MM-YYYY" date into separate numeric components.
+fun String.toDatePartsOrNull(): DateParts? {
+    val parts = split("-")
+
+    if (parts.size != 3) return null
+
+    val day = parts[0].toIntOrNull() ?: return null
+    val month = parts[1].toIntOrNull() ?: return null
+    val year = parts[2].toIntOrNull() ?: return null
+
+    if (day !in 1..31 || month !in 1..12 || year <= 0) {
+        return null
+    }
+
+    return DateParts(
+        day = day,
+        month = month,
+        year = year,
+    )
+}
