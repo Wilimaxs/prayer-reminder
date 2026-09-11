@@ -47,6 +47,7 @@ import com.project.prayerreminder.utils.composables.AppSnackbarType
 import com.project.prayerreminder.utils.composables.LocalAppSnackbarHostState
 import com.project.prayerreminder.utils.composables.showAppSnackbar
 import androidx.core.net.toUri
+import timber.log.Timber
 
 @SuppressLint("MissingPermission")
 @Composable
@@ -112,18 +113,23 @@ fun SplashScreen(
             val cancellationTokenSource = CancellationTokenSource()
 
             fusedLocationClient.getCurrentLocation(
-                Priority.PRIORITY_BALANCED_POWER_ACCURACY,
+                Priority.PRIORITY_HIGH_ACCURACY,
                 cancellationTokenSource.token,
             ).addOnSuccessListener { location ->
                 if (location != null) {
+                    Timber.d(
+                        "Location acquired: lat=${location.latitude}, lng=${location.longitude}, accuracy=${location.accuracy}"
+                    )
                     viewModel.onLocationAvailable(
                         latitude = location.latitude,
                         longitude = location.longitude,
                     )
                 } else {
+                    Timber.w("getCurrentLocation returned null")
                     viewModel.onLocationUnavailable(LocationSettingsTarget.Location)
                 }
             }.addOnFailureListener {
+                Timber.e("getCurrentLocation failed")
                 viewModel.onLocationUnavailable(LocationSettingsTarget.Location)
             }
         }

@@ -3,8 +3,8 @@
     <string name="splash_subtitle">Disiplin Spiritual</string>
     <string name="splash_checking_application">Memeriksa status aplikasi…</string>
     <string name="splash_checking_location">Memeriksa lokasi perangkat…</string>
-    <string name="splash_checking_prayer_schedule">Memeriksa jadwal salat…</string>
-    <string name="splash_syncing_prayer_schedule">Memperbarui jadwal salat…</string>
+    <string name="splash_checking_prayer_schedule">Memeriksa jadwal sholat…</string>
+    <string name="splash_syncing_prayer_schedule">Memperbarui jadwal sholat…</string>
     <string name="splash_checking_islamic_calendar">Memeriksa kalender Islam…</string>
     <string name="splash_syncing_islamic_calendar">Memperbarui kalender Islam…</string>
     <string name="splash_finishing">Menyelesaikan pengaturan…</string>
@@ -13,11 +13,11 @@
     <string name="continue_with_jakarta">Lanjutkan</string>
     <string name="open_settings">Buka pengaturan</string>
     <string name="splash_sync_success_title">Jadwal diperbarui</string>
-    <string name="splash_sync_success_description">Jadwal salat dan data kalender sudah siap.</string>
+    <string name="splash_sync_success_description">Jadwal sholat dan data kalender sudah siap.</string>
     <string name="splash_sync_failed_title">Gagal memperbarui data</string>
     <string name="splash_tap_to_retry">Ketuk pesan ini untuk mencoba lagi.</string>
     <string name="splash_calendar_sync_failed_title">Pembaruan kalender gagal</string>
-    <string name="splash_calendar_sync_failed_description">Jadwal salat sudah siap, tetapi data kalender Islam tidak dapat diperbarui.</string>
+    <string name="splash_calendar_sync_failed_description">Jadwal sholat sudah siap, tetapi data kalender Islam tidak dapat diperbarui.</string>
     <string name="maintenance_title">Aplikasi Sedang Dalam Pemeliharaan</string>
     <string name="maintenance_description">Prayer Reminder sementara tidak tersedia karena sedang dalam pemeliharaan. Silakan coba lagi nanti.</string>
     <string name="update_required_title">Pembaruan Diperlukan</string>
@@ -30,12 +30,12 @@
     <string name="home_label">Beranda</string>
     <string name="calendar_label">Kalender</string>
     <string name="profile_label">Profil</string>
-    <string name="next_prayer">Salat Berikutnya</string>
+    <string name="next_prayer">Sholat Berikutnya</string>
     <string name="Greeting">Assalamu\'alaikum</string>
-    <string name="prayer_schedule_today">Jadwal Salat Hari Ini</string>
+    <string name="prayer_schedule_today">Jadwal sholat Hari Ini</string>
     <string name="minutes_left">Sisa %1$d menit</string>
-    <string name="home_data_empty">Jadwal salat tidak tersedia.</string>
-    <string name="home_data_error">Gagal memuat jadwal salat.</string>
+    <string name="home_data_empty">Jadwal sholat tidak tersedia.</string>
+    <string name="home_data_error">Gagal memuat jadwal sholat.</string>
     <string name="fajr">Subuh</string>
     <string name="dhuhr">Zuhur</string>
     <string name="asr">Asar</string>
@@ -63,21 +63,21 @@
     <string name="select_reminder_time">Pilih Waktu Pengingat</string>
     <string name="select_reminder_time_subtitle">Pilih kapan Anda ingin diingatkan.</string>
     <string name="minutes_before">%1$d menit sebelumnya</string>
-    <string name="notification_channel_name">Pengingat Salat dan Jadwal</string>
-    <string name="notification_channel_description">Alarm salat dan pengingat untuk jadwal pribadi Anda.</string>
-    <string name="notification_prayer_title">Pengingat Salat</string>
-    <string name="notification_prayer_at_time">Waktu salat %1$s telah tiba.</string>
-    <string name="notification_prayer_before">Salat %1$s dimulai dalam %2$d menit pada pukul %3$s.</string>
+    <string name="notification_channel_name">Pengingat sholat dan Jadwal</string>
+    <string name="notification_channel_description">Alarm sholat dan pengingat untuk jadwal pribadi Anda.</string>
+    <string name="notification_prayer_title">Pengingat sholat</string>
+    <string name="notification_prayer_at_time">Waktu sholat %1$s telah tiba.</string>
+    <string name="notification_prayer_before">Sholat %1$s dimulai dalam %2$d menit pada pukul %3$s.</string>
     <string name="notification_schedule_at_time">Jadwal Anda dimulai sekarang.</string>
     <string name="notification_schedule_before">Dimulai dalam %1$d menit pada pukul %2$s.</string>
     <string name="edit_profile_picture">Edit foto profil</string>
 
-    <string name="prayer_settings">PENGATURAN SALAT</string>
+    <string name="prayer_settings">PENGATURAN SHOLAT</string>
     <string name="calculation_method">Metode Perhitungan</string>
     <string name="madhab_asr">Mazhab</string>
     <string name="notifications">NOTIFIKASI</string>
-    <string name="prayer_reminders">Pengingat Salat</string>
-    <string name="prayer_reminders_description">Peringatan untuk ke-5 waktu salat</string>
+    <string name="prayer_reminders">Pengingat sholat</string>
+    <string name="prayer_reminders_description">Peringatan untuk ke-5 waktu sholat</string>
     <string name="reminder_offset">Waktu Pengingat</string>
 
     <string name="appearance">TAMPILAN</string>
@@ -94,8 +94,8 @@
     <string name="shafi_standard">Syafi\'i (Standar)</string>
     <string name="hanafi">Hanafi</string>
 
-    <string name="select_calculation_method">Pilih Metode Perhitungan Salat</string>
-    <string name="select_calculation_method_description">Pilih metode perhitungan salat yang paling sesuai dengan wilayah Anda.</string>
+    <string name="select_calculation_method">Pilih Metode Perhitungan sholat</string>
+    <string name="select_calculation_method_description">Pilih metode perhitungan sholat yang paling sesuai dengan wilayah Anda.</string>
     <string name="save">Simpan</string>
 
     <string name="kemenag_indonesia_description">Direkomendasikan untuk Indonesia</string>
@@ -103,13 +103,13 @@
     <string name="jakim_malaysia_description">Metode perhitungan resmi untuk Malaysia</string>
 
     <string name="select_madhab">Pilih Mazhab Asar</string>
-    <string name="select_madhab_description">Pilih mazhab yang digunakan untuk menentukan waktu mulai salat Asar.</string>
-    <string name="prayer_setting_updated_title">Pengaturan salat diperbarui</string>
-    <string name="prayer_setting_updated_description">Jadwal salat bulan ini telah disinkronkan dengan pengaturan baru Anda.</string>
-    <string name="prayer_setting_update_failed_title">Gagal memperbarui pengaturan salat</string>
-    <string name="prayer_setting_update_failed_description">Jadwal salat tidak dapat disinkronkan. Silakan coba lagi.</string>
+    <string name="select_madhab_description">Pilih mazhab yang digunakan untuk menentukan waktu mulai sholat Asar.</string>
+    <string name="prayer_setting_updated_title">Pengaturan sholat diperbarui</string>
+    <string name="prayer_setting_updated_description">Jadwal sholat bulan ini telah disinkronkan dengan pengaturan baru Anda.</string>
+    <string name="prayer_setting_update_failed_title">Gagal memperbarui pengaturan sholat</string>
+    <string name="prayer_setting_update_failed_description">Jadwal sholat tidak dapat disinkronkan. Silakan coba lagi.</string>
     <string name="prayer_setting_change_limit_title">Batas perubahan tercapai</string>
-    <string name="prayer_setting_change_limit_description">Anda telah mencapai batas perubahan pengaturan salat. Silakan coba lagi dalam %1$d menit.</string>
+    <string name="prayer_setting_change_limit_description">Anda telah mencapai batas perubahan pengaturan sholat. Silakan coba lagi dalam %1$d menit.</string>
     <string name="profile_settings_load_failed_title">Gagal memuat pengaturan profil</string>
     <string name="profile_setting_save_failed_title">Gagal menyimpan pengaturan profil</string>
 
@@ -118,23 +118,23 @@
     <string name="hanafi_description">Asar dimulai ketika bayangan benda dua kali panjangnya.</string>
 
     <string name="select_reminder_offset">Pilih Waktu Pengingat</string>
-    <string name="select_reminder_offset_description">Pilih kapan Anda ingin menerima pengingat sebelum waktu salat.</string>
-    <string name="at_prayer_time">Saat waktu salat</string>
+    <string name="select_reminder_offset_description">Pilih kapan Anda ingin menerima pengingat sebelum waktu sholat.</string>
+    <string name="at_prayer_time">Saat waktu sholat</string>
 
     <string name="indonesian">Bahasa Indonesia</string>
     <string name="select_language">Pilih Bahasa</string>
     <string name="select_language_description">Pilih bahasa yang digunakan di seluruh aplikasi.</string>
 
     <string name="version_name">Versi %1$s</string>
-    <string name="about_application_description">Prayer Reminder membantu pengguna melihat jadwal salat yang akurat, mengelola aktivitas Islam, dan menerima pengingat salat berdasarkan lokasi mereka.</string>
+    <string name="about_application_description">Prayer Reminder membantu pengguna melihat jadwal sholat yang akurat, mengelola aktivitas Islam, dan menerima pengingat sholat berdasarkan lokasi mereka.</string>
 
     <string name="features">Fitur</string>
-    <string name="about_feature_prayer_schedule">Jadwal Salat</string>
-    <string name="about_feature_prayer_schedule_description">Waktu salat harian yang akurat didukung oleh Aladhan API.</string>
+    <string name="about_feature_prayer_schedule">Jadwal sholat</string>
+    <string name="about_feature_prayer_schedule_description">Waktu sholat harian yang akurat didukung oleh Aladhan API.</string>
     <string name="about_feature_islamic_calendar">Kalender Islam</string>
     <string name="about_feature_islamic_calendar_description">Lihat tanggal Masehi, acara Islam, dan jadwal pribadi.</string>
-    <string name="about_feature_prayer_reminder">Pengingat Salat</string>
-    <string name="about_feature_prayer_reminder_description">Terima notifikasi sebelum setiap waktu salat.</string>
+    <string name="about_feature_prayer_reminder">Pengingat sholat</string>
+    <string name="about_feature_prayer_reminder_description">Terima notifikasi sebelum setiap waktu sholat.</string>
     <string name="about_feature_custom_settings">Pengaturan Kustom</string>
     <string name="about_feature_custom_settings_description">Konfigurasikan metode perhitungan, mazhab, pengingat, dan bahasa.</string>
 
@@ -154,28 +154,28 @@
     <string name="acceptance_of_terms_description">Dengan menggunakan %1$s, Anda menyetujui syarat dan ketentuan ini. Jika Anda tidak setuju dengan ketentuan ini, harap hentikan penggunaan aplikasi.</string>
 
     <string name="application_usage">Penggunaan Aplikasi</string>
-    <string name="usage_view_prayer_schedules">Melihat jadwal salat</string>
+    <string name="usage_view_prayer_schedules">Melihat jadwal sholat</string>
     <string name="usage_manage_islamic_calendar">Mengelola acara kalender Islam</string>
-    <string name="usage_receive_prayer_notifications">Menerima notifikasi salat</string>
+    <string name="usage_receive_prayer_notifications">Menerima notifikasi sholat</string>
     <string name="usage_customize_preferences">Menyesuaikan preferensi aplikasi</string>
 
-    <string name="prayer_time_accuracy">Akurasi Waktu Salat</string>
-    <string name="prayer_time_accuracy_description">%1$s menggunakan layanan perhitungan eksternal untuk menyediakan jadwal salat. Pengguna harus memverifikasi waktu salat dengan otoritas keagamaan setempat karena variasi geografis dan atmosfer mungkin terjadi.</string>
+    <string name="prayer_time_accuracy">Akurasi Waktu sholat</string>
+    <string name="prayer_time_accuracy_description">%1$s menggunakan layanan perhitungan eksternal untuk menyediakan jadwal sholat. Pengguna harus memverifikasi waktu sholat dengan otoritas keagamaan setempat karena variasi geografis dan atmosfer mungkin terjadi.</string>
 
     <string name="user_responsibilities">Tanggung Jawab Pengguna</string>
-    <string name="responsibility_verify_prayer_times">Memverifikasi waktu salat dengan otoritas keagamaan setempat</string>
+    <string name="responsibility_verify_prayer_times">Memverifikasi waktu sholat dengan otoritas keagamaan setempat</string>
     <string name="responsibility_manage_location_permission">Mengelola izin lokasi dan pengaturan perangkat</string>
     <string name="responsibility_use_application_appropriately">Menggunakan aplikasi secara tepat</string>
     <string name="responsibility_manage_notifications">Mengelola preferensi dan izin notifikasi</string>
 
     <string name="third_party_services">Layanan Pihak Ketiga</string>
     <string name="aladhan_api">Aladhan API</string>
-    <string name="aladhan_api_description">Menyediakan perhitungan waktu salat dan data kalender Islam.</string>
+    <string name="aladhan_api_description">Menyediakan perhitungan waktu sholat dan data kalender Islam.</string>
     <string name="firebase">Firebase</string>
     <string name="firebase_description">Menyediakan konfigurasi jarak jauh, pelaporan kerusakan, dan pemantauan performa.</string>
 
     <string name="limitation_of_liability">Batasan Tanggung Jawab</string>
-    <string name="limitation_of_liability_description">%1$s disediakan sebagai aplikasi informasi. Pengembang tidak bertanggung jawab atas perbedaan waktu salat, notifikasi yang terlewat, atau kewajiban agama yang terlewat.</string>
+    <string name="limitation_of_liability_description">%1$s disediakan sebagai aplikasi informasi. Pengembang tidak bertanggung jawab atas perbedaan waktu sholat, notifikasi yang terlewat, atau kewajiban agama yang terlewat.</string>
 
     <string name="changes_to_application">Perubahan pada Aplikasi</string>
     <string name="changes_to_application_description">Pengembang dapat memperbarui, memodifikasi, atau menghentikan fitur aplikasi kapan saja untuk meningkatkan layanan, menjaga keamanan, atau mematuhi peraturan.</string>
@@ -202,12 +202,12 @@
 
     <string name="official_document">DOKUMEN RESMI</string>
 
-    <string name="privacy_introduction">%1$s menghormati privasi Anda dan hanya memproses informasi yang diperlukan untuk menyediakan jadwal salat, pengingat, preferensi aplikasi, dan performa aplikasi yang andal.</string>
+    <string name="privacy_introduction">%1$s menghormati privasi Anda dan hanya memproses informasi yang diperlukan untuk menyediakan jadwal sholat, pengingat, preferensi aplikasi, dan performa aplikasi yang andal.</string>
 
     <string name="information_we_process">Informasi yang Kami Proses</string>
 
     <string name="location_data">Data Lokasi</string>
-    <string name="location_data_privacy_description">Lokasi perangkat yang tepat atau perkiraan digunakan untuk meminta jadwal salat. Koordinat dikirim ke Aladhan API saat sinkronisasi jadwal dilakukan.</string>
+    <string name="location_data_privacy_description">Lokasi perangkat yang tepat atau perkiraan digunakan untuk meminta jadwal sholat. Koordinat dikirim ke Aladhan API saat sinkronisasi jadwal dilakukan.</string>
 
     <string name="application_preferences">Preferensi Aplikasi</string>
     <string name="application_preferences_privacy_description">Metode perhitungan, mazhab Asar, bahasa, status pengingat, dan waktu pengingat disimpan secara lokal di perangkat Anda.</string>
@@ -219,13 +219,13 @@
     <string name="diagnostic_performance_data_description">Firebase dapat memproses laporan kerusakan, status aplikasi, metadata perangkat, pengidentifikasi instalasi, metrik performa, dan waktu jaringan untuk membantu meningkatkan stabilitas aplikasi.</string>
 
     <string name="how_we_use_information">Cara Kami Menggunakan Informasi</string>
-    <string name="use_location_for_prayer_schedule">Meminta jadwal salat dari Aladhan berdasarkan lokasi perangkat Anda.</string>
-    <string name="use_local_application_data">Menyimpan jadwal salat, jadwal pribadi, dan preferensi aplikasi secara lokal.</string>
-    <string name="use_data_for_reminders">Menjadwalkan alarm salat, notifikasi, dan pengingat jadwal pribadi.</string>
+    <string name="use_location_for_prayer_schedule">Meminta jadwal sholat dari Aladhan berdasarkan lokasi perangkat Anda.</string>
+    <string name="use_local_application_data">Menyimpan jadwal sholat, jadwal pribadi, dan preferensi aplikasi secara lokal.</string>
+    <string name="use_data_for_reminders">Menjadwalkan alarm sholat, notifikasi, dan pengingat jadwal pribadi.</string>
     <string name="use_diagnostic_data">Mengidentifikasi kerusakan dan memantau performa aplikasi melalui Firebase.</string>
 
     <string name="data_storage_and_security">Penyimpanan &amp; Keamanan Data</string>
-    <string name="data_storage_and_security_description">Jadwal salat, jadwal pribadi, dan preferensi aplikasi disimpan secara lokal di perangkat Anda. Koordinat lokasi dikirim ke Aladhan hanya saat jadwal salat disinkronkan. Firebase dapat memproses data diagnostik dan performa teknis di infrastruktur Google. Aplikasi tidak menyediakan akun pengguna atau menyimpan data pribadi Anda di backend yang dioperasikan pengembang.</string>
+    <string name="data_storage_and_security_description">Jadwal sholat, jadwal pribadi, dan preferensi aplikasi disimpan secara lokal di perangkat Anda. Koordinat lokasi dikirim ke Aladhan hanya saat jadwal sholat disinkronkan. Firebase dapat memproses data diagnostik dan performa teknis di infrastruktur Google. Aplikasi tidak menyediakan akun pengguna atau menyimpan data pribadi Anda di backend yang dioperasikan pengembang.</string>
 
     <string name="privacy_contact_description">Untuk pertanyaan terkait privasi, hubungi:</string>
 </resources>
