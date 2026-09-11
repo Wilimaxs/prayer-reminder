@@ -104,6 +104,7 @@ dependencies {
     implementation(libs.firebase.config)
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.perf)
+    implementation(libs.firebase.analytics)
 
     // Utilities
     implementation(libs.androidx.core.splashscreen)
