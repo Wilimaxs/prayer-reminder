@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="splash_subtitle">Disiplin Spiritual</string>
+    <string name="splash_checking_application">Memeriksa status aplikasi…</string>
     <string name="splash_checking_location">Memeriksa lokasi perangkat…</string>
     <string name="splash_checking_prayer_schedule">Memeriksa jadwal salat…</string>
     <string name="splash_syncing_prayer_schedule">Memperbarui jadwal salat…</string>
@@ -17,6 +18,15 @@
     <string name="splash_tap_to_retry">Ketuk pesan ini untuk mencoba lagi.</string>
     <string name="splash_calendar_sync_failed_title">Pembaruan kalender gagal</string>
     <string name="splash_calendar_sync_failed_description">Jadwal salat sudah siap, tetapi data kalender Islam tidak dapat diperbarui.</string>
+    <string name="maintenance_title">Aplikasi Sedang Dalam Pemeliharaan</string>
+    <string name="maintenance_description">Prayer Reminder sementara tidak tersedia karena sedang dalam pemeliharaan. Silakan coba lagi nanti.</string>
+    <string name="update_required_title">Pembaruan Diperlukan</string>
+    <string name="update_required_description">Versi aplikasi ini sudah tidak didukung. Perbarui Prayer Reminder untuk melanjutkan.</string>
+    <string name="update_available_title">Pembaruan Tersedia</string>
+    <string name="update_available_description">Versi terbaru Prayer Reminder telah tersedia.</string>
+    <string name="update_now">Perbarui Sekarang</string>
+    <string name="later">Nanti</string>
+    <string name="announcement_title">Pengumuman</string>
     <string name="home_label">Beranda</string>
     <string name="calendar_label">Kalender</string>
     <string name="profile_label">Profil</string>

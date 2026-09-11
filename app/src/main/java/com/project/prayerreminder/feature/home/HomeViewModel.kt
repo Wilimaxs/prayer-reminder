@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.project.prayerreminder.core.data.local.pref.DataStoreManager
 import com.project.prayerreminder.core.data.local.pref.PreferenceKeys
 import com.project.prayerreminder.core.data.repository.PrayerRepository
+import com.project.prayerreminder.core.firebase.RemoteConfigManager
 import com.project.prayerreminder.core.location.LocationAddressResolver
 import com.project.prayerreminder.feature.home.mapper.toHomeContentUiState
 import com.project.prayerreminder.utils.enumeration.AppLanguage
@@ -17,24 +18,47 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.transformLatest
 import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 import javax.inject.Inject
+import kotlin.coroutines.cancellation.CancellationException
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     prayerRepository: PrayerRepository,
-    dataStoreManager: DataStoreManager,
+    private val dataStoreManager: DataStoreManager,
     private val locationAddressResolver: LocationAddressResolver,
+    remoteConfigManager: RemoteConfigManager,
 ) : ViewModel() {
+
+    private val remoteAnnouncement = flow {
+        val config = remoteConfigManager.currentConfig
+        val lastSeenId = dataStoreManager.get(
+            key = PreferenceKeys.LAST_SEEN_ANNOUNCEMENT_ID,
+            defaultValue = "",
+        ).first()
+
+        emit(
+            if (config.announcementId.isNotBlank() &&
+                config.announcementMessage.isNotBlank() &&
+                config.announcementId != lastSeenId
+            ) {
+                config.announcementId to config.announcementMessage
+            } else {
+                null
+            }
+        )
+    }
 
     // Shares one Room observation between Home content and location resolution.
     private val prayerSchedules = prayerRepository.observePrayerSchedules()
@@ -141,6 +165,11 @@ class HomeViewModel @Inject constructor(
                 isReminderEnabled = isReminderEnabled,
             ),
         )
+    }.combine(remoteAnnouncement) { state, announcement ->
+        state.copy(
+            announcementId = announcement?.first,
+            announcementMessage = announcement?.second,
+        )
     }.catch { error ->
         Timber.e(error, "Failed to observe Home data")
         emit(
@@ -154,6 +183,22 @@ class HomeViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(5_000L),
         initialValue = HomeUiState(),
     )
+
+    // Prevents the same Remote Config announcement from appearing again.
+    fun markAnnouncementAsSeen(announcementId: String) {
+        viewModelScope.launch {
+            try {
+                dataStoreManager.save(
+                    key = PreferenceKeys.LAST_SEEN_ANNOUNCEMENT_ID,
+                    value = announcementId,
+                )
+            } catch (exception: CancellationException) {
+                throw exception
+            } catch (exception: Exception) {
+                Timber.e(exception, "Failed to save the viewed announcement")
+            }
+        }
+    }
 
     private fun LocationLookup.isDefaultLocation(): Boolean {
         return latitude == DEFAULT_LATITUDE && longitude == DEFAULT_LONGITUDE

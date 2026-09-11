@@ -2,6 +2,7 @@
     <string name="app_name" translatable="false">Prayer Reminder</string>
     <string name="splash_title" translatable="false">Prayer Reminder</string>
     <string name="splash_subtitle">Spiritual Discipline</string>
+    <string name="splash_checking_application">Checking application status…</string>
     <string name="splash_checking_location">Checking device location…</string>
     <string name="splash_checking_prayer_schedule">Checking prayer schedule…</string>
     <string name="splash_syncing_prayer_schedule">Updating prayer schedule…</string>
@@ -18,6 +19,15 @@
     <string name="splash_tap_to_retry">Tap this message to retry.</string>
     <string name="splash_calendar_sync_failed_title">Calendar update failed</string>
     <string name="splash_calendar_sync_failed_description">Prayer schedule is ready, but Islamic calendar data could not be updated.</string>
+    <string name="maintenance_title">Application Under Maintenance</string>
+    <string name="maintenance_description">Prayer Reminder is temporarily unavailable while maintenance is in progress. Please try again later.</string>
+    <string name="update_required_title">Update Required</string>
+    <string name="update_required_description">This application version is no longer supported. Update Prayer Reminder to continue.</string>
+    <string name="update_available_title">Update Available</string>
+    <string name="update_available_description">A newer version of Prayer Reminder is available.</string>
+    <string name="update_now">Update Now</string>
+    <string name="later">Later</string>
+    <string name="announcement_title">Announcement</string>
     <string name="home_label">Home</string>
     <string name="calendar_label">Calendar</string>
     <string name="profile_label">Profile</string>

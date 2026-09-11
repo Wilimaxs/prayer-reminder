@@ -3,8 +3,11 @@ package com.project.prayerreminder
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
+import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.google.firebase.perf.FirebasePerformance
 import com.project.prayerreminder.core.data.local.pref.DataStoreManager
 import com.project.prayerreminder.core.data.local.pref.PreferenceKeys
+import com.project.prayerreminder.core.firebase.CrashlyticsTree
 import com.project.prayerreminder.receiver.PrayerAlarmReceiver
 import com.project.prayerreminder.utils.enumeration.AppLanguage
 import dagger.hilt.EntryPoint
@@ -72,9 +75,13 @@ class PrayerApplication : Application() {
 
         applyStoredLanguage()
         PrayerAlarmReceiver.createNotificationChannel(this)
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true)
+        FirebasePerformance.getInstance().isPerformanceCollectionEnabled = true
 
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
+        } else {
+            Timber.plant(CrashlyticsTree())
         }
     }
 

@@ -13,6 +13,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,6 +26,9 @@ import com.project.prayerreminder.feature.home.composable.HomeCard
 import com.project.prayerreminder.feature.home.composable.HomeHeader
 import com.project.prayerreminder.feature.home.composable.HomeSchedule
 import com.project.prayerreminder.utils.composables.AppBar
+import com.project.prayerreminder.utils.composables.AppSnackbarType
+import com.project.prayerreminder.utils.composables.LocalAppSnackbarHostState
+import com.project.prayerreminder.utils.composables.showAppSnackbar
 
 @Composable
 fun HomeScreen(
@@ -32,6 +36,21 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val snackbarHostState = LocalAppSnackbarHostState.current
+    val announcementTitle = stringResource(R.string.announcement_title)
+
+    // Displays each Remote Config announcement once per announcement ID.
+    LaunchedEffect(uiState.announcementId, uiState.announcementMessage) {
+        val announcementId = uiState.announcementId ?: return@LaunchedEffect
+        val announcementMessage = uiState.announcementMessage ?: return@LaunchedEffect
+
+        viewModel.markAnnouncementAsSeen(announcementId)
+        snackbarHostState.showAppSnackbar(
+            title = announcementTitle,
+            subtitle = announcementMessage,
+            type = AppSnackbarType.INFO,
+        )
+    }
 
     HomeScreenContent(
         uiState = uiState,

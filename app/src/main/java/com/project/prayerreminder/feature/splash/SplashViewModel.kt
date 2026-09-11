@@ -2,11 +2,13 @@ package com.project.prayerreminder.feature.splash
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.project.prayerreminder.BuildConfig
 import com.project.prayerreminder.core.alarm.AlarmScheduler
 import com.project.prayerreminder.core.data.local.entity.PrayerEntity
 import com.project.prayerreminder.core.data.local.pref.DataStoreManager
 import com.project.prayerreminder.core.data.local.pref.PreferenceKeys
 import com.project.prayerreminder.core.data.repository.PrayerRepository
+import com.project.prayerreminder.core.firebase.RemoteConfigManager
 import com.project.prayerreminder.core.onError
 import com.project.prayerreminder.core.onLoading
 import com.project.prayerreminder.core.onSuccess
@@ -33,6 +35,7 @@ class SplashViewModel @Inject constructor(
     private val prayerRepository: PrayerRepository,
     private val dataStoreManager: DataStoreManager,
     private val alarmScheduler: AlarmScheduler,
+    private val remoteConfigManager: RemoteConfigManager,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(SplashUiState())
     val uiState = _uiState.asStateFlow()
@@ -45,6 +48,50 @@ class SplashViewModel @Inject constructor(
     private var lastShouldCompareLocation = false
 
     init {
+        checkRemoteConfig()
+    }
+
+    // Checks whether the application may continue before location and cache work starts.
+    private fun checkRemoteConfig() {
+        _uiState.update { currentState ->
+            currentState.copy(
+                isInitializing = true,
+                progressMessage = SplashProgressMessage.CheckingApplication,
+                errorMessage = null,
+            )
+        }
+
+        viewModelScope.launch {
+            val config = remoteConfigManager.fetchAndActivate()
+            val currentVersion = BuildConfig.VERSION_CODE.toLong()
+            val remoteDialog = when {
+                config.maintenanceEnabled -> SplashRemoteDialog.Maintenance
+                currentVersion < config.minimumSupportedVersion -> {
+                    SplashRemoteDialog.ForceUpdate
+                }
+
+                currentVersion < config.latestVersion -> SplashRemoteDialog.SoftUpdate
+                else -> null
+            }
+
+            if (remoteDialog == null) {
+                checkCacheBeforeLocation()
+            } else {
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        isInitializing = false,
+                        remoteDialog = remoteDialog,
+                    )
+                }
+            }
+        }
+    }
+
+    // Continues startup when the optional update is postponed.
+    fun continueAfterOptionalUpdate() {
+        _uiState.update { currentState ->
+            currentState.copy(remoteDialog = null)
+        }
         checkCacheBeforeLocation()
     }
 

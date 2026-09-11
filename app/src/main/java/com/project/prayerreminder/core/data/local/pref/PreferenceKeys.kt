@@ -17,4 +17,5 @@ object PreferenceKeys {
     val PRAYER_SETTING_CHANGE_COUNT = intPreferencesKey("prayer_setting_change_count")
     val PRAYER_SETTING_CHANGE_WINDOW_STARTED_AT =
         longPreferencesKey("prayer_setting_change_window_started_at")
+    val LAST_SEEN_ANNOUNCEMENT_ID = stringPreferencesKey("last_seen_announcement_id")
 }

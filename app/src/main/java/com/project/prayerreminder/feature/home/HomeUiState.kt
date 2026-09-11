@@ -8,6 +8,8 @@ data class HomeUiState(
     val isLoading: Boolean = true,
     val content: HomeContentUiState? = null,
     val errorMessage: String? = null,
+    val announcementId: String? = null,
+    val announcementMessage: String? = null,
 )
 
 data class HomeContentUiState(

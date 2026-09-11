@@ -69,6 +69,25 @@ fun SplashScreen(
     val synchronizationErrorTitle = stringResource(R.string.splash_sync_failed_title)
     val synchronizationErrorSubtitle = stringResource(R.string.splash_tap_to_retry)
 
+    // Opens the application page in Google Play with a browser fallback.
+    val openApplicationStore: () -> Unit = {
+        val marketIntent = Intent(
+            Intent.ACTION_VIEW,
+            "market://details?id=${context.packageName}".toUri(),
+        )
+
+        runCatching {
+            context.startActivity(marketIntent)
+        }.onFailure {
+            context.startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    "https://play.google.com/store/apps/details?id=${context.packageName}".toUri(),
+                )
+            )
+        }
+    }
+
     // Checks whether either precise or approximate location permission is available.
     fun hasLocationPermission(): Boolean {
         val hasFineLocation = ContextCompat.checkSelfPermission(
@@ -282,10 +301,71 @@ fun SplashScreen(
             },
         )
     }
+
+    when (uiState.remoteDialog) {
+        SplashRemoteDialog.Maintenance -> {
+            AlertDialog(
+                onDismissRequest = {},
+                title = {
+                    Text(text = stringResource(R.string.maintenance_title))
+                },
+                text = {
+                    Text(text = stringResource(R.string.maintenance_description))
+                },
+                confirmButton = {},
+            )
+        }
+
+        SplashRemoteDialog.ForceUpdate -> {
+            AlertDialog(
+                onDismissRequest = {},
+                title = {
+                    Text(text = stringResource(R.string.update_required_title))
+                },
+                text = {
+                    Text(text = stringResource(R.string.update_required_description))
+                },
+                confirmButton = {
+                    AppButton(
+                        text = stringResource(R.string.update_now),
+                        onClick = openApplicationStore,
+                    )
+                },
+            )
+        }
+
+        SplashRemoteDialog.SoftUpdate -> {
+            AlertDialog(
+                onDismissRequest = viewModel::continueAfterOptionalUpdate,
+                title = {
+                    Text(text = stringResource(R.string.update_available_title))
+                },
+                text = {
+                    Text(text = stringResource(R.string.update_available_description))
+                },
+                dismissButton = {
+                    AppButton(
+                        text = stringResource(R.string.later),
+                        onClick = viewModel::continueAfterOptionalUpdate,
+                        variant = AppButtonVariant.Outlined,
+                    )
+                },
+                confirmButton = {
+                    AppButton(
+                        text = stringResource(R.string.update_now),
+                        onClick = openApplicationStore,
+                    )
+                },
+            )
+        }
+
+        null -> Unit
+    }
 }
 
 private val SplashProgressMessage.textRes: Int
     get() = when (this) {
+        SplashProgressMessage.CheckingApplication -> R.string.splash_checking_application
         SplashProgressMessage.CheckingLocation -> R.string.splash_checking_location
         SplashProgressMessage.CheckingPrayerSchedule -> R.string.splash_checking_prayer_schedule
         SplashProgressMessage.SynchronizingPrayerSchedule -> R.string.splash_syncing_prayer_schedule
