@@ -8,6 +8,7 @@ import com.project.prayerreminder.core.data.local.pref.DataStoreManager
 import com.project.prayerreminder.core.data.local.pref.PreferenceKeys
 import com.project.prayerreminder.core.data.repository.PersonalScheduleRepository
 import com.project.prayerreminder.core.data.repository.PrayerRepository
+import com.project.prayerreminder.core.firebase.AnalyticsLogger
 import com.project.prayerreminder.feature.calendar.mapper.toCalendarUiState
 import com.project.prayerreminder.feature.calendar.mapper.toIslamicEventUiStates
 import com.project.prayerreminder.utils.enumeration.AppLanguage
@@ -36,6 +37,7 @@ class CalendarViewModel @Inject constructor(
     private val personalScheduleRepository: PersonalScheduleRepository,
     private val dataStoreManager: DataStoreManager,
     private val alarmScheduler: AlarmScheduler,
+    private val analyticsLogger: AnalyticsLogger,
 ) : ViewModel() {
 
     private val selectedDate = MutableStateFlow(LocalDate.now())
@@ -120,6 +122,15 @@ class CalendarViewModel @Inject constructor(
                 )
                 // Applies the latest personal schedules to AlarmManager.
                 alarmScheduler.reschedulePersonalAlarms()
+                analyticsLogger.log(
+                    eventName = AnalyticsLogger.EVENT_PERSONAL_SCHEDULE_CHANGED,
+                    AnalyticsLogger.PARAM_ACTION to if (scheduleId == null) {
+                        "created"
+                    } else {
+                        "updated"
+                    },
+                    AnalyticsLogger.PARAM_ENABLED to isReminderEnabled,
+                )
             } catch (error: CancellationException) {
                 throw error
             } catch (error: Exception) {
@@ -135,6 +146,10 @@ class CalendarViewModel @Inject constructor(
                 personalScheduleRepository.deleteSchedule(scheduleId)
                 // Removes the pending alarm that belonged to the deleted schedule.
                 alarmScheduler.cancelPersonalSchedule(scheduleId)
+                analyticsLogger.log(
+                    eventName = AnalyticsLogger.EVENT_PERSONAL_SCHEDULE_CHANGED,
+                    AnalyticsLogger.PARAM_ACTION to "deleted",
+                )
             } catch (error: CancellationException) {
                 throw error
             } catch (error: Exception) {

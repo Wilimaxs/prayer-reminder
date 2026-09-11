@@ -8,6 +8,7 @@ import com.project.prayerreminder.core.data.local.entity.PrayerEntity
 import com.project.prayerreminder.core.data.local.pref.DataStoreManager
 import com.project.prayerreminder.core.data.local.pref.PreferenceKeys
 import com.project.prayerreminder.core.data.repository.PrayerRepository
+import com.project.prayerreminder.core.firebase.AnalyticsLogger
 import com.project.prayerreminder.core.firebase.RemoteConfigManager
 import com.project.prayerreminder.core.onError
 import com.project.prayerreminder.core.onLoading
@@ -36,6 +37,7 @@ class SplashViewModel @Inject constructor(
     private val dataStoreManager: DataStoreManager,
     private val alarmScheduler: AlarmScheduler,
     private val remoteConfigManager: RemoteConfigManager,
+    private val analyticsLogger: AnalyticsLogger,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(SplashUiState())
     val uiState = _uiState.asStateFlow()
@@ -77,6 +79,16 @@ class SplashViewModel @Inject constructor(
             if (remoteDialog == null) {
                 checkCacheBeforeLocation()
             } else {
+                // Records which remote application gate prevented normal startup.
+                analyticsLogger.log(
+                    eventName = AnalyticsLogger.EVENT_REMOTE_GATE_SHOWN,
+                    AnalyticsLogger.PARAM_TYPE to when (remoteDialog) {
+                        SplashRemoteDialog.Maintenance -> "maintenance"
+                        SplashRemoteDialog.ForceUpdate -> "force_update"
+                        SplashRemoteDialog.SoftUpdate -> "soft_update"
+                    },
+                )
+
                 _uiState.update { currentState ->
                     currentState.copy(
                         isInitializing = false,
@@ -342,10 +354,22 @@ class SplashViewModel @Inject constructor(
                         madhab = madhab,
                     ).onSuccess {
                         didSynchronize = true
+                        analyticsLogger.log(
+                            eventName = AnalyticsLogger.EVENT_PRAYER_SYNC,
+                            AnalyticsLogger.PARAM_RESULT to AnalyticsLogger.RESULT_SUCCESS,
+                        )
                     }.onError { error ->
+                        analyticsLogger.log(
+                            eventName = AnalyticsLogger.EVENT_PRAYER_SYNC,
+                            AnalyticsLogger.PARAM_RESULT to AnalyticsLogger.RESULT_FAILED,
+                        )
                         finishWithError(error.message)
                         return@launch
                     }.onLoading {
+                        analyticsLogger.log(
+                            eventName = AnalyticsLogger.EVENT_PRAYER_SYNC,
+                            AnalyticsLogger.PARAM_RESULT to AnalyticsLogger.RESULT_FAILED,
+                        )
                         finishWithError(
                             message = "Prayer schedule synchronization did not finish.",
                         )
@@ -378,10 +402,22 @@ class SplashViewModel @Inject constructor(
                         longitude = longitude,
                     ).onSuccess {
                         didSynchronize = true
+                        analyticsLogger.log(
+                            eventName = AnalyticsLogger.EVENT_CALENDAR_SYNC,
+                            AnalyticsLogger.PARAM_RESULT to AnalyticsLogger.RESULT_SUCCESS,
+                        )
                     }.onError {
                         calendarSyncFailed = true
+                        analyticsLogger.log(
+                            eventName = AnalyticsLogger.EVENT_CALENDAR_SYNC,
+                            AnalyticsLogger.PARAM_RESULT to AnalyticsLogger.RESULT_FAILED,
+                        )
                     }.onLoading {
                         calendarSyncFailed = true
+                        analyticsLogger.log(
+                            eventName = AnalyticsLogger.EVENT_CALENDAR_SYNC,
+                            AnalyticsLogger.PARAM_RESULT to AnalyticsLogger.RESULT_FAILED,
+                        )
                     }
                 }
 

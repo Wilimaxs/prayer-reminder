@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.project.prayerreminder.core.data.local.pref.DataStoreManager
 import com.project.prayerreminder.core.data.local.pref.PreferenceKeys
 import com.project.prayerreminder.core.data.repository.PrayerRepository
+import com.project.prayerreminder.core.firebase.AnalyticsLogger
 import com.project.prayerreminder.core.firebase.RemoteConfigManager
 import com.project.prayerreminder.core.location.LocationAddressResolver
 import com.project.prayerreminder.feature.home.mapper.toHomeContentUiState
@@ -39,6 +40,7 @@ class HomeViewModel @Inject constructor(
     private val dataStoreManager: DataStoreManager,
     private val locationAddressResolver: LocationAddressResolver,
     remoteConfigManager: RemoteConfigManager,
+    private val analyticsLogger: AnalyticsLogger,
 ) : ViewModel() {
 
     private val remoteAnnouncement = flow {
@@ -186,6 +188,12 @@ class HomeViewModel @Inject constructor(
 
     // Prevents the same Remote Config announcement from appearing again.
     fun markAnnouncementAsSeen(announcementId: String) {
+        // Tracks only the Remote Config identifier, never the announcement content.
+        analyticsLogger.log(
+            eventName = AnalyticsLogger.EVENT_ANNOUNCEMENT_VIEWED,
+            AnalyticsLogger.PARAM_ANNOUNCEMENT_ID to announcementId,
+        )
+
         viewModelScope.launch {
             try {
                 dataStoreManager.save(

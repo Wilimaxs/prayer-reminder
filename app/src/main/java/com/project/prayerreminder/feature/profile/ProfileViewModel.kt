@@ -7,6 +7,7 @@ import com.project.prayerreminder.core.alarm.AlarmScheduler
 import com.project.prayerreminder.core.data.local.pref.DataStoreManager
 import com.project.prayerreminder.core.data.local.pref.PreferenceKeys
 import com.project.prayerreminder.core.data.repository.PrayerRepository
+import com.project.prayerreminder.core.firebase.AnalyticsLogger
 import com.project.prayerreminder.core.onError
 import com.project.prayerreminder.core.onLoading
 import com.project.prayerreminder.core.onSuccess
@@ -31,6 +32,7 @@ class ProfileViewModel @Inject constructor(
     private val dataStoreManager: DataStoreManager,
     private val prayerRepository: PrayerRepository,
     private val alarmScheduler: AlarmScheduler,
+    private val analyticsLogger: AnalyticsLogger,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ProfileUiState())
@@ -130,6 +132,10 @@ class ProfileViewModel @Inject constructor(
             value = isEnabled,
             onSaved = {
                 alarmScheduler.reschedulePrayerAlarms()
+                analyticsLogger.log(
+                    eventName = AnalyticsLogger.EVENT_PRAYER_REMINDER_CHANGED,
+                    AnalyticsLogger.PARAM_ENABLED to isEnabled,
+                )
             },
         )
     }
@@ -235,6 +241,7 @@ class ProfileViewModel @Inject constructor(
                     madhab = currentState.prayerSettings.madhab,
                     preferenceKey = PreferenceKeys.CALCULATION_METHOD,
                     preferenceValue = selectedMethod.apiCode,
+                    settingType = "calculation_method",
                 )
                 return
             }
@@ -253,6 +260,7 @@ class ProfileViewModel @Inject constructor(
                     madhab = selectedMadhab,
                     preferenceKey = PreferenceKeys.MADZHAB,
                     preferenceValue = selectedMadhab.apiCode,
+                    settingType = "madhab",
                 )
                 return
             }
@@ -263,6 +271,11 @@ class ProfileViewModel @Inject constructor(
                     value = currentState.bottomSheet.selectedReminderOffsetMinutes,
                     onSaved = {
                         alarmScheduler.reschedulePrayerAlarms()
+                        analyticsLogger.log(
+                            eventName = AnalyticsLogger.EVENT_REMINDER_OFFSET_CHANGED,
+                            AnalyticsLogger.PARAM_OFFSET_MINUTES to
+                                    currentState.bottomSheet.selectedReminderOffsetMinutes,
+                        )
                     },
                 )
             }
@@ -286,6 +299,7 @@ class ProfileViewModel @Inject constructor(
         madhab: AsrMadhab,
         preferenceKey: Preferences.Key<Int>,
         preferenceValue: Int,
+        settingType: String,
     ) {
         if (prayerSettingSyncJob?.isActive == true) return
 
@@ -330,6 +344,11 @@ class ProfileViewModel @Inject constructor(
                             changeLimitRemainingMinutes = remainingMinutes.coerceAtLeast(1L),
                         )
                     }
+                    analyticsLogger.log(
+                        eventName = AnalyticsLogger.EVENT_PRAYER_SETTING_SYNC,
+                        AnalyticsLogger.PARAM_TYPE to settingType,
+                        AnalyticsLogger.PARAM_RESULT to AnalyticsLogger.RESULT_RATE_LIMITED,
+                    )
                     return@launch
                 }
 
@@ -339,7 +358,10 @@ class ProfileViewModel @Inject constructor(
                 )
 
                 if (cachedPrayer == null) {
-                    finishPrayerSettingSync(ProfileMessage.PrayerSettingSyncFailed)
+                    finishPrayerSettingSync(
+                        message = ProfileMessage.PrayerSettingSyncFailed,
+                        settingType = settingType,
+                    )
                     return@launch
                 }
 
@@ -362,7 +384,10 @@ class ProfileViewModel @Inject constructor(
                 }
 
                 if (!isSyncSuccessful) {
-                    finishPrayerSettingSync(ProfileMessage.PrayerSettingSyncFailed)
+                    finishPrayerSettingSync(
+                        message = ProfileMessage.PrayerSettingSyncFailed,
+                        settingType = settingType,
+                    )
                     return@launch
                 }
 
@@ -382,18 +407,40 @@ class ProfileViewModel @Inject constructor(
 
                 // Replaces existing alarms using the newly downloaded prayer times.
                 alarmScheduler.reschedulePrayerAlarms()
-                finishPrayerSettingSync(ProfileMessage.PrayerSettingSyncSuccess)
+                finishPrayerSettingSync(
+                    message = ProfileMessage.PrayerSettingSyncSuccess,
+                    settingType = settingType,
+                )
             } catch (exception: CancellationException) {
                 throw exception
             } catch (exception: Exception) {
                 Timber.e(exception, "Failed to update prayer setting")
-                finishPrayerSettingSync(ProfileMessage.PrayerSettingSyncFailed)
+                finishPrayerSettingSync(
+                    message = ProfileMessage.PrayerSettingSyncFailed,
+                    settingType = settingType,
+                )
             }
         }
     }
 
     // Closes the selection sheet and exposes the synchronization result to the Snackbar.
-    private fun finishPrayerSettingSync(message: ProfileMessage) {
+    private fun finishPrayerSettingSync(
+        message: ProfileMessage,
+        settingType: String,
+    ) {
+        // Tracks the complete setting flow without sending coordinates or API payloads.
+        analyticsLogger.log(
+            eventName = AnalyticsLogger.EVENT_PRAYER_SETTING_SYNC,
+            AnalyticsLogger.PARAM_TYPE to settingType,
+            AnalyticsLogger.PARAM_RESULT to if (
+                message == ProfileMessage.PrayerSettingSyncSuccess
+            ) {
+                AnalyticsLogger.RESULT_SUCCESS
+            } else {
+                AnalyticsLogger.RESULT_FAILED
+            },
+        )
+
         _uiState.update { currentState ->
             currentState.copy(
                 isPrayerSettingSyncing = false,
