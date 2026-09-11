@@ -88,6 +88,14 @@
 
     <string name="select_madhab">Select Asr Madhab</string>
     <string name="select_madhab_description">Choose the madhab used to determine the start of Asr prayer.</string>
+    <string name="prayer_setting_updated_title">Prayer settings updated</string>
+    <string name="prayer_setting_updated_description">This month’s prayer schedule has been synchronized with your new settings.</string>
+    <string name="prayer_setting_update_failed_title">Unable to update prayer settings</string>
+    <string name="prayer_setting_update_failed_description">The prayer schedule could not be synchronized. Please try again.</string>
+    <string name="prayer_setting_change_limit_title">Change limit reached</string>
+    <string name="prayer_setting_change_limit_description">You have reached the prayer setting change limit. Please try again in %1$d minutes.</string>
+    <string name="profile_settings_load_failed_title">Unable to load profile settings</string>
+    <string name="profile_setting_save_failed_title">Unable to save profile setting</string>
 
     <string name="shafi_description">Asr begins when an object\'s shadow equals its length.</string>
 

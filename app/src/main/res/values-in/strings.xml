@@ -87,6 +87,14 @@
 
     <string name="select_madhab">Pilih Mazhab Asar</string>
     <string name="select_madhab_description">Pilih mazhab yang digunakan untuk menentukan waktu mulai salat Asar.</string>
+    <string name="prayer_setting_updated_title">Pengaturan salat diperbarui</string>
+    <string name="prayer_setting_updated_description">Jadwal salat bulan ini telah disinkronkan dengan pengaturan baru Anda.</string>
+    <string name="prayer_setting_update_failed_title">Gagal memperbarui pengaturan salat</string>
+    <string name="prayer_setting_update_failed_description">Jadwal salat tidak dapat disinkronkan. Silakan coba lagi.</string>
+    <string name="prayer_setting_change_limit_title">Batas perubahan tercapai</string>
+    <string name="prayer_setting_change_limit_description">Anda telah mencapai batas perubahan pengaturan salat. Silakan coba lagi dalam %1$d menit.</string>
+    <string name="profile_settings_load_failed_title">Gagal memuat pengaturan profil</string>
+    <string name="profile_setting_save_failed_title">Gagal menyimpan pengaturan profil</string>
 
     <string name="shafi_description">Asar dimulai ketika bayangan benda sama dengan panjangnya.</string>
 

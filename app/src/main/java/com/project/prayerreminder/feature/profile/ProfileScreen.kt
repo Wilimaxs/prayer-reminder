@@ -8,9 +8,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -26,7 +29,11 @@ import com.project.prayerreminder.feature.profile.composable.bottomsheet.Languag
 import com.project.prayerreminder.feature.profile.composable.bottomsheet.MadhabList
 import com.project.prayerreminder.feature.profile.composable.bottomsheet.ReminderOffsetList
 import com.project.prayerreminder.utils.composables.AppBottomSheet
+import com.project.prayerreminder.utils.composables.AppButton
+import com.project.prayerreminder.utils.composables.AppSnackbarType
 import com.project.prayerreminder.utils.composables.BottomSheetButtonConfig
+import com.project.prayerreminder.utils.composables.LocalAppSnackbarHostState
+import com.project.prayerreminder.utils.composables.showAppSnackbar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -36,6 +43,56 @@ fun ProfileScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val snackbarHostState = LocalAppSnackbarHostState.current
+    val snackbarTitle = when (uiState.message) {
+        ProfileMessage.PrayerSettingSyncSuccess -> {
+            stringResource(R.string.prayer_setting_updated_title)
+        }
+
+        ProfileMessage.PrayerSettingSyncFailed -> {
+            stringResource(R.string.prayer_setting_update_failed_title)
+        }
+
+        ProfileMessage.LoadSettingsFailed -> {
+            stringResource(R.string.profile_settings_load_failed_title)
+        }
+
+        ProfileMessage.SaveSettingFailed -> {
+            stringResource(R.string.profile_setting_save_failed_title)
+        }
+
+        null -> ""
+    }
+    val snackbarSubtitle = when (uiState.message) {
+        ProfileMessage.PrayerSettingSyncSuccess -> {
+            stringResource(R.string.prayer_setting_updated_description)
+        }
+
+        ProfileMessage.PrayerSettingSyncFailed -> {
+            stringResource(R.string.prayer_setting_update_failed_description)
+        }
+
+        ProfileMessage.LoadSettingsFailed,
+        ProfileMessage.SaveSettingFailed,
+        null,
+            -> null
+    }
+
+    // Displays the latest Profile operation result at once.
+    LaunchedEffect(uiState.message) {
+        val message = uiState.message ?: return@LaunchedEffect
+
+        snackbarHostState.showAppSnackbar(
+            title = snackbarTitle,
+            subtitle = snackbarSubtitle,
+            type = if (message == ProfileMessage.PrayerSettingSyncSuccess) {
+                AppSnackbarType.SUCCESS
+            } else {
+                AppSnackbarType.ERROR
+            },
+        )
+        viewModel.clearMessage()
+    }
 
     Scaffold(
         modifier = modifier,
@@ -109,6 +166,8 @@ fun ProfileScreen(
                 primaryButton = BottomSheetButtonConfig(
                     text = stringResource(R.string.save),
                     onClick = viewModel::confirmBottomSheet,
+                    enabled = !uiState.isPrayerSettingSyncing,
+                    isLoading = uiState.isPrayerSettingSyncing,
                 ),
             ) {
                 CalculationMethodList(
@@ -127,6 +186,8 @@ fun ProfileScreen(
                 primaryButton = BottomSheetButtonConfig(
                     text = stringResource(R.string.save),
                     onClick = viewModel::confirmBottomSheet,
+                    enabled = !uiState.isPrayerSettingSyncing,
+                    isLoading = uiState.isPrayerSettingSyncing,
                 ),
             ) {
                 MadhabList(
@@ -173,5 +234,28 @@ fun ProfileScreen(
         }
 
         null -> Unit
+    }
+
+    uiState.changeLimitRemainingMinutes?.let { remainingMinutes ->
+        AlertDialog(
+            onDismissRequest = viewModel::dismissChangeLimitDialog,
+            title = {
+                Text(text = stringResource(R.string.prayer_setting_change_limit_title))
+            },
+            text = {
+                Text(
+                    text = stringResource(
+                        R.string.prayer_setting_change_limit_description,
+                        remainingMinutes,
+                    ),
+                )
+            },
+            confirmButton = {
+                AppButton(
+                    text = stringResource(R.string.confirm),
+                    onClick = viewModel::dismissChangeLimitDialog,
+                )
+            },
+        )
     }
 }

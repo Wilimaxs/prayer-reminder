@@ -4,12 +4,14 @@ import com.project.prayerreminder.utils.enumeration.AppLanguage
 
 data class ProfileUiState(
     val isLoading: Boolean = true,
+    val isPrayerSettingSyncing: Boolean = false,
     val user: ProfileUserUiState = ProfileUserUiState(),
     val prayerSettings: ProfilePrayerSettingsUiState = ProfilePrayerSettingsUiState(),
     val notificationSettings: ProfileNotificationSettingsUiState = ProfileNotificationSettingsUiState(),
     val appearanceSettings: ProfileAppearanceSettingsUiState = ProfileAppearanceSettingsUiState(),
     val bottomSheet: ProfileBottomSheetUiState = ProfileBottomSheetUiState(),
     val message: ProfileMessage? = null,
+    val changeLimitRemainingMinutes: Long? = null,
 )
 
 data class ProfileUserUiState(
@@ -85,4 +87,6 @@ enum class AsrMadhab(
 enum class ProfileMessage {
     LoadSettingsFailed,
     SaveSettingFailed,
+    PrayerSettingSyncSuccess,
+    PrayerSettingSyncFailed,
 }
