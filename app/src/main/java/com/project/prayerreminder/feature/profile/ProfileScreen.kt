@@ -111,9 +111,6 @@ fun ProfileScreen(
         ) {
             ProfileHeader(
                 name = uiState.user.name,
-                onEditClick = {
-                    // TODO: Open profile picture selector.
-                },
                 modifier = Modifier.fillMaxWidth(),
             )
 
