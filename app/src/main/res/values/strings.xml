@@ -54,6 +54,13 @@
     <string name="select_reminder_time">Select Reminder Time</string>
     <string name="select_reminder_time_subtitle">Choose when you want to be reminded.</string>
     <string name="minutes_before">%1$d minutes before</string>
+    <string name="notification_channel_name">Prayer and Schedule Reminders</string>
+    <string name="notification_channel_description">Prayer alarms and reminders for your personal schedules.</string>
+    <string name="notification_prayer_title">Prayer Reminder</string>
+    <string name="notification_prayer_at_time">It is time for %1$s prayer.</string>
+    <string name="notification_prayer_before">%1$s prayer begins in %2$d minutes at %3$s.</string>
+    <string name="notification_schedule_at_time">Your schedule starts now.</string>
+    <string name="notification_schedule_before">Starts in %1$d minutes at %2$s.</string>
     <string name="edit_profile_picture">Edit profile picture</string>
 
     <string name="prayer_settings">PRAYER SETTINGS</string>

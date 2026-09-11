@@ -3,6 +3,7 @@ package com.project.prayerreminder.feature.profile
 import androidx.datastore.preferences.core.Preferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.project.prayerreminder.core.alarm.AlarmScheduler
 import com.project.prayerreminder.core.data.local.pref.DataStoreManager
 import com.project.prayerreminder.core.data.local.pref.PreferenceKeys
 import com.project.prayerreminder.core.data.repository.PrayerRepository
@@ -29,6 +30,7 @@ import kotlin.coroutines.cancellation.CancellationException
 class ProfileViewModel @Inject constructor(
     private val dataStoreManager: DataStoreManager,
     private val prayerRepository: PrayerRepository,
+    private val alarmScheduler: AlarmScheduler,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ProfileUiState())
@@ -126,6 +128,9 @@ class ProfileViewModel @Inject constructor(
         savePreference(
             key = PreferenceKeys.PRAYER_REMINDERS_ENABLED,
             value = isEnabled,
+            onSaved = {
+                alarmScheduler.reschedulePrayerAlarms()
+            },
         )
     }
 
@@ -256,6 +261,9 @@ class ProfileViewModel @Inject constructor(
                 savePreference(
                     key = PreferenceKeys.REMINDER_OFFSET_MINUTES,
                     value = currentState.bottomSheet.selectedReminderOffsetMinutes,
+                    onSaved = {
+                        alarmScheduler.reschedulePrayerAlarms()
+                    },
                 )
             }
 
@@ -372,6 +380,8 @@ class ProfileViewModel @Inject constructor(
                     value = currentCount + 1,
                 )
 
+                // Replaces existing alarms using the newly downloaded prayer times.
+                alarmScheduler.reschedulePrayerAlarms()
                 finishPrayerSettingSync(ProfileMessage.PrayerSettingSyncSuccess)
             } catch (exception: CancellationException) {
                 throw exception
@@ -422,6 +432,7 @@ class ProfileViewModel @Inject constructor(
     private fun <T> savePreference(
         key: Preferences.Key<T>,
         value: T,
+        onSaved: suspend () -> Unit = {},
     ) {
         viewModelScope.launch {
             try {
@@ -429,6 +440,7 @@ class ProfileViewModel @Inject constructor(
                     key = key,
                     value = value,
                 )
+                onSaved()
             } catch (exception: CancellationException) {
                 throw exception
             } catch (exception: Exception) {

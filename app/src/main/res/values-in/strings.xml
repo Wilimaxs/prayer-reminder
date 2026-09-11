@@ -53,6 +53,13 @@
     <string name="select_reminder_time">Pilih Waktu Pengingat</string>
     <string name="select_reminder_time_subtitle">Pilih kapan Anda ingin diingatkan.</string>
     <string name="minutes_before">%1$d menit sebelumnya</string>
+    <string name="notification_channel_name">Pengingat Salat dan Jadwal</string>
+    <string name="notification_channel_description">Alarm salat dan pengingat untuk jadwal pribadi Anda.</string>
+    <string name="notification_prayer_title">Pengingat Salat</string>
+    <string name="notification_prayer_at_time">Waktu salat %1$s telah tiba.</string>
+    <string name="notification_prayer_before">Salat %1$s dimulai dalam %2$d menit pada pukul %3$s.</string>
+    <string name="notification_schedule_at_time">Jadwal Anda dimulai sekarang.</string>
+    <string name="notification_schedule_before">Dimulai dalam %1$d menit pada pukul %2$s.</string>
     <string name="edit_profile_picture">Edit foto profil</string>
 
     <string name="prayer_settings">PENGATURAN SALAT</string>

@@ -2,6 +2,7 @@ package com.project.prayerreminder.feature.splash
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.project.prayerreminder.core.alarm.AlarmScheduler
 import com.project.prayerreminder.core.data.local.entity.PrayerEntity
 import com.project.prayerreminder.core.data.local.pref.DataStoreManager
 import com.project.prayerreminder.core.data.local.pref.PreferenceKeys
@@ -31,6 +32,7 @@ import kotlin.math.sqrt
 class SplashViewModel @Inject constructor(
     private val prayerRepository: PrayerRepository,
     private val dataStoreManager: DataStoreManager,
+    private val alarmScheduler: AlarmScheduler,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(SplashUiState())
     val uiState = _uiState.asStateFlow()
@@ -380,6 +382,15 @@ class SplashViewModel @Inject constructor(
         result: SplashResult,
     ) {
         progressJob?.cancel()
+
+        try {
+            // Ensures cached and newly synchronized schedules have active alarms.
+            alarmScheduler.rescheduleAllAlarms()
+        } catch (error: CancellationException) {
+            throw error
+        } catch (error: Exception) {
+            Timber.e(error, "Failed to schedule reminders during startup")
+        }
 
         _uiState.update { currentState ->
             currentState.copy(

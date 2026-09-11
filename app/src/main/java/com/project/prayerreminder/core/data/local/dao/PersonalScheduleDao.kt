@@ -21,6 +21,10 @@ interface PersonalScheduleDao {
     @Query("SELECT * FROM personal_schedules WHERE id = :scheduleId LIMIT 1")
     suspend fun getScheduleById(scheduleId: Long): PersonalScheduleEntity?
 
+    // Retrieves every schedule when alarms need to be restored.
+    @Query("SELECT * FROM personal_schedules")
+    suspend fun getAllSchedules(): List<PersonalScheduleEntity>
+
     // Deletes a schedule directly using its ID.
     @Query("DELETE FROM personal_schedules WHERE id = :scheduleId")
     suspend fun deleteScheduleById(scheduleId: Long)

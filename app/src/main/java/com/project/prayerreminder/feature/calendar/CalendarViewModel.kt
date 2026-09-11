@@ -2,6 +2,7 @@ package com.project.prayerreminder.feature.calendar
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.project.prayerreminder.core.alarm.AlarmScheduler
 import com.project.prayerreminder.core.data.local.entity.PersonalScheduleEntity
 import com.project.prayerreminder.core.data.local.pref.DataStoreManager
 import com.project.prayerreminder.core.data.local.pref.PreferenceKeys
@@ -34,6 +35,7 @@ class CalendarViewModel @Inject constructor(
     private val prayerRepository: PrayerRepository,
     private val personalScheduleRepository: PersonalScheduleRepository,
     private val dataStoreManager: DataStoreManager,
+    private val alarmScheduler: AlarmScheduler,
 ) : ViewModel() {
 
     private val selectedDate = MutableStateFlow(LocalDate.now())
@@ -116,6 +118,8 @@ class CalendarViewModel @Inject constructor(
                         reminderOffsetMinutes = reminderOffsetMinutes,
                     )
                 )
+                // Applies the latest personal schedules to AlarmManager.
+                alarmScheduler.reschedulePersonalAlarms()
             } catch (error: CancellationException) {
                 throw error
             } catch (error: Exception) {
@@ -129,6 +133,8 @@ class CalendarViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 personalScheduleRepository.deleteSchedule(scheduleId)
+                // Removes the pending alarm that belonged to the deleted schedule.
+                alarmScheduler.cancelPersonalSchedule(scheduleId)
             } catch (error: CancellationException) {
                 throw error
             } catch (error: Exception) {

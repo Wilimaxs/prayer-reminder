@@ -5,6 +5,7 @@ import android.app.Application
 import android.os.Bundle
 import com.project.prayerreminder.core.data.local.pref.DataStoreManager
 import com.project.prayerreminder.core.data.local.pref.PreferenceKeys
+import com.project.prayerreminder.receiver.PrayerAlarmReceiver
 import com.project.prayerreminder.utils.enumeration.AppLanguage
 import dagger.hilt.EntryPoint
 import dagger.hilt.android.EntryPointAccessors
@@ -70,6 +71,7 @@ class PrayerApplication : Application() {
         registerActivityLifecycleCallbacks(activityCallbacks)
 
         applyStoredLanguage()
+        PrayerAlarmReceiver.createNotificationChannel(this)
 
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())

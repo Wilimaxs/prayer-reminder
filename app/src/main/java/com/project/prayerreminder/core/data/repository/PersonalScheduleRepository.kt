@@ -23,6 +23,11 @@ class PersonalScheduleRepository @Inject constructor(
         personalScheduleDao.upsertSchedule(schedule)
     }
 
+    // Returns all personal schedules for alarm restoration.
+    suspend fun getAllSchedules(): List<PersonalScheduleEntity> {
+        return personalScheduleDao.getAllSchedules()
+    }
+
     // Deletes a personal schedule using its Room ID.
     suspend fun deleteSchedule(scheduleId: Long) {
         personalScheduleDao.deleteScheduleById(scheduleId)
